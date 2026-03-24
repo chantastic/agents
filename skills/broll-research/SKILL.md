@@ -3,140 +3,120 @@ name: broll-research
 description: Research and collect b-roll assets from video transcripts. Extracts entities (companies, products, people) and downloads logos, screenshots, social media posts, and videos. Generates FCPXML markers for video editing. Use when preparing b-roll for a video project.
 ---
 
-# B-Roll Research Skill
+# B-Roll Research
 
-Research and collect b-roll assets from video transcripts. Extracts entities (companies, products, people) and downloads logos, screenshots, social media posts, and videos. Generates FCPXML markers for video editing.
+Research and collect b-roll assets from a video transcript. Extracts entities, collects visual assets, and generates timeline markers.
 
-## IMPORTANT: Development Environment
+## Prerequisites
 
-**This skill requires running all commands within a nix-shell environment.**
+- `yt-dlp` — for video downloads
+- `ffmpeg` — for media processing
+- Playwright (via Bun) — for screenshots. If unavailable, skip screenshot/social collection and note it.
 
-All dependencies (Python/spaCy, yt-dlp, ffmpeg, Bun/Playwright, jq, xmllint) are managed via `shell.nix` in the skill directory.
-
-**Before executing ANY command**, enter the nix-shell:
+For screenshot and social media collection, the nix-shell in this skill directory provides Bun + Playwright:
 ```bash
-cd ~/skills/broll-research
-nix-shell
+nix-shell ~/.agents/skills/broll-research/shell.nix
 ```
 
-OR wrap individual commands with:
-```bash
-nix-shell ~/skills/broll-research/shell.nix --run "COMMAND_HERE"
-```
+## Process
 
-The nix-shell provides an isolated, reproducible environment with all required tools.
+### Step 1: Locate Transcript
 
-## Overview
+Check for a transcript in the current directory:
+1. `transcript.json` (from video-cut skill / Deepgram)
+2. Any `.json` file with `utterances` or `words` keys
+3. Ask the user for the path
 
-This skill orchestrates multiple specialized agents to:
-1. Extract entities (companies, products, people) from transcripts
-2. Collect assets in parallel (logos, screenshots, social media, videos)
-3. Generate FCPXML chapter markers linking assets to timeline positions
-4. Produce a human-readable research report
+The transcript can be either:
+- **Deepgram format** (preferred): has `utterances`, `words`, `paragraphs`
+- **Whisper format** (legacy): has `transcription` array with `text` and `offsets`
 
-## Workflow
+### Step 2: Extract Entities
 
-### Phase 1: Setup and Validation
+Read the transcript and extract entities directly. Do NOT use spaCy or external NER — you are better at this.
 
-1. **Determine transcript location**:
-   - If user provides `--transcript` path, use that
-   - Otherwise, look for `/tmp/audio_for_whisper.wav.json` (from recent rough-cut run)
-   - Validate transcript file exists and is valid JSON
+From the transcript text, identify:
+- **Companies/Products**: OpenAI, WorkOS, AuthKit, Docker, etc.
+- **People**: Named individuals mentioned
+- **Technologies**: Languages, frameworks, tools (TypeScript, Vim, Kubernetes)
+- **Websites**: Domains mentioned (workos.com, agentskills.io)
 
-2. **Determine working directory**:
-   - If transcript is in `/tmp/`, ask user where to create `broll-research/` directory
-   - Otherwise, create `broll-research/` as sibling to transcript file
-   - Create directory structure:
-     ```
-     broll-research/
-     ├── entities.json
-     ├── assets/
-     │   ├── logos/
-     │   ├── screenshots/
-     │   ├── social/
-     │   └── videos/
-     ├── markers.fcpxml
-     └── research_log.md
-     ```
+For each entity, record:
+- Name (properly cased)
+- Type (ORG, PERSON, PRODUCT, TECH, WEBSITE)
+- First mention timestamp (from utterance/word timestamps)
+- Mention count
+- Context (the sentence where it first appears)
 
-3. **Enter nix-shell environment**:
-   ```bash
-   cd ~/skills/broll-research
-   nix-shell
-   ```
-
-   This loads all dependencies (Python/spaCy, yt-dlp, ffmpeg, Bun, jq, xmllint).
-
-   **CRITICAL**: All subsequent commands in this skill MUST be run within the nix-shell.
-
-4. **Validate spaCy model**:
-   ```bash
-   python3 -c "import spacy; from pathlib import Path; model_path = Path.home() / '.spacy' / 'data' / 'en_core_web_sm-3.8.0' / 'en_core_web_sm' / 'en_core_web_sm-3.8.0'; spacy.load(str(model_path))"
-   ```
-
-   If model not found, instruct user to download it (one-time setup):
-   ```bash
-   cd ~/.spacy/data
-   wget https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0.tar.gz
-   tar -xzf en_core_web_sm-3.8.0.tar.gz
-   ```
-
-### Phase 2: Entity Extraction (Sequential)
-
-**Run entity extraction**:
-- Use the Python script `scripts/extract-entities.py` with spaCy NER
-- Pass transcript path and output path (`./broll-research/entities.json`)
-- **All commands must run via nix-shell**: Wrap with `nix-shell ~/skills/broll-research/shell.nix --run "COMMAND"`
-- **Wait for completion** before proceeding (output needed for next phase)
-
-**Expected output**: `entities.json` with format:
+Write to `broll-research/entities.json`:
 ```json
 [{
-  "name": "OpenAI",
+  "name": "WorkOS",
   "type": "ORG",
-  "first_mention_ms": 8120,
+  "first_mention_seconds": 1045.3,
   "mention_count": 5,
-  "relevance_score": 10,
-  "context": "and then OpenAI released ChatGPT..."
+  "context": "So we'll say what does WorkOS do? workos.com, it's a company that I work at."
 }]
 ```
 
-**Validation**: Check that at least 3 entities were extracted. If fewer, warn user that transcript may be too generic for b-roll research.
+Rank by mention count × relevance. Focus on the top 10-15 entities.
 
-### Phase 3: Asset Collection (Parallel)
+### Step 3: Create Working Directory
 
-**Run 4 asset collection tasks**:
+```
+broll-research/
+├── entities.json
+├── assets/
+│   ├── logos/
+│   ├── screenshots/
+│   ├── social/
+│   └── videos/
+├── markers.fcpxml
+└── report.md
+```
 
-All tasks use the same inputs:
-- Path to `entities.json`
-- Output directory (e.g., `./broll-research/assets/`)
-- Number of entities to process (recommend: top 10 by relevance_score)
+### Step 4: Collect Assets
 
-**Tasks** (run in parallel where possible):
-1. **Logo collection** → Follow `agents/logo-collector.md` to search and download company/product logos
-2. **Screenshot collection** → Follow `agents/screenshot-collector.md` to capture website screenshots using Playwright
-3. **Social media collection** → Follow `agents/social-collector.md` to screenshot social media posts (Twitter, LinkedIn)
-4. **Video collection** → Follow `agents/video-collector.md` to download YouTube clips with yt-dlp
+For each entity (top 10-15 by relevance), collect:
 
-**Wait for all collection tasks** to complete before proceeding to marker generation.
+**Logos** — Search and download:
+- Follow `agents/logo-collector.md` for detailed instructions
+- Prefer SVG/PNG with transparency from official sources
+- Save as `assets/logos/{slug}.png`
 
-### Phase 4: FCPXML Marker Generation (Sequential)
+**Screenshots** — Capture websites (requires nix-shell for Playwright):
+- Follow `agents/screenshot-collector.md`
+- Capture official website, product page, or landing page
+- Save as `assets/screenshots/{slug}.png`
 
-**Generate FCPXML markers** by following `agents/marker-generator.md`:
-- Pass paths: `entities.json`, `assets/` directory, output `markers.fcpxml`
-- Scan assets directories and generate FCPXML chapter markers
-- Each marker contains:
-  - Start time (from entity's first_mention_ms)
-  - Marker label (entity name + asset type)
-  - Note with relative path to asset file
+**Social media** — Capture posts (requires nix-shell for Playwright):
+- Follow `agents/social-collector.md`
+- Find official Twitter/X or LinkedIn accounts
+- Save as `assets/social/{slug}_twitter.png`
 
-**Wait for completion**.
+**Videos** — Download clips with yt-dlp:
+- Follow `agents/video-collector.md`
+- Find official YouTube channels, product demos
+- Save as `assets/videos/{slug}.mp4`
 
-### Phase 5: Research Report Generation
+Run collection tasks in parallel where possible. Skip any that fail and continue.
 
-**Generate `research_log.md`**:
+### Step 5: Generate Timeline Markers
 
-Create a human-readable markdown report summarizing the research:
+Generate an FCPXML file with chapter markers for each entity's first mention.
+
+Each marker should have:
+- Start time at the entity's `first_mention_seconds`
+- Label: entity name + asset type
+- Note: relative path to the collected asset
+
+Use `~/.agents/services/timeline.py` concepts but for markers specifically, generate FCPXML directly since OTIO marker support varies by adapter.
+
+Save as `broll-research/markers.fcpxml`.
+
+### Step 6: Generate Report
+
+Write `broll-research/report.md`:
 
 ```markdown
 # B-Roll Research Report
@@ -145,103 +125,31 @@ Transcript: {transcript_path}
 
 ## Summary
 - Entities extracted: {count}
-- Assets collected: {total_count}
-  - Logos: {logo_count}
-  - Screenshots: {screenshot_count}
-  - Social media: {social_count}
-  - Videos: {video_count}
+- Assets collected: {total}
+  - Logos: {n}, Screenshots: {n}, Social: {n}, Videos: {n}
 
-## Entity Breakdown
+## Entities
 
 ### {Entity Name} ({type})
-- Mentions: {mention_count}
-- First mention: {timestamp}
-- Assets:
-  - Logo: `./assets/logos/{slug}.png`
-  - Screenshot: `./assets/screenshots/{slug}.png`
-  - Social: `./assets/social/{slug}_twitter.png`
-  - Video: `./assets/videos/{slug}.mp4`
+- Mentions: {count}, First at: {timestamp}
+- Assets: {list of collected files}
 
-[Repeat for each entity]
-
-## Assets Not Found
-- {Entity}: No logo found
-- {Entity}: No social media presence
+## Missing Assets
+- {Entity}: {what couldn't be found}
 
 ## Next Steps
-1. Review assets in `./broll-research/assets/`
-2. Import `markers.fcpxml` into Final Cut Pro
-3. Markers will show asset locations on timeline
+1. Review assets in broll-research/assets/
+2. Import markers.fcpxml into Final Cut Pro alongside your video timeline
+3. Markers show where each entity appears — add b-roll at those points
 ```
 
-### Phase 6: User Report
+### Step 7: Report to User
 
-**Report completion to user**:
+Summarize what was collected, what's missing, and the paths to all outputs.
 
-```
-✓ B-roll research complete!
+## Notes
 
-Entities extracted: 12
-Assets collected: 35
-  - Logos: 10
-  - Screenshots: 12
-  - Social media: 8
-  - Videos: 5
-
-Output directory: ./broll-research/
-
-Next steps:
-1. Review research_log.md for detailed findings
-2. Import markers.fcpxml into Final Cut Pro
-3. Assets are organized in ./assets/ subdirectories
-```
-
-## Error Handling
-
-- **No transcript found**: Guide user to provide `--transcript` path
-- **Invalid transcript**: Explain expected Whisper JSON format
-- **No entities extracted**: Suggest transcript may be too generic
-- **Dependencies missing**: Agents will fallback gracefully (e.g., regex instead of spaCy)
-- **Network failures**: Collectors skip failed downloads and continue
-- **All collectors fail**: Still generate report showing what was attempted
-
-## Agent Communication Protocol
-
-Agents communicate via file outputs:
-- `entities.json` - Shared input for all collectors
-- Asset files - Organized by type in subdirectories
-- `markers.fcpxml` - Final output for video editor
-
-No inter-agent communication needed - all run independently.
-
-## Performance Expectations
-
-- Entity extraction: ~5-10 seconds
-- Asset collection (parallel): ~30-60 seconds (depends on entity count)
-- Marker generation: ~2-5 seconds
-- Total time: **~45-90 seconds** for 10 entities
-
-## Usage Examples
-
-**Basic usage** (use existing transcript):
-```
-/skill:broll-research
-```
-
-**Specify transcript**:
-```
-/skill:broll-research --transcript /path/to/transcript.json
-```
-
-**Specify output directory**:
-```
-/skill:broll-research --transcript /tmp/audio.json --output /Users/chan/Videos/project1/
-```
-
-## Future Enhancements
-
-- Cache frequently used assets globally (`~/.broll-cache/`)
-- Support custom entity lists (user-provided JSON)
-- Integration with stock photo APIs (Pexels, Unsplash)
-- Automatic marker insertion into rough-cut timeline
-- Multi-language support with multilingual spaCy models
+- Entity extraction is done by the LLM reading the transcript — no spaCy, no NER library needed.
+- The Deepgram transcript (from video-cut) has better text quality (smart formatting, proper nouns) than whisper, making entity extraction more reliable.
+- Screenshot and social collection require Playwright via nix-shell. If unavailable, skip those and note it in the report.
+- All asset paths in markers are relative to the broll-research directory.
