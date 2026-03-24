@@ -1,6 +1,0 @@
-models/
-*.wav
-*.mp4
-*.mov
-*.fcpxml
-!templates/*.fcpxml.template

@@ -28,7 +28,7 @@ Also requires: `ffmpeg`, `ffprobe` on PATH, and `DEEPGRAM_API_KEY` in environmen
 | `youtube-audit` | Channel analysis via yt-dlp |
 | `xstate-naming` | XState naming conventions |
 
-**Archived**: `rough-cut` (superseded by `video-cut` — used whisper-cli + silencedetect, significantly worse results)
+Previously `rough-cut` existed here (whisper-cli + silencedetect). It was removed — `video-cut` fully replaces it.
 
 ## Principles
 
