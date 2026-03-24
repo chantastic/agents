@@ -6,8 +6,29 @@ This is Chan's (chantastic) shared agent workspace. Skills and services here are
 
 ```
 services/     — standalone Python CLI scripts. No agent dependency.
+  requirements.txt — pip dependencies (opentimelineio, otio-fcpx-xml-adapter)
 skills/       — Agent Skills standard (agentskills.io). Portable across agents.
 ```
+
+## Setup
+
+```bash
+pip3 install -r ~/.agents/services/requirements.txt
+```
+
+Also requires: `ffmpeg`, `ffprobe` on PATH, and `DEEPGRAM_API_KEY` in environment.
+
+## Active Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `video-cut` | Video editing: Deepgram + LLM → FCPXML |
+| `broll-research` | B-roll asset collection from transcripts |
+| `chantastic-scripts` | Blog → YouTube script conversion |
+| `youtube-audit` | Channel analysis via yt-dlp |
+| `xstate-naming` | XState naming conventions |
+
+**Archived**: `rough-cut` (superseded by `video-cut` — used whisper-cli + silencedetect, significantly worse results)
 
 ## Principles
 

@@ -1,0 +1,2 @@
+opentimelineio>=0.18
+otio-fcpx-xml-adapter>=1.0
