@@ -1,0 +1,38 @@
+{
+  "fcpxml_version": "1.13",
+  "default_fps": 30,
+  "default_library": "~/Movies/Untitled.fcpbundle/",
+  "silence_detection": {
+    "min_duration_seconds": 1.0,
+    "db_threshold": "adaptive",
+    "db_offset_from_mean": -10,
+    "fallback_db": -44
+  },
+  "padding": {
+    "pre_roll_seconds": 0.15,
+    "post_roll_seconds": 0.25
+  },
+  "take_detection": {
+    "min_matching_words": 3,
+    "keep": "last",
+    "fuzzy_match": true
+  },
+  "filler_words": ["um", "uh", "er", "ah", "like", "you know", "basically", "actually", "literally"],
+  "whisper": {
+    "model": "large-v3-turbo",
+    "model_path": "~/.whisper/models/ggml-large-v3-turbo.bin",
+    "language": "en",
+    "output_format": "json"
+  },
+  "markers": {
+    "silence_removed": { "type": "standard", "note_prefix": "agent:silence|" },
+    "duplicate_removed": { "type": "standard", "note_prefix": "agent:duplicate|" },
+    "chapter": { "type": "chapter-marker" },
+    "review": { "type": "todo", "completed": 0 }
+  },
+  "frame_durations": {
+    "23.976": "1001/24000s", "24": "100/2400s", "25": "100/2500s",
+    "29.97": "1001/30000s", "30": "100/3000s", "50": "100/5000s",
+    "59.94": "1001/60000s", "60": "100/6000s"
+  }
+}
