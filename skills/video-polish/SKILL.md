@@ -20,8 +20,10 @@ The core insight: the first pass (video-cut) reads utterances as isolated keep/r
 Read from `manifest.json` in the project directory:
 - `source` — original video path
 - `keyterms` — domain terms for re-transcription
-- `thesis` — video goal (for editorial pacing decisions)
+- `thesis` — inferred by the cut stage from the video content (used for editorial pacing decisions)
 - `stages.cut` — paths to transcript, edit list, and preview from the cut stage
+
+The thesis is always available when running after the cut stage — it is inferred from the kept utterances, not provided by the user. This means editorial pacing evaluation (category E) is always active.
 
 If no manifest exists, ask the user for the source video path and look for `cut/` outputs in the working directory.
 
@@ -99,7 +101,7 @@ False starts that weren't caught because they spanned two kept utterances: "And 
 Segments under ~0.8 seconds that exist only as isolated filler: a lone "Cool." or "K." that doesn't connect to adjacent content. Not all short clips are filler — "YOLO" or "Sick" after a reveal add personality and should stay.
 
 **E. Pacing drag (editorial)**
-Only apply if thesis/goal is set. Sections where the preview feels slow:
+Evaluate against the thesis (from `manifest.json`). Sections where the preview feels slow:
 - Long stretches of reading output aloud that viewers could read on screen
 - Repeated debugging loops where the narrative is "tried → failed → tried → failed → tried → succeeded" but could be "tried → failed → succeeded"
 - Extended confusion that could be compressed to the moment of confusion + the resolution

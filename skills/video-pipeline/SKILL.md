@@ -60,7 +60,7 @@ The manifest (`manifest.json`) is the single source of truth. Every stage reads 
 {
   "source": "/absolute/path/to/video.mp4",
   "keyterms": ["term1", "term2"],
-  "thesis": "What this video is about",
+  "thesis": "Inferred after cut stage — null until then",
   "target_duration": null,
   "stages": {
     "cut": {
@@ -99,8 +99,9 @@ All file paths in the manifest are **relative to the project directory**.
 If no `manifest.json` exists, ask the user for:
 1. **Video file path** (required)
 2. **Domain keyterms** for speech-to-text (suggest terms based on context)
-3. **Video goal/thesis** (optional — enables editorial cuts)
-4. **Target duration** (optional)
+3. **Target duration** (optional)
+
+Do **not** ask for a thesis. The thesis is inferred from the content after the cut stage.
 
 Create the directory structure and write the initial manifest:
 
@@ -108,7 +109,7 @@ Create the directory structure and write the initial manifest:
 {
   "source": "<absolute path>",
   "keyterms": [...],
-  "thesis": "...",
+  "thesis": null,
   "target_duration": null,
   "stages": {}
 }
@@ -127,11 +128,13 @@ Execute stages in order: **cut → polish → zoom**. For each stage:
 
 #### Stage: cut
 
-Invoke the `video-cut` skill. It reads inputs from the manifest and writes outputs to `cut/`.
+Invoke the `video-cut` skill. It reads inputs from the manifest and writes outputs to `cut/`. The cut stage performs a **rough cut only** — removing duplicate takes, false starts, and fragments. No editorial decisions yet.
+
+After the cut stage completes, the cut skill infers a **thesis** from the kept utterances and writes it to the manifest. This thesis describes what the video is actually about, grounded in the content the speaker chose to say. The user can review and adjust it before polish runs.
 
 #### Stage: polish
 
-Invoke the `video-polish` skill. It reads the cut stage outputs from the manifest and writes outputs to `polish/`.
+Invoke the `video-polish` skill. It reads the cut stage outputs **and the inferred thesis** from the manifest. With the thesis now available, polish can make editorial pacing decisions — removing tangential sections, compressing debugging loops, cutting screen-reading. This is where the bulk of editorial improvement happens.
 
 #### Stage: zoom
 
