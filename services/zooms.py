@@ -227,13 +227,34 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
             if c['tl_end'] > z_start and c['tl_start'] < z_end:
                 # Convert zoom start to source time within this clip
                 src_offset = c['src_start'] + (z_start - c['tl_start'])
+                # Support both old schema (style) and new schema (tier + anim_in/anim_out).
+                # Old: style=push|punch|smooth, ramp_in, ramp_out
+                # New: tier=webcam|guide|emphasis|extreme, anim_in=0|default, anim_out=0|default
+                old_style = z.get('style')
+                tier = z.get('tier')
+                if tier and not old_style:
+                    # New schema: derive style from tier + anim fields
+                    anim_in = z.get('anim_in', '0')
+                    anim_out = z.get('anim_out', 'default')
+                    # Use constant_zoom (push) only for opening GG18 zooms (explicit in zooms.json as style=push)
+                    # Everything else maps to zoom_in template or adjustment clip
+                    style = 'punch'  # default for title template path
+                else:
+                    # Old schema: use style directly
+                    style = old_style or 'punch'
+                    anim_in = z.get('anim_in', '0' if style == 'punch' else 'default')
+                    anim_out = z.get('anim_out', '0' if style == 'punch' else 'default')
+
                 clip_zooms[c['i']].append({
                     'id': z['id'],
-                    'style': z.get('style', 'punch'),
+                    'style': z.get('style', style),
+                    'tier': tier,
                     'src_offset': src_offset,
                     'duration': z_dur,
                     'scale': z.get('scale', 1.50),
                     'anchor': z.get('anchor', None),
+                    'anim_in': anim_in,
+                    'anim_out': anim_out,
                     'ramp_in': z.get('ramp_in', 0.5),
                     'ramp_out': z.get('ramp_out', 0.3),
                 })
@@ -334,16 +355,18 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
                     ref = title_effect_ids['zoom_in']
                     params = TEMPLATES['zoom_in']['params']
                     nx, ny = norm
+                    anim_in_val = z.get('anim_in', '0')
+                    anim_out_val = z.get('anim_out', 'default')
                     W.append(f'                            <title ref="{ref}" lane="1" '
                              f'offset="{z_off}" name="{TEMPLATES["zoom_in"]["name"]}" '
                              f'start="3600s" duration="{z_dur}">')
+                    if anim_in_val == '0':
+                        W.append(f'                                <param name="Animation In" key="{params["animation_in"]}" value="0"/>')
+                    if anim_out_val == '0':
+                        W.append(f'                                <param name="Animation Out" key="{params["animation_out"]}" value="0"/>')
                     if norm != (0.5, 0.5):
                         W.append(f'                                <param name="Content Position" key="{params["content_position"]}" value="{nx:.6f} {ny:.6f}"/>')
                     W.append(f'                                <param name="Content Scale" key="{params["content_scale"]}" value="{scale}"/>')
-                    if style == 'punch':
-                        # Disable both animations for hard cut
-                        W.append(f'                                <param name="Animation In" key="{params["animation_in"]}" value="0"/>')
-                        W.append(f'                                <param name="Animation Out" key="{params["animation_out"]}" value="0"/>')
                     W.append(f'                            </title>')
                     continue
 

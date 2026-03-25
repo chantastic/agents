@@ -117,13 +117,19 @@ False starts that weren't caught because they spanned two kept utterances: "And 
 Utterances under ~0.8 seconds that exist only as isolated filler: a lone "Cool." or "K." that doesn't connect to adjacent content. Not all short clips are filler — "YOLO" or "Sick" after a reveal add personality and should stay.
 
 **E. Pacing drag (editorial)**
-Evaluate against the thesis (from `manifest.json`). Sections where the preview feels slow:
-- Long stretches of reading output aloud that viewers could read on screen
-- Repeated debugging loops where the narrative is "tried → failed → tried → failed → tried → succeeded" but could be "tried → failed → succeeded"
+Evaluate against the thesis (from `manifest.json`). This is the highest-value category — editorial pacing cuts account for ~70% of the time saved in the polish pass.
+
+**E1. Screen narration** — the speaker reads visible screen content aloud. The viewer can already see the terminal/browser. If the speaker is narrating documentation, feature lists, or command output line-by-line, the narration adds nothing. Remove the narration; the screen speaks for itself. Exception: if the speaker adds commentary or reaction between lines ("Oh, that's interesting" — keep the reaction, cut the reading).
+
+**E2. LLM output narration** — the speaker narrates what Claude/GPT wrote back. The viewer hasn't seen the prompt context, so a detailed summary of the LLM's recommendations is meaningless to them. Keep the speaker's *reaction or assessment* of the output ("You've assembled a seriously impressive pipeline — thank you, Claude"), cut the narration of the output itself ("It says to port your skills to Pi format, highest value, lowest effort...").
+
+**E3. Exploration loops** — repeated attempts at the same task. The narrative pattern "tried → failed → tried → failed → tried → succeeded" should compress to "tried → failed → succeeded." The viewer needs to see one failure to understand the struggle, not every attempt. Keep the first attempt, the key failure moment, and the resolution. Cut the intermediate retries.
+
+**E4. Transitional bridges** — empty phrases between sections ("Okay. We'll come back to that. I wanna try some of these other modes out."). If the next section starts with enough context, the bridge is unnecessary. Cut it.
+
+**E5. Other drag:**
 - Extended tangents unrelated to the thesis
 - Extended confusion that could be compressed to the moment of confusion + the resolution
-
-This is the highest-value category. In real edits, editorial pacing cuts account for ~70% of the time saved in the polish pass.
 
 **F. Audio artifacts**
 Jump cuts that land mid-word, segments that start/end abruptly. Note the preview timestamp.

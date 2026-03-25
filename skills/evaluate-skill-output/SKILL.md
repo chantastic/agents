@@ -7,10 +7,21 @@ description: Evaluate the quality of a skill's output after a run. Reads the pro
 
 Generate a structured self-evaluation of a skill run. The eval is saved alongside the skill — not in the project directory — so it persists as a learning artifact.
 
+## Modes
+
+This skill supports two modes:
+
+**Self-eval** (run immediately after a pipeline): Reads the project artifacts and the agent's own decisions. Assesses accuracy, process adherence, and efficiency. No user input required beyond the project directory.
+
+**Diff eval** (run after user provides their edited output): Compares the agent's output against the user's final version. Extracts what was changed, categorizes the differences, and derives calibration data. Requires the user's export (e.g., an FCPXML from Final Cut Pro) alongside the project.
+
+Both modes save the eval alongside the skill. A diff eval is strictly more valuable than a self-eval — it has ground truth. Run a self-eval when the user won't be reviewing; run a diff eval when they provide feedback.
+
 ## Inputs
 
 1. **Project directory** — path to the project with a `manifest.json` (or equivalent output)
 2. **Skill name** — which skill to evaluate (determines where the eval is saved)
+3. **User's edited output** (diff eval only) — path to the user's final export (e.g., FCPXML, edited file)
 
 If not provided, infer from context: check the current directory for a manifest, or ask.
 
@@ -174,6 +185,57 @@ Tell the user:
 - Top 3 issues to address
 - What feedback would be most valuable (from the learning hooks)
 - Whether recurring patterns were found across evals
+
+## Diff Eval Process
+
+When the user provides their edited output, run these additional steps after (or instead of) the self-eval steps.
+
+### Step D1: Parse the user's output
+
+For video pipelines, parse the user's FCPXML to extract:
+- Clip list with source time ranges (what was kept)
+- Zoom titles with parameters (scale, position, animation in/out)
+
+### Step D2: Diff against agent output
+
+Compare the user's clips against the agent's edit list:
+- **Clips the user removed** — source segments the agent kept but the user cut. These are the agent's false negatives (under-cutting).
+- **Clips the user restored** — source segments the agent cut but the user kept. These are false positives (over-cutting).
+- **Boundary adjustments** — clips the user trimmed or extended relative to the agent's cut points.
+
+For zooms, compare:
+- **Zooms removed** — agent's zooms the user deleted
+- **Zooms added** — zooms the user created that the agent didn't
+- **Zooms adjusted** — scale, position, or animation changes
+
+### Step D3: Categorize differences
+
+For each difference, identify the root cause by reading the source utterances:
+- Screen narration the agent should have cut
+- LLM output narration the agent should have cut
+- Exploration loops the agent should have compressed
+- Authentic moments the agent shouldn't have cut
+- Zoom calibration (scale too high/low, wrong anchor, wrong animation)
+
+Group and count by category to identify systematic patterns.
+
+### Step D4: Extract calibration data
+
+Record specific numbers for future runs:
+- Scale ranges the user actually used per tier (webcam, guide, emphasis, extreme)
+- Animation preferences (which combinations the user used most)
+- Position patterns (where the user anchored for different content types)
+- Pacing preferences (what the user kept that the agent flagged as drag)
+
+### Step D5: Write the diff eval
+
+Save alongside the self-eval, clearly labeled as a diff:
+
+```
+~/.agents/skills/<skill-name>/evals/<date>-<project-slug>-diff.md
+```
+
+Include the categorized differences, calibration data, and specific recommendations for skill updates. This is the highest-value eval artifact — it has ground truth.
 
 ## Notes
 
