@@ -36,6 +36,12 @@ Previously `rough-cut` existed here (whisper-cli + silencedetect). It was remove
 
 ## Principles
 
+### Project artifacts live with the project, learning artifacts live with the skill
+
+Video project artifacts (manifests, previews, transcripts, edit lists, timelines) live in the project directory — even if that's in `~/Downloads`. They're tied to that specific video and disposable once the video ships.
+
+But evals, self-analyses, and accuracy data are **skill development artifacts**. They teach the skills to be better. If they're stored in the project directory (especially Downloads), they vanish when the project is cleaned up and can never inform future runs. Store them alongside the skill or extension they improve (e.g., `~/.agents/skills/video-pipeline/evals/`).
+
 ### Services over abstractions
 
 Services are thin CLI wrappers around a specific external tool (Deepgram, ffmpeg, OTIO). They do one thing. They don't abstract over multiple backends — a Deepgram wrapper is a Deepgram wrapper, not a "transcription service with pluggable backends." If a different backend is needed, write a different script.
