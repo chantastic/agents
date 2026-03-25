@@ -36,9 +36,11 @@ def generate(source_path, edits_path, output_path, timeline_name="Video Edit"):
     )
 
     for i, edit in enumerate(edits):
-        start = otio.opentime.RationalTime.from_seconds(edit['start'], fps)
-        end = otio.opentime.RationalTime.from_seconds(edit['end'], fps)
-        source_range = otio.opentime.TimeRange(start_time=start, duration=end - start)
+        start_frame = round(edit['start'] * fps)
+        end_frame = round(edit['end'] * fps)
+        start = otio.opentime.RationalTime(start_frame, fps)
+        dur = otio.opentime.RationalTime(end_frame - start_frame, fps)
+        source_range = otio.opentime.TimeRange(start_time=start, duration=dur)
 
         for track in [video_track, audio_track]:
             ref = otio.schema.ExternalReference(target_url=source_abs, available_range=avail)

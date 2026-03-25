@@ -103,19 +103,27 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
     # FCP canonical frameDuration: 100/3000s for 30fps, etc.
     frame_dur = f"{fps_den * 100}/{fps_num * 100}s"
 
-    # Build cumulative timeline positions
-    tl_pos = 0.0
+    # Build cumulative timeline positions using frame-accurate integers
+    # to prevent ±1 frame rounding drift between clips
+    fps = Fraction(fps_num, fps_den)
+    tl_frame = 0  # accumulate in frames (integers)
     clips = []
     for i, edit in enumerate(edits):
-        seg_dur = edit['end'] - edit['start']
+        src_start_frame = round(edit['start'] * fps)
+        src_end_frame = round(edit['end'] * fps)
+        dur_frames = src_end_frame - src_start_frame
         clips.append({
             'i': i, 'name': f'Clip_{i+1:03d}',
             'src_start': edit['start'], 'src_end': edit['end'],
-            'tl_start': tl_pos, 'tl_end': tl_pos + seg_dur,
-            'dur': seg_dur,
+            'src_start_frame': src_start_frame, 'dur_frames': dur_frames,
+            'tl_start_frame': tl_frame,
+            # Keep float versions for zoom mapping
+            'tl_start': float(Fraction(tl_frame * fps_den, fps_num)),
+            'tl_end': float(Fraction((tl_frame + dur_frames) * fps_den, fps_num)),
+            'dur': float(Fraction(dur_frames * fps_den, fps_num)),
         })
-        tl_pos += seg_dur
-    total_dur = tl_pos
+        tl_frame += dur_frames
+    total_dur = float(Fraction(tl_frame * fps_den, fps_num))
 
     # Map zooms to clips.
     # Connected clips use the PARENT CLIP'S SOURCE TIMEBASE for offset.
@@ -139,7 +147,7 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
                     'id': z['id'],
                     'src_offset': src_offset,
                     'duration': z_dur,
-                    'scale': z.get('scale', 1.15),
+                    'scale': z.get('scale', 1.50),
                     'anchor': z.get('anchor', None),
                 })
                 break
@@ -173,10 +181,17 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
              f'tcStart="0s" tcFormat="NDF" audioLayout="stereo" audioRate="48k">')
     W.append(f'                    <spine>')
 
+    def frames_to_time(frames):
+        """Convert integer frame count to FCPXML rational time string."""
+        t = Fraction(frames * fps_den, fps_num)
+        if t.denominator == 1:
+            return f"{t.numerator}s"
+        return f"{t.numerator}/{t.denominator}s"
+
     for c in clips:
-        offset = to_time(c['tl_start'], fps_num, fps_den)
-        dur = to_time(c['dur'], fps_num, fps_den)
-        start = to_time(c['src_start'], fps_num, fps_den)
+        offset = frames_to_time(c['tl_start_frame'])
+        dur = frames_to_time(c['dur_frames'])
+        start = frames_to_time(c['src_start_frame'])
         zlist = clip_zooms[c['i']]
 
         if not zlist:
