@@ -9,6 +9,25 @@ Evaluate and refine a video edit by listening to what actually came out.
 
 The core insight: the first pass (video-cut) reads utterances as isolated keep/remove decisions. This skill reads the *output as a viewer experiences it* — a continuous flow where duplicates, stumbles, and pacing problems become obvious.
 
+## Architecture: Decisions, Not Segment Mutation
+
+Polish produces its own **decisions file** (`decisions/polish.json`) in the same format as `decisions/cut.json`. Both are layers of keep/remove decisions against the **original transcript** (`transcript.json`) at the project root.
+
+The edit list is a compiled artifact — it merges contiguous kept utterances into segments, losing utterance provenance. Polish never reads or modifies the cut edit list. Instead:
+
+1. Polish identifies issues by reading the preview as a viewer.
+2. For each issue, it records the **original utterance indices** to remove.
+3. It writes `decisions/polish.json` with those removals.
+4. A single compile step merges all decision layers into the final edit list:
+
+```bash
+python3 ~/.agents/services/edit.py apply transcript.json \
+  decisions/cut.json decisions/polish.json \
+  --padding 0.05 --output polish/final/edit_list.json
+```
+
+This eliminates the need to map between utterances and segments. No overlap math, no segment splitting, no reverse-engineering merged segments.
+
 ## Required Environment
 
 - `DEEPGRAM_API_KEY` — set in environment
@@ -21,7 +40,9 @@ Read from `manifest.json` in the project directory:
 - `source` — original video path
 - `keyterms` — domain terms for re-transcription
 - `thesis` — inferred by the cut stage from the video content (used for editorial pacing decisions)
-- `stages.cut` — paths to transcript, edit list, and preview from the cut stage
+- `transcript` — path to shared transcript (`transcript.json`)
+- `decisions` — array of existing decision layer paths
+- `stages.cut.preview` — path to the cut preview for re-transcription
 
 The thesis is always available when running after the cut stage — it is inferred from the kept utterances, not provided by the user. This means editorial pacing evaluation (category E) is always active.
 
@@ -32,20 +53,21 @@ If no manifest exists, ask the user for the source video path and look for `cut/
 All outputs go to `polish/` within the project directory:
 
 ```
+decisions/
+└── polish.json                    ← polish decisions (same format as cut)
+
 polish/
 ├── pass_1/
 │   ├── preview_transcript.json    ← re-transcription of cut preview
 │   ├── preview_utterances.txt     ← formatted for review
-│   ├── word_map.json              ← word-level segment data
-│   └── eval.json                  ← issues found
+│   └── eval.json                  ← issues found (with original_utterances)
 ├── pass_2/
-│   ├── edit_list.json             ← fixed segment list
-│   ├── preview.mp4                ← re-rendered preview
+│   ├── preview.mp4                ← re-rendered with all decisions compiled
 │   ├── preview_transcript.json    ← re-transcription for verification
 │   ├── preview_utterances.txt
 │   └── eval.json                  ← convergence check
 └── final/
-    ├── edit_list.json
+    ├── edit_list.json             ← compiled from ALL decision layers
     ├── preview.mp4
     ├── timeline.fcpxml
     └── timeline.otio
@@ -57,7 +79,7 @@ After completion, update `manifest.json` with polish stage status and stats.
 
 ### Pass 1: Evaluate
 
-This is where the value is. Render → transcribe → read as a viewer → find everything the first pass missed.
+This is where the value is. Transcribe the cut preview → read as a viewer → find everything the first pass missed.
 
 #### Step 1.1: Transcribe the cut preview
 
@@ -74,13 +96,7 @@ python3 ~/.agents/services/edit.py format polish/pass_1/preview_transcript.json 
   --output polish/pass_1/preview_utterances.txt
 ```
 
-#### Step 1.2: Build word-level segment map
-
-Read the original transcript (`cut/transcript.json`) and edit list (`cut/edit_list.json`). For each segment, find all words that fall within its time range. Record internal gaps and bookend silence. Save as `polish/pass_1/word_map.json`.
-
-This data is needed later for word-level fixes (trimming mid-utterance stumbles).
-
-#### Step 1.3: Read as a viewer
+#### Step 1.2: Read as a viewer
 
 Read every preview utterance from start to finish. This is the critical step. Evaluate against these criteria:
 
@@ -98,12 +114,13 @@ Self-corrections within a single utterance: "we should be good to dig and we sho
 False starts that weren't caught because they spanned two kept utterances: "And then we'll cp from our" (kept) → "and we'll move from our downloads folder" (kept). The first is a false start of the second.
 
 **D. Filler clips**
-Segments under ~0.8 seconds that exist only as isolated filler: a lone "Cool." or "K." that doesn't connect to adjacent content. Not all short clips are filler — "YOLO" or "Sick" after a reveal add personality and should stay.
+Utterances under ~0.8 seconds that exist only as isolated filler: a lone "Cool." or "K." that doesn't connect to adjacent content. Not all short clips are filler — "YOLO" or "Sick" after a reveal add personality and should stay.
 
 **E. Pacing drag (editorial)**
 Evaluate against the thesis (from `manifest.json`). Sections where the preview feels slow:
 - Long stretches of reading output aloud that viewers could read on screen
 - Repeated debugging loops where the narrative is "tried → failed → tried → failed → tried → succeeded" but could be "tried → failed → succeeded"
+- Extended tangents unrelated to the thesis
 - Extended confusion that could be compressed to the moment of confusion + the resolution
 
 This is the highest-value category. In real edits, editorial pacing cuts account for ~70% of the time saved in the polish pass.
@@ -111,7 +128,7 @@ This is the highest-value category. In real edits, editorial pacing cuts account
 **F. Audio artifacts**
 Jump cuts that land mid-word, segments that start/end abruptly. Note the preview timestamp.
 
-#### Step 1.4: Write evaluation
+#### Step 1.3: Write evaluation
 
 Save all issues as `polish/pass_1/eval.json`:
 
@@ -124,33 +141,66 @@ Save all issues as `polish/pass_1/eval.json`:
       "preview_timestamp": "822.3-833.6",
       "original_utterances": ["322", "324"],
       "description": "Human-readable description of the issue",
-      "fix": "Specific fix: which segments to remove, which words to trim"
+      "fix": "remove utterances 322, 324"
     }
   ]
 }
 ```
 
+The `original_utterances` field is the key output. These are indices into the **original transcript** (`transcript.json`), which is the shared source of truth across all stages.
+
 ---
 
-### Pass 2: Fix and Verify
+### Pass 2: Write Decisions, Compile, and Verify
 
-#### Step 2.1: Apply fixes
+#### Step 2.1: Write polish decisions
 
-Read `polish/pass_1/eval.json`. For each issue, map back to original source timestamps and apply:
+Convert the eval issues into a decisions file. This is the same format as `decisions/cut.json` — only include utterances that polish is additionally removing.
 
-- **Missed duplicate / missed false start / filler clip**: Remove the segment from the edit list.
-- **Mid-utterance stumble**: Use word-level timestamps from `polish/pass_1/word_map.json` to split the segment, removing the stumble words. Preserve ≥0.05s padding around cut points.
-- **Pacing drag**: Remove the identified segments. Follow the contiguous time range rule — don't splice fragments from different parts of a section.
+```json
+{
+  "decisions": {
+    "033": "remove: pacing_drag — Sisyphus tangent, not related to thesis",
+    "034": "remove: pacing_drag — Sisyphus tangent",
+    "071": "remove: filler_clip — isolated 'Okay.' (0.4s)",
+    "322": "remove: missed_duplicate — same observation as 318"
+  },
+  "word_edits": [
+    {
+      "utterance": "145",
+      "exclude_from_word": 8,
+      "exclude_to_word": 14,
+      "reason": "mid_utterance_stumble — 'we should be good to dig and we should be good to go' → trim the stumble"
+    }
+  ]
+}
+```
 
-Save the fixed edit list as `polish/pass_2/edit_list.json`.
+Save as `decisions/polish.json`.
 
-#### Step 2.2: Render and re-transcribe
+**Polish decisions only include utterances to remove.** Utterances not mentioned are left as-is (inheriting their status from the cut layer). You never need to re-specify "keep" for utterances the cut stage already kept.
+
+The optional `word_edits` section handles mid-utterance stumbles — sub-utterance edits that split a kept utterance at word boundaries. These are passed through to `edit.py apply` which handles the splitting.
+
+#### Step 2.2: Compile all decisions and render
+
+Compile both decision layers into a single edit list:
+
+```bash
+python3 ~/.agents/services/edit.py apply transcript.json \
+  decisions/cut.json decisions/polish.json \
+  --padding 0.05 --output polish/pass_2/edit_list.json
+```
+
+Render the preview:
 
 ```bash
 python3 ~/.agents/services/render.py "<source_video>" \
   --edits polish/pass_2/edit_list.json \
   --output polish/pass_2/preview.mp4
 ```
+
+Re-transcribe for verification:
 
 ```bash
 DEEPGRAM_API_KEY=<key> python3 ~/.agents/services/transcribe.py polish/pass_2/preview.mp4 \
@@ -167,9 +217,11 @@ python3 ~/.agents/services/edit.py format polish/pass_2/preview_transcript.json 
 
 Read the new preview utterances. Evaluate against the same criteria. Save as `polish/pass_2/eval.json`.
 
-- **If new issues found**: Create `polish/pass_3/`, apply fixes, render, re-transcribe, re-evaluate. Increment pass numbers.
+- **If new issues found**: Add additional removals to `decisions/polish.json`, re-compile, re-render, re-evaluate. Increment pass directories.
 - **If no new issues or only marginal improvements**: Converge.
-- **Maximum**: 3 fix cycles (passes 2, 3, 4). After that, report remaining issues for manual review.
+- **Maximum**: 3 fix cycles. After that, report remaining issues for manual review.
+
+When adding decisions in subsequent passes, **append to the same `decisions/polish.json`** — it accumulates all polish-stage removals. Then re-compile from scratch each time.
 
 In practice, convergence usually happens after 1 fix cycle. The issues are systematic (missed duplicates, pacing), not cascading.
 
@@ -178,6 +230,13 @@ In practice, convergence usually happens after 1 fix cycle. The issues are syste
 ### Final Output
 
 Copy the last pass's edit list to `polish/final/edit_list.json`. Generate the final timeline and preview:
+
+```bash
+# Final compile (same command, just different output path)
+python3 ~/.agents/services/edit.py apply transcript.json \
+  decisions/cut.json decisions/polish.json \
+  --padding 0.05 --output polish/final/edit_list.json
+```
 
 ```bash
 python3 ~/.agents/services/timeline.py \
@@ -195,7 +254,7 @@ python3 ~/.agents/services/render.py "<source_video>" \
 
 ### Update Manifest and Report
 
-Update `manifest.json`:
+Update `manifest.json`. Add `decisions/polish.json` to the top-level `decisions` array:
 
 ```json
 {
@@ -209,8 +268,8 @@ Update `manifest.json`:
       "timeline": "polish/final/timeline.fcpxml",
       "stats": {
         "edited_duration": ...,
-        "segments_before": ...,
-        "segments_after": ...,
+        "utterances_removed_by_polish": ...,
+        "word_edits_applied": ...,
         "issues_fixed": ...,
         "passes_run": ...
       }
@@ -224,7 +283,7 @@ Report:
 | Metric | Cut | Polished | Improvement |
 |---|---|---|---|
 | Duration | ? | ? | ? removed |
-| Segments | ? | ? | ? removed, ? split |
+| Utterances removed | ? (cut) | ? (polish) | ? additional |
 | Issues fixed | — | ? | by category |
 | Passes | — | ? | — |
 
@@ -232,7 +291,9 @@ List final output file paths. If running standalone, remind user to open `.fcpxm
 
 ## Notes
 
-- Every intermediate file is preserved. The user can trace any cut: `eval.json` → `edit_list.json` → `word_map.json` → `cut/transcript.json`.
+- **Decisions are the contract, not segments.** Polish writes decisions against the original transcript, the same unit as cut. The edit list is a compiled artifact produced at the end. This eliminates segment-mapping bugs.
+- Every intermediate file is preserved. The user can trace any cut: `eval.json` → `decisions/polish.json` + `decisions/cut.json` → `transcript.json`.
 - The re-transcription step is essential. It catches things that look fine on paper but are obvious when experienced as continuous flow. Do not skip it to save cost.
 - This skill does not make content-level editorial decisions about what topics to cover. It tightens *how the existing content flows*. Major content restructuring belongs in `video-cut`.
-- Dead air removal (silence gaps between words) is folded into the fix step when needed. It is not a separate pass — in practice, transcript-based cuts leave very little intra-segment silence.
+- Dead air removal (silence gaps between words) is folded into the compile step when needed. It is not a separate pass — in practice, transcript-based cuts leave very little intra-segment silence.
+- The `word_map.json` from the previous version of this skill is no longer needed. Word-level edits are handled natively by `edit.py apply` via the `word_edits` section.

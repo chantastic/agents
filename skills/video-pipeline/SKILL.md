@@ -15,27 +15,27 @@ Orchestrate a raw recording through cut → polish → final output.
 
 ## Project Structure
 
-Every video project uses this directory layout:
+Every video project uses this directory layout. **Sources of truth live at the root. Build artifacts live in stage directories.**
 
 ```
 project/
 ├── manifest.json              ← shared state across stages
-├── cut/                       ← video-cut outputs
-│   ├── transcript.json
-│   ├── utterances.txt
-│   ├── decisions.json
+├── transcript.json            ← source of truth: original transcript
+├── utterances.txt             ← formatted view of transcript
+├── decisions/                 ← source: all decision layers
+│   ├── cut.json               ← layer 1: rough cut (fragments, false starts)
+│   └── polish.json            ← layer 2: editorial (tangents, pacing, filler)
+├── cut/                       ← build artifacts from cut stage
 │   ├── edit_list.json
 │   ├── preview.mp4
 │   ├── timeline.fcpxml
 │   └── timeline.otio
-├── polish/                    ← video-polish outputs
+├── polish/                    ← build artifacts + working files from polish
 │   ├── pass_1/
-│   │   ├── word_map.json
 │   │   ├── preview_transcript.json
 │   │   ├── preview_utterances.txt
 │   │   └── eval.json
 │   ├── pass_N/
-│   │   ├── edit_list.json
 │   │   ├── preview.mp4
 │   │   ├── preview_transcript.json
 │   │   ├── preview_utterances.txt
@@ -45,16 +45,35 @@ project/
 │       ├── preview.mp4
 │       ├── timeline.fcpxml
 │       └── timeline.otio
-├── zoom/                      ← video-zoom outputs (FCPXML-only, no OTIO)
-│   ├── frames/                ← extracted frames for anchor analysis
-│   ├── zooms.json             ← zoom decisions
-│   └── timeline_zoomed.fcpxml ← final FCPXML with adjustment clips
+├── zoom/                      ← zoom stage outputs (FCPXML-only, no OTIO)
+│   ├── frames/
+│   ├── zooms.json
+│   └── timeline_zoomed.fcpxml
 └── broll/                     ← future: broll-research outputs
 ```
 
+### Decisions as Contract
+
+The **original transcript** (`transcript.json`) is the shared source of truth for all stages. Each stage produces a **decisions layer** in `decisions/` — a set of keep/remove decisions against the original utterance indices:
+
+```
+decisions/cut.json      → layer 1: fragments, false starts, duplicate takes
+decisions/polish.json   → layer 2: tangents, pacing drag, filler, editorial
+```
+
+Edit lists are **compiled artifacts** — produced by merging all decision layers in a single build step:
+
+```bash
+python3 ~/.agents/services/edit.py apply transcript.json \
+  decisions/cut.json decisions/polish.json \
+  --padding 0.05 --output polish/final/edit_list.json
+```
+
+Stages never read or modify each other's edit lists. They only read the transcript and write decisions.
+
 ## Manifest
 
-The manifest (`manifest.json`) is the single source of truth. Every stage reads it first and writes it last.
+The manifest (`manifest.json`) is the single source of truth for pipeline state. Every stage reads it first and writes it last.
 
 ```json
 {
@@ -62,11 +81,12 @@ The manifest (`manifest.json`) is the single source of truth. Every stage reads 
   "keyterms": ["term1", "term2"],
   "thesis": "Inferred after cut stage — null until then",
   "target_duration": null,
+  "transcript": "transcript.json",
+  "utterances": "utterances.txt",
+  "decisions": ["decisions/cut.json"],
   "stages": {
     "cut": {
       "status": "complete|in_progress|failed",
-      "transcript": "cut/transcript.json",
-      "decisions": "cut/decisions.json",
       "edit_list": "cut/edit_list.json",
       "preview": "cut/preview.mp4",
       "timeline": "cut/timeline.fcpxml",
@@ -90,6 +110,8 @@ The manifest (`manifest.json`) is the single source of truth. Every stage reads 
 }
 ```
 
+The top-level `decisions` array lists all decision layers in order. Each stage appends its decisions path when complete. The compile step always uses this array.
+
 All file paths in the manifest are **relative to the project directory**.
 
 ## Process
@@ -111,9 +133,14 @@ Create the directory structure and write the initial manifest:
   "keyterms": [...],
   "thesis": null,
   "target_duration": null,
+  "transcript": null,
+  "utterances": null,
+  "decisions": [],
   "stages": {}
 }
 ```
+
+Create directories: `decisions/`, `cut/`, `polish/`, `zoom/`.
 
 If `manifest.json` already exists, read it and resume from the last incomplete stage.
 
@@ -128,13 +155,25 @@ Execute stages in order: **cut → polish → zoom**. For each stage:
 
 #### Stage: cut
 
-Invoke the `video-cut` skill. It reads inputs from the manifest and writes outputs to `cut/`. The cut stage performs a **rough cut only** — removing duplicate takes, false starts, and fragments. No editorial decisions yet.
+Invoke the `video-cut` skill. It transcribes the video (writing `transcript.json` and `utterances.txt` at the project root), makes rough cut decisions (writing `decisions/cut.json`), and compiles them into `cut/edit_list.json` and a preview.
+
+Cut performs a **rough cut only** — removing duplicate takes, false starts, and fragments. No editorial decisions yet.
 
 After the cut stage completes, the cut skill infers a **thesis** from the kept utterances and writes it to the manifest. This thesis describes what the video is actually about, grounded in the content the speaker chose to say. The user can review and adjust it before polish runs.
 
 #### Stage: polish
 
-Invoke the `video-polish` skill. It reads the cut stage outputs **and the inferred thesis** from the manifest. With the thesis now available, polish can make editorial pacing decisions — removing tangential sections, compressing debugging loops, cutting screen-reading. This is where the bulk of editorial improvement happens.
+Invoke the `video-polish` skill. It reads the cut preview, transcript, **and the inferred thesis** from the manifest. With the thesis now available, polish can make editorial pacing decisions — removing tangential sections, compressing debugging loops, cutting screen-reading. This is where the bulk of editorial improvement happens.
+
+Polish writes `decisions/polish.json` (decision layer 2) — additional removals against the same original transcript. The final edit list is compiled from all layers:
+
+```bash
+python3 ~/.agents/services/edit.py apply transcript.json \
+  decisions/cut.json decisions/polish.json \
+  --padding 0.05 --output polish/final/edit_list.json
+```
+
+Polish never reads or modifies `cut/edit_list.json`. It only adds decisions.
 
 #### Stage: zoom
 
@@ -169,12 +208,15 @@ If invoked on a project with an existing manifest:
 
 If the user asks to re-run a stage (e.g., "re-cut with different editorial decisions"):
 1. Archive the existing stage directory (rename to `cut_prev/` or similar)
-2. Clear that stage's manifest entry
-3. Also clear all downstream stages (re-cutting invalidates polish)
-4. Re-run from that stage forward
+2. Archive the decisions file (rename `decisions/cut.json` → `decisions/cut_prev.json`)
+3. Remove that stage's decisions from the manifest `decisions` array
+4. Also clear all downstream stages (re-cutting invalidates polish)
+5. Re-run from that stage forward
 
 ## Notes
 
 - The manifest is the contract between skills. A stage skill should never need to ask the user for information that's already in the manifest.
 - All paths in the manifest are relative to the project directory. The source video path is absolute (it may live outside the project).
-- Future stages (broll, publish) can be added to the pipeline by extending the manifest schema and adding stage directories.
+- **Decisions are source, edit lists are compiled.** Each stage produces a decisions file against the original transcript. Edit lists are built by compiling all decision layers. Stages never modify each other's edit lists.
+- `edit.py apply` accepts multiple decision files. Any utterance marked "remove" in any layer is removed. This makes the compile step trivial regardless of how many stages add decisions.
+- Future stages (broll, publish) can be added to the pipeline by extending the manifest schema and adding stage directories. If a future stage needs its own decision layer, it adds to `decisions/`.
