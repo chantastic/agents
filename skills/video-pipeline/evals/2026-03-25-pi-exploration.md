@@ -123,3 +123,21 @@ The pipeline should either regenerate zooms when defaults change or apply the de
 **3. Zoom scale calibration.** A/B test old (1.10–1.30) vs new (1.50+) scales. Right level depends on recording layout (split-screen vs talking head).
 
 **4. Automatic b-roll detection.** When speaker says "let's look at the docs" and screen shows docs — detect and flag for zoom-to-screen or overlay.
+
+---
+
+## Changes made after this eval
+
+| Commit | Change |
+|---|---|
+| `587aa8c` | Thesis inferred from content, not asked upfront. Cut is always rough; polish gets editorial power. |
+| `55060f1` | Three zoom styles: punch, smooth, push |
+| `28e2e42` | Fix center-first easing on smooth/push zooms |
+| `0b4524e` | Title-based zooms via DesignStudio templates (--titles flag) |
+| `2f338e9` | OZML reverse engineering docs for future custom templates |
+
+## Decisions made
+
+- **Silence pre-processing rejected** — breaks non-destructive source-referenced design. All timestamps must trace to original file.
+- **Chapters belong in a future publish/upload stage** — not part of the automated cut→polish→zoom pipeline. Chapters happen after manual review in FCP, as part of upload prep.
+- **Next step: validate thesis inference** — run pipeline on a fresh video to test editorial pacing cuts in polish stage.
