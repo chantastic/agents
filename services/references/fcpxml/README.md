@@ -80,3 +80,21 @@ bottom-left: (-88.89, -50)    bottom-center: (0, -50)    bottom-right: (88.89, -
 ### Connected clip offset
 
 Connected clips (lane 1) use the **parent clip's source timebase** for offset, not the timeline. A connected clip CAN overhang past its parent — FCP extends it across adjacent clips.
+
+### FCPXML generation pitfalls
+
+These were learned through trial and error. Do not re-learn them.
+
+**Generate from scratch, don't inject into OTIO output.** The OTIO FCPXML adapter produces `<clip><video ref>` wrappers instead of `<asset-clip ref>`. Adding `<video>` adjustment clips to these `<clip>` elements crashes FCP (conflicting `<video>` children). Always generate FCPXML from the edit list using `<asset-clip>` elements directly.
+
+**Version 1.14 requires `<media-rep>`.** FCPXML 1.8 allowed `src` directly on `<asset>`. Version 1.14 requires `<media-rep kind="original-media" src="file:///..."/>` as a child of `<asset>`. Using the 1.8 pattern with version 1.14 produces a DTD validation error.
+
+**Format element must match FCP's database.** Use `frameDuration="100/3000s"` (not `1/30s`). Include `width`, `height`, and `colorSpace="1-1-1 (Rec. 709)"` on the format element. Omitting `colorSpace` or using non-canonical `frameDuration` causes "unexpected value" errors on the `<sequence>` format reference.
+
+**`library > event > project` hierarchy is required.** A bare `<project>` under `<fcpxml>` may work for OTIO round-trips but is fragile. The full hierarchy matches what FCP exports.
+
+**`start="3600s"` for generators.** FCP uses this as the conventional start time for adjustment clips and generators. Copy this value exactly.
+
+**`role="adjustments"` on adjustment clip `<video>` elements.** FCP normalizes this to `"adjustments.adjustments-1"` on re-export, but `"adjustments"` works for import.
+
+**FCP inspector shows pixels, FCPXML uses FCP units.** The `position` and `anchor` values in FCPXML are in FCP's unit system (frame height = 100 units). The inspector displays the equivalent pixel values (FCP units × height/100). For a 1440p project, 50 FCP units = 720 pixels in the inspector.

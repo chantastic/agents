@@ -45,6 +45,10 @@ project/
 │       ├── preview.mp4
 │       ├── timeline.fcpxml
 │       └── timeline.otio
+├── zoom/                      ← video-zoom outputs (FCPXML-only, no OTIO)
+│   ├── frames/                ← extracted frames for anchor analysis
+│   ├── zooms.json             ← zoom decisions
+│   └── timeline_zoomed.fcpxml ← final FCPXML with adjustment clips
 └── broll/                     ← future: broll-research outputs
 ```
 
@@ -74,6 +78,12 @@ The manifest (`manifest.json`) is the single source of truth. Every stage reads 
       "edit_list": "polish/final/edit_list.json",
       "preview": "polish/final/preview.mp4",
       "timeline": "polish/final/timeline.fcpxml",
+      "stats": { ... }
+    },
+    "zoom": {
+      "status": "complete|in_progress|failed",
+      "zooms": "zoom/zooms.json",
+      "timeline": "zoom/timeline_zoomed.fcpxml",
       "stats": { ... }
     }
   }
@@ -108,7 +118,7 @@ If `manifest.json` already exists, read it and resume from the last incomplete s
 
 ### Step 2: Run stages
 
-Execute stages in order: **cut → polish**. For each stage:
+Execute stages in order: **cut → polish → zoom**. For each stage:
 
 1. Check `manifest.stages.<stage>.status`
 2. If `"complete"` — skip (or ask user if they want to re-run)
@@ -123,6 +133,10 @@ Invoke the `video-cut` skill. It reads inputs from the manifest and writes outpu
 
 Invoke the `video-polish` skill. It reads the cut stage outputs from the manifest and writes outputs to `polish/`.
 
+#### Stage: zoom
+
+Invoke the `video-zoom` skill. It reads the polished edit list and preview from the manifest, analyzes the transcript and frames for zoom opportunities, and generates an FCPXML with adjustment clips. This stage is FCPXML-only — no OTIO equivalent exists for adjustment clips. The OTIO timeline from polish remains the portable format.
+
 ### Step 3: Report
 
 After all stages complete, report:
@@ -135,8 +149,9 @@ After all stages complete, report:
 | Total removed | original − polished (% of original) |
 
 **Final outputs** (from manifest paths):
-- `.fcpxml` — open in Final Cut Pro
-- `preview.mp4` — rendered preview
+- `zoom/timeline_zoomed.fcpxml` — open in Final Cut Pro (includes zoom adjustment clips)
+- `polish/final/timeline.otio` — portable timeline (no zooms)
+- `polish/final/preview.mp4` — rendered preview
 - `manifest.json` — full audit trail
 
 ## Resuming
