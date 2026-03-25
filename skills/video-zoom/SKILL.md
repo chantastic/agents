@@ -164,8 +164,13 @@ python3 ~/.agents/services/zooms.py \
   --edits <edit_list.json> \
   --zooms zoom/zooms.json \
   --name "<timeline name> - Zoomed" \
+  --titles \
   --output zoom/timeline_zoomed.fcpxml
 ```
+
+The `--titles` flag generates zooms as **DesignStudio title clips** instead of adjustment clips. Title-based zooms are resizable in FCP's timeline — drag the edge and the animation auto-scales. Requires MotionVFX DesignStudio templates installed (Constant Zoom GG18, Zoom In 0ZZM). Falls back to keyframed adjustment clips if templates are not found.
+
+Omit `--titles` to always use adjustment clips (no dependencies).
 
 ### Step 7: Update manifest and report
 

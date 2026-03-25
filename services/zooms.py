@@ -18,8 +18,78 @@ Usage:
         --name "My Timeline" --output zoomed.fcpxml
 """
 
-import argparse, json, subprocess, sys, os, urllib.parse
+import argparse, json, subprocess, sys, os, urllib.parse, glob
 from fractions import Fraction
+
+
+# DesignStudio title template paths and parameter keys.
+# Templates are NOT bundled — requires MotionVFX license.
+# See ~/.agents/services/motion-templates/README.md for details.
+
+TEMPLATE_SEARCH_PATHS = [
+    os.path.expanduser("~/Movies/Motion Templates.localized/Titles.localized/DesignStudio"),
+    os.path.expanduser("~/Library/Containers/com.apple.FinalCut/Data/Movies/Motion Templates.localized/Titles.localized/DesignStudio"),
+]
+
+TEMPLATES = {
+    'constant_zoom': {
+        'name': 'Constant Zoom GG18',
+        'dir': 'Constant Zoom GG18',
+        'moti': 'Constant Zoom GG18.moti',
+        'params': {
+            'strength': '9999/10003/4/3189716296/203',
+            'end_point': '9999/3189715466/3293474482/2/1/13',
+        },
+    },
+    'zoom_in': {
+        'name': 'Zoom In 0ZZM',
+        'dir': 'Zoom In 0ZZM',
+        'moti': 'Zoom In 0ZZM.moti',
+        'params': {
+            'content_position': '9999/3144439439/3330899423/2/1/13',
+            'content_scale': '9999/3144439439/3330899423/2/1/15',
+            'animation_in': '9999/3144439361/2/101',
+            'animation_out': '9999/3144439361/2/102',
+        },
+    },
+}
+
+
+def find_template(template_key):
+    """Find a DesignStudio template on disk. Returns (moti_path, uid) or (None, None)."""
+    info = TEMPLATES[template_key]
+    for base in TEMPLATE_SEARCH_PATHS:
+        moti = os.path.join(base, info['dir'], info['moti'])
+        if os.path.exists(moti):
+            # uid uses ~/Titles.localized/ relative path (FCP convention)
+            uid = f"~/Titles.localized/DesignStudio/{info['dir']}/{info['moti']}"
+            return moti, uid
+    return None, None
+
+
+def resolve_anchor_normalized(anchor_val):
+    """Resolve anchor preset to normalized 0–1 coordinates for title templates.
+
+    Returns (x, y) where (0,0)=top-left, (1,1)=bottom-right, (0.5,0.5)=center.
+    Values inset from edges to avoid cropping at high zoom.
+    """
+    presets = {
+        'top-left':      (0.15, 0.15),
+        'top-center':    (0.50, 0.15),
+        'top-right':     (0.85, 0.15),
+        'middle-left':   (0.15, 0.50),
+        'middle-center': (0.50, 0.50),
+        'middle-right':  (0.85, 0.50),
+        'bottom-left':   (0.15, 0.85),
+        'bottom-center': (0.50, 0.85),
+        'bottom-right':  (0.85, 0.85),
+    }
+    key = anchor_val.strip().lower() if anchor_val else 'middle-center'
+    if key in presets:
+        return presets[key]
+    # Raw "x y" values — assume already normalized
+    parts = anchor_val.split()
+    return float(parts[0]), float(parts[1])
 
 
 def get_video_info(video_path):
@@ -91,11 +161,25 @@ def resolve_anchor(anchor_val: str, width: int, height: int):
         return float(parts[0]), float(parts[1])
 
 
-def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_name):
+def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_name, use_titles=False):
     with open(edits_path) as f:
         edits = json.load(f)
     with open(zooms_path) as f:
         zooms = json.load(f).get('zooms', [])
+
+    # Detect title templates
+    title_refs = {}  # template_key → (moti_path, uid)
+    if use_titles:
+        for key in TEMPLATES:
+            path, uid = find_template(key)
+            if path:
+                title_refs[key] = (path, uid)
+                print(f"  Title template found: {TEMPLATES[key]['name']}", file=sys.stderr)
+            else:
+                print(f"  Title template NOT found: {TEMPLATES[key]['name']} — falling back to adjustment clips", file=sys.stderr)
+        if not title_refs:
+            print("  No title templates found, using adjustment clips for all zooms", file=sys.stderr)
+            use_titles = False
 
     duration, fps_num, fps_den, width, height = get_video_info(source_path)
     source_dur = to_time(duration, fps_num, fps_den)
@@ -173,8 +257,25 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
              f'hasAudio="1" audioSources="1" audioChannels="2" audioRate="48000">')
     W.append(f'            <media-rep kind="original-media" src="{escape_xml(src_url)}"/>')
     W.append(f'        </asset>')
-    if any(clip_zooms[i] for i in clip_zooms):
+    has_zooms = any(clip_zooms[i] for i in clip_zooms)
+    if has_zooms:
         W.append(f'        <effect id="r3" name="Adjustment Clip" uid="FFAdjustmentEffect"/>')
+    # Title template effect refs
+    title_effect_ids = {}
+    if use_titles and has_zooms:
+        next_id = 4
+        if 'constant_zoom' in title_refs:
+            rid = f'r{next_id}'
+            _, uid = title_refs['constant_zoom']
+            W.append(f'        <effect id="{rid}" name="{TEMPLATES["constant_zoom"]["name"]}" uid="{uid}"/>')
+            title_effect_ids['constant_zoom'] = rid
+            next_id += 1
+        if 'zoom_in' in title_refs:
+            rid = f'r{next_id}'
+            _, uid = title_refs['zoom_in']
+            W.append(f'        <effect id="{rid}" name="{TEMPLATES["zoom_in"]["name"]}" uid="{uid}"/>')
+            title_effect_ids['zoom_in'] = rid
+            next_id += 1
     W.append('    </resources>')
 
     W.append(f'    <library>')
@@ -211,42 +312,66 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
                 scale = z['scale']
                 style = z.get('style', 'punch')
                 result = resolve_anchor(z['anchor'], width, height) if z.get('anchor') else None
+                norm = resolve_anchor_normalized(z.get('anchor'))
 
+                # --- Title-based zoom (preferred when templates available) ---
+                if use_titles and style == 'push' and 'constant_zoom' in title_effect_ids:
+                    ref = title_effect_ids['constant_zoom']
+                    params = TEMPLATES['constant_zoom']['params']
+                    nx, ny = norm
+                    W.append(f'                            <title ref="{ref}" lane="1" '
+                             f'offset="{z_off}" name="{TEMPLATES["constant_zoom"]["name"]}" '
+                             f'start="3600s" duration="{z_dur}">')
+                    # Strength: map our scale to 0–1 range (1.5 → ~0.33)
+                    strength = min(1.0, (scale - 1.0))
+                    W.append(f'                                <param name="Zoom In Strength" key="{params["strength"]}" value="{strength:.4f}"/>')
+                    if norm != (0.5, 0.5):
+                        W.append(f'                                <param name="Zoom In End Point" key="{params["end_point"]}" value="{nx:.6f} {ny:.6f}"/>')
+                    W.append(f'                            </title>')
+                    continue
+
+                if use_titles and style in ('smooth', 'punch') and 'zoom_in' in title_effect_ids:
+                    ref = title_effect_ids['zoom_in']
+                    params = TEMPLATES['zoom_in']['params']
+                    nx, ny = norm
+                    W.append(f'                            <title ref="{ref}" lane="1" '
+                             f'offset="{z_off}" name="{TEMPLATES["zoom_in"]["name"]}" '
+                             f'start="3600s" duration="{z_dur}">')
+                    if norm != (0.5, 0.5):
+                        W.append(f'                                <param name="Content Position" key="{params["content_position"]}" value="{nx:.6f} {ny:.6f}"/>')
+                    W.append(f'                                <param name="Content Scale" key="{params["content_scale"]}" value="{scale}"/>')
+                    if style == 'punch':
+                        # Disable both animations for hard cut
+                        W.append(f'                                <param name="Animation In" key="{params["animation_in"]}" value="0"/>')
+                        W.append(f'                                <param name="Animation Out" key="{params["animation_out"]}" value="0"/>')
+                    W.append(f'                            </title>')
+                    continue
+
+                # --- Fallback: adjustment clip with keyframed/static transforms ---
                 W.append(f'                            <video ref="r3" lane="1" '
                          f'offset="{z_off}" name="Zoom {z["id"]}" '
                          f'start="3600s" duration="{z_dur}" role="adjustments">')
 
                 if style == 'smooth':
-                    # Animated zoom: ease from 1.0 → scale (ramp in), hold, ease back (ramp out)
-                    # Position/anchor are STATIC — only scale is keyframed.
-                    # This ensures the zoom always expands from the anchor point,
-                    # not from center-then-panning to anchor.
                     ramp_in = z.get('ramp_in', 0.5)
                     ramp_out = z.get('ramp_out', 0.3)
                     z_dur_secs = z['duration']
-
-                    # Keyframe times relative to start="3600s"
                     t0 = 3600.0
                     t1 = t0 + ramp_in
                     t2 = t0 + z_dur_secs - ramp_out
                     t3 = t0 + z_dur_secs
-                    # Clamp: if ramps overlap, split evenly
                     if t1 >= t2:
                         mid = t0 + z_dur_secs / 2
                         t1 = mid
                         t2 = mid
-
                     kt0 = to_time(t0, fps_num, fps_den)
                     kt1 = to_time(t1, fps_num, fps_den)
                     kt2 = to_time(t2, fps_num, fps_den)
                     kt3 = to_time(t3, fps_num, fps_den)
-
-                    # Static anchor, keyframed scale only
                     anchor_attr = ''
                     if result:
                         fx, fy = result
                         anchor_attr = f' position="{fx:.4f} {fy:.4f}" anchor="{fx:.4f} {fy:.4f}"'
-
                     W.append(f'                                <adjust-transform{anchor_attr}>')
                     W.append(f'                                    <param name="scale">')
                     W.append(f'                                        <keyframeAnimation>')
@@ -259,18 +384,14 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
                     W.append(f'                                </adjust-transform>')
 
                 elif style == 'push':
-                    # Continuous slow zoom: eases from 1.0 to scale over full duration
-                    # Static anchor, keyframed scale only — zoom expands from anchor point
                     t0 = 3600.0
                     t1 = t0 + z['duration']
                     kt0 = to_time(t0, fps_num, fps_den)
                     kt1 = to_time(t1, fps_num, fps_den)
-
                     anchor_attr = ''
                     if result:
                         fx, fy = result
                         anchor_attr = f' position="{fx:.4f} {fy:.4f}" anchor="{fx:.4f} {fy:.4f}"'
-
                     W.append(f'                                <adjust-transform{anchor_attr}>')
                     W.append(f'                                    <param name="scale">')
                     W.append(f'                                        <keyframeAnimation>')
@@ -281,7 +402,6 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
                     W.append(f'                                </adjust-transform>')
 
                 else:
-                    # 'punch' (default) or 'hold' — static scale, no animation
                     if result:
                         fx, fy = result
                         W.append(f'                                <adjust-transform '
@@ -306,7 +426,8 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
         f.write('\n'.join(W))
 
     zoom_count = sum(len(v) for v in clip_zooms.values())
-    print(f"Generated: {len(clips)} clips, {zoom_count} adjustment clips for {len(zooms)} zooms", file=sys.stderr)
+    mode = "titles" if use_titles and title_effect_ids else "adjustment clips"
+    print(f"Generated: {len(clips)} clips, {zoom_count} zooms ({mode}) for {len(zooms)} zoom entries", file=sys.stderr)
     print(f"Timeline: {total_dur:.1f}s ({total_dur/60:.1f}min)", file=sys.stderr)
     print(f"Wrote: {output_path}", file=sys.stderr)
 
@@ -318,8 +439,11 @@ def main():
     p.add_argument('--zooms', required=True, help='Zooms JSON file')
     p.add_argument('--name', default='Video Edit - Zoomed', help='Timeline name')
     p.add_argument('--output', '-o', required=True, help='Output FCPXML file')
+    p.add_argument('--titles', action='store_true',
+                   help='Use DesignStudio title templates instead of adjustment clips (requires MotionVFX)')
     args = p.parse_args()
-    generate_fcpxml(args.source, args.edits, args.zooms, args.output, args.name)
+    generate_fcpxml(args.source, args.edits, args.zooms, args.output, args.name,
+                    use_titles=args.titles)
 
 
 if __name__ == '__main__':
