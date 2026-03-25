@@ -47,12 +47,12 @@ Read every utterance and select moments that benefit from visual emphasis.
 
 | Signal | Scale range | Example |
 |---|---|---|
-| Key statement / thesis | 1.10–1.18 | "Pi follows a philosophy of aggressive extensibility" |
-| Reveal / payoff | 1.15–1.25 | "And it works!" "YOLO. This is a big one." |
-| Quick reaction | 1.20–1.30 | "Sick." / "RTFM, bro." |
-| Satisfaction / assessment | 1.08–1.15 | "Pretty painless so far" |
-| Opening / closing | 1.10–1.18 | Thesis statement, sign-off |
-| Emotional emphasis | 1.15–1.25 | "We can even run Doom." |
+| Key statement / thesis | 1.40–1.50 | "Pi follows a philosophy of aggressive extensibility" |
+| Reveal / payoff | 1.50–1.65 | "And it works!" "YOLO. This is a big one." |
+| Quick reaction | 1.60–1.75 | "Sick." / "RTFM, bro." |
+| Satisfaction / assessment | 1.35–1.50 | "Pretty painless so far" |
+| Opening / closing | 1.40–1.50 | Thesis statement, sign-off |
+| Emotional emphasis | 1.50–1.65 | "We can even run Doom." |
 
 **Anti-patterns (don't zoom):**
 - Already zoomed recently (minimum ~15s gap)
@@ -105,7 +105,7 @@ Write `zoom/zooms.json`:
       "id": "Z001",
       "timeline_start": 0.0,
       "timeline_end": 6.5,
-      "scale": 1.15,
+      "scale": 1.50,
       "anchor": "middle-left",
       "reason": "Key thesis statement. Terminal showing Pi description."
     }
@@ -116,7 +116,7 @@ Write `zoom/zooms.json`:
 **Fields:**
 - `id` — unique identifier (Z001, Z002, ...)
 - `timeline_start` / `timeline_end` — position in the POLISHED timeline (seconds)
-- `scale` — zoom factor (1.0 = no zoom, 1.15 = 15% punch-in)
+- `scale` — zoom factor (1.0 = no zoom, 1.50 = 50% punch-in)
 - `anchor` — named preset or raw FCP units "x y"
 - `reason` — why this moment deserves a zoom
 
