@@ -1,0 +1,1292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE fcpxml>
+
+<fcpxml version="1.14">
+    <resources>
+        <format id="r1" name="FFVideoFormat720p30" frameDuration="100/3000s" width="1280" height="720" colorSpace="1-1-1 (Rec. 709)"/>
+        <asset id="r2" name="Source" uid="EA60A757DB30A03145EB0AB4F4305D20" start="0s" duration="3853300/1000s" hasVideo="1" format="r3" hasAudio="1" videoSources="1" audioSources="1" audioChannels="2" audioRate="48000">
+            <media-rep kind="original-media" sig="EA60A757DB30A03145EB0AB4F4305D20" src="file:///Users/chan/Downloads/chantastic.fcpbundle/3-24-26/Original%20Media/2026-03-23%2011-57-49.mp4">
+                <bookmark>Ym9va+ADAAAAAAUQQAAAAHCyRPF/QU57ULwk4yQamcREbli5vf2/oYhe1sVaVbjlAAAAAAAAAAAAAAAAAAAAAJwCAAAEAAAAAwMAAAAYACgFAAAAAQEAAFVzZXJzAAAABAAAAAEBAABjaGFuCQAAAAEBAABEb3dubG9hZHMAAAAUAAAAAQEAAGNoYW50YXN0aWMuZmNwYnVuZGxlBwAAAAEBAAAzLTI0LTI2AA4AAAABAQAAT3JpZ2luYWwgTWVkaWEAABcAAAABAQAAMjAyNi0wMy0yMyAxMS01Ny00OS5tcDQAHAAAAAEGAAAQAAAAIAAAACwAAABAAAAAXAAAAGwAAACEAAAACAAAAAQDAAAzQwAAAAAAAAgAAAAEAwAA5X0AAAAAAAAIAAAABAMAABh+AAAAAAAACAAAAAQDAAAK1IwAAAAAAAgAAAAEAwAAChySAAAAAAAIAAAABAMAABIckgAAAAAACAAAAAQDAAAdHJIAAAAAABwAAAABBgAAyAAAANgAAADoAAAA+AAAAAgBAAAYAQAAKAEAAAgAAAAABAAAQce5K1K7XSEYAAAAAQIAAAEAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAAAAABBQAABAAAAAMDAAAIAAAABAAAAAMDAAAFAAAACAAAAAQDAAAFAAAAAAAAAAQAAAADAwAA9QEAAAgAAAABCQAAZmlsZTovLy8MAAAAAQEAAE1hY2ludG9zaCBIRAgAAAAEAwAAAJCClucAAAAIAAAAAAQAAEHHl5ILAAAAJAAAAAEBAABERDlEMDE4MS03OTkyLTQ4NDQtODFEOS0wREM2M0E4NjFGQjIYAAAAAQIAAIEAAAABAAAA7xMAAAEAAAAAAAAAAAAAAAEAAAABAQAALwAAAC8AAAABAQAATlNVUkxCb29rbWFya1F1YXJhbnRpbmVNb3VudGVkTmV0d29ya1ZvbHVtZXNLZXkA/AAAAP7///8BAAAAAAAAABQAAAAEEAAApAAAAAAAAAAFEAAAOAEAAAAAAAAQEAAAbAEAAAAAAABAEAAAXAEAAAAAAABUEAAAlAEAAAAAAABVEAAAoAEAAAAAAABWEAAAjAEAAAAAAAACIAAAWAIAAAAAAAAFIAAAyAEAAAAAAAAQIAAA2AEAAAAAAAARIAAADAIAAAAAAAASIAAA7AEAAAAAAAATIAAA/AEAAAAAAAAgIAAAOAIAAAAAAAAwIAAAjAEAAAAAAAABwAAArAEAAAAAAAARwAAAIAAAAAAAAAASwAAAvAEAAAAAAAAQ0AAABAAAAAAAAABkAgCAjAEAAAAAAAA=</bookmark>
+            </media-rep>
+            <metadata>
+                <md key="com.apple.proapps.studio.rawToLogConversion" value="0"/>
+                <md key="com.apple.proapps.spotlight.kMDItemProfileName" value="HD (1-1-1)"/>
+                <md key="com.apple.proapps.studio.cameraISO" value="0"/>
+                <md key="com.apple.proapps.studio.cameraColorTemperature" value="0"/>
+                <md key="com.apple.proapps.spotlight.kMDItemCodecs">
+                    <array>
+                        <string>MPEG-4 AAC</string>
+                        <string>obs_nvenc_h264_tex</string>
+                    </array>
+                </md>
+                <md key="com.apple.proapps.mio.ingestDate" value="2026-03-24 14:59:52 -0700"/>
+            </metadata>
+        </asset>
+        <format id="r3" frameDuration="1/30s" width="2560" height="1440" colorSpace="1-1-1 (Rec. 709)"/>
+        <format id="r4" name="FFVideoFormat720p30" frameDuration="100/3000s" width="1280" height="720"/>
+        <effect id="r5" name="Adjustment Clip" uid="FFAdjustmentEffect"/>
+    </resources>
+    <library location="file:///Users/chan/Downloads/chantastic.fcpbundle/">
+        <event name="3-24-26 1" uid="B456058C-A338-407C-A834-F135BB89CA0A">
+            <project name="Pi Discovery - Zoomed" uid="F77040B3-D359-45E6-8B04-72AD0E7CFC9F" modDate="2026-03-24 15:03:20 -0700">
+                <sequence format="r1" duration="3354700/3000s" tcStart="0s" tcFormat="NDF" audioLayout="stereo" audioRate="48k">
+                    <spine>
+                        <asset-clip ref="r2" offset="0s" name="Clip_001" start="437/15s" duration="17/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="0s" name="Zoom Z001" start="3600s" duration="17/15s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.15 1.15"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="17/15s" name="Clip_002" start="746/15s" duration="8/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="17/15s" name="Zoom Z001" start="3600s" duration="8/3s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.15 1.15"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                            <video ref="r5" lane="1" offset="149200/3000s" name="Constant Zoom Example" start="3600s" duration="10s" role="adjustments">
+                                <adjust-transform>
+                                    <param name="scale">
+                                        <keyframeAnimation>
+                                            <keyframe time="3600s" value="1 1"/>
+                                            <keyframe time="3610s" value="1.87 1.87"/>
+                                        </keyframeAnimation>
+                                    </param>
+                                </adjust-transform>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="57/15s" name="Clip_003" start="956/15s" duration="17/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="19/5s" name="Zoom Z001" start="3600s" duration="27/10s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.15 1.15"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="199/30s" name="Clip_004" start="1022/15s" duration="2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="25900/3000s" name="Clip_005" start="93s" duration="53/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="36500/3000s" name="Clip_006" start="779/5s" duration="61/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="467400/3000s" name="Punch into center example" start="3600s" duration="18300/3000s" role="adjustments">
+                                <adjust-transform scale="1.5 1.5"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="54800/3000s" name="Clip_007" start="2441/15s" duration="29/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="60600/3000s" name="Clip_004" start="210400/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="210400/3000s" name="Punch into top left example" start="3600s" duration="18300/3000s" role="adjustments">
+                                <adjust-transform scale="1.5 1.5" anchor="-29.4861 16.5556"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="60700/3000s" name="Clip_008" start="1767/10s" duration="10300/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="71000/3000s" name="Clip_009" start="3202/15s" duration="281/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="99100/3000s" name="Clip_008" start="540400/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="99200/3000s" name="Clip_010" start="1176/5s" duration="161/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="115300/3000s" name="Clip_011" start="2473/10s" duration="16/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="118500/3000s" name="Clip_012" start="4244/15s" duration="193/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="157100/3000s" name="Clip_013" start="9169/30s" duration="29/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="165800/3000s" name="Clip_014" start="9277/30s" duration="4s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="278/5s" name="Zoom Z002" start="3600s" duration="11/3s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.12 1.12"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="177800/3000s" name="Clip_015" start="4822/15s" duration="47/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="889/15s" name="Zoom Z002" start="3600s" duration="47/15s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.12 1.12"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="187200/3000s" name="Clip_016" start="3343/10s" duration="20/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="312/5s" name="Zoom Z002" start="3600s" duration="3/10s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.12 1.12"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="207200/3000s" name="Clip_017" start="3521/10s" duration="49/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="221900/3000s" name="Clip_018" start="5516/15s" duration="8/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="229900/3000s" name="Clip_019" start="11231/30s" duration="17/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="233300/3000s" name="Clip_020" start="5681/15s" duration="37/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="79s" name="Clip_021" start="1142/3s" duration="4800/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="241800/3000s" name="Clip_022" start="3833/10s" duration="7/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="248800/3000s" name="Clip_021" start="1146800/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="248900/3000s" name="Clip_023" start="3861/10s" duration="11/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="251100/3000s" name="Clip_024" start="12023/30s" duration="41/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="263400/3000s" name="Clip_025" start="813/2s" duration="9600/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="91s" name="Clip_026" start="1238/3s" duration="17/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="276400/3000s" name="Clip_025" start="1229100/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="276500/3000s" name="Clip_027" start="2082/5s" duration="17/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="278200/3000s" name="Clip_028" start="2097/5s" duration="8/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="286200/3000s" name="Clip_029" start="2232/5s" duration="34/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="293000/3000s" name="Clip_030" start="2321/5s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="298100/3000s" name="Clip_031" start="7027/15s" duration="13/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="302000/3000s" name="Clip_032" start="4729/10s" duration="5500/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="1019/10s" name="Zoom Z003" start="3600s" duration="3/5s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.25 1.25"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="307500/3000s" name="Clip_033" start="2881/6s" duration="8/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="205/2s" name="Zoom Z003" start="3600s" duration="1s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.25 1.25"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="315500/3000s" name="Clip_034" start="14549/30s" duration="133/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="328800/3000s" name="Clip_035" start="7366/15s" duration="94/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="347600/3000s" name="Clip_036" start="7463/15s" duration="33/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="357500/3000s" name="Clip_037" start="15061/30s" duration="13200/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="370700/3000s" name="Clip_038" start="3119/6s" duration="52/5s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="401900/3000s" name="Clip_037" start="1519300/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="134s" name="Clip_039" start="15911/30s" duration="89/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="419800/3000s" name="Clip_040" start="16331/30s" duration="13/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="426300/3000s" name="Clip_041" start="8323/15s" duration="277/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="454000/3000s" name="Clip_042" start="8468/15s" duration="13/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="473500/3000s" name="Clip_043" start="17143/30s" duration="209/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="494400/3000s" name="Clip_044" start="17569/30s" duration="94/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="513200/3000s" name="Clip_045" start="9023/15s" duration="41/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="2" offset="861/5s" name="Zoom Z004" start="3600s" duration="89/30s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.18 1.18"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="525500/3000s" name="Clip_046" start="606s" duration="46/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="1051/6s" name="Zoom Z004" start="3600s" duration="4/3s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.18 1.18"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="534700/3000s" name="Clip_047" start="9157/15s" duration="29/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="537600/3000s" name="Clip_048" start="1835/3s" duration="94/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="556400/3000s" name="Clip_049" start="9284/15s" duration="34/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="563200/3000s" name="Clip_050" start="9343/15s" duration="14/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="577200/3000s" name="Clip_051" start="6283/10s" duration="53/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="587800/3000s" name="Clip_052" start="1900/3s" duration="89/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="596700/3000s" name="Clip_053" start="19163/30s" duration="149/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="611600/3000s" name="Clip_032" start="1424200/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="611700/3000s" name="Clip_054" start="6453/10s" duration="22/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="616100/3000s" name="Clip_055" start="6489/10s" duration="17/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="619500/3000s" name="Clip_056" start="1954/3s" duration="77/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="627200/3000s" name="Clip_057" start="9812/15s" duration="41/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="631300/3000s" name="Clip_014" start="939700/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="631400/3000s" name="Clip_058" start="10022/15s" duration="29/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="637200/3000s" name="Clip_059" start="671s" duration="149/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="652100/3000s" name="Clip_060" start="2036/3s" duration="73/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="659400/3000s" name="Clip_061" start="4135/6s" duration="7200/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="666600/3000s" name="Clip_062" start="10382/15s" duration="37/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="670300/3000s" name="Clip_063" start="10406/15s" duration="29/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="676100/3000s" name="Clip_064" start="7019/10s" duration="133/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="1127/5s" name="Zoom Z005" start="3600s" duration="22/5s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.15 1.15"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="689400/3000s" name="Clip_065" start="2497/3s" duration="20400/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="1149/5s" name="Zoom Z005" start="3600s" duration="4s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.15 1.15"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="709800/3000s" name="Clip_066" start="25181/30s" duration="22/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="714200/3000s" name="Clip_067" start="12664/15s" duration="41/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="722400/3000s" name="Clip_068" start="12712/15s" duration="13/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="735400/3000s" name="Clip_065" start="2517400/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="735500/3000s" name="Clip_069" start="5147/6s" duration="16800/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="752300/3000s" name="Clip_070" start="4324/5s" duration="28/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="757900/3000s" name="Clip_071" start="26011/30s" duration="7/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="764900/3000s" name="Clip_072" start="895s" duration="133/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="778200/3000s" name="Clip_073" start="13826/15s" duration="19200/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="797400/3000s" name="Clip_074" start="13948/15s" duration="7/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="804400/3000s" name="Clip_073" start="2784400/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="804500/3000s" name="Clip_075" start="2797/3s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="809600/3000s" name="Clip_076" start="4674/5s" duration="3600/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="813200/3000s" name="Clip_077" start="9611/10s" duration="149/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="828100/3000s" name="Clip_076" start="936s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="828200/3000s" name="Clip_078" start="5809/6s" duration="29/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="278s" name="Clip_079" start="29117/30s" duration="34/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="840800/3000s" name="Clip_080" start="4894/5s" duration="13200/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="854000/3000s" name="Clip_081" start="4932/5s" duration="37/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="857700/3000s" name="Clip_082" start="14881/15s" duration="49/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="872400/3000s" name="Clip_083" start="14978/15s" duration="47/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="881800/3000s" name="Clip_084" start="30061/30s" duration="101/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="902000/3000s" name="Clip_085" start="6055/6s" duration="8/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="910000/3000s" name="Clip_086" start="5064/5s" duration="21/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="916300/3000s" name="Clip_087" start="15599/15s" duration="124/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="941100/3000s" name="Clip_088" start="31477/30s" duration="2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="947100/3000s" name="Clip_089" start="5257/5s" duration="49/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="952000/3000s" name="Clip_090" start="5318/5s" duration="119/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="975800/3000s" name="Clip_091" start="2145/2s" duration="37/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="979500/3000s" name="Clip_092" start="16139/15s" duration="53/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="990100/3000s" name="Clip_093" start="16457/15s" duration="109/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1022800/3000s" name="Clip_094" start="16882/15s" duration="277/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="347s" name="Zoom Z006" start="3600s" duration="19/6s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.1 1.1"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1050500/3000s" name="Clip_095" start="34253/30s" duration="101/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="2101/6s" name="Zoom Z006" start="3600s" duration="17/6s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.1 1.1"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1060600/3000s" name="Clip_096" start="5734/5s" duration="61/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1078900/3000s" name="Clip_097" start="1153s" duration="23/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1083500/3000s" name="Clip_098" start="17378/15s" duration="509/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1134400/3000s" name="Clip_099" start="11761/10s" duration="29/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1140200/3000s" name="Clip_088" start="3153700/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1140300/3000s" name="Clip_100" start="17714/15s" duration="9100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1149400/3000s" name="Clip_101" start="35533/30s" duration="113/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1160700/3000s" name="Clip_100" start="3551900/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1160800/3000s" name="Clip_102" start="17911/15s" duration="88/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1178400/3000s" name="Clip_103" start="12003/10s" duration="89/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1187300/3000s" name="Clip_104" start="18068/15s" duration="28/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1192900/3000s" name="Clip_105" start="36199/30s" duration="13/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1199400/3000s" name="Clip_106" start="36311/30s" duration="137/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1213100/3000s" name="Clip_080" start="2949600/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1213200/3000s" name="Clip_107" start="37037/30s" duration="17/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1230200/3000s" name="Clip_108" start="12459/10s" duration="8/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1238200/3000s" name="Clip_109" start="12609/10s" duration="33/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1248100/3000s" name="Clip_110" start="7609/6s" duration="77/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1255800/3000s" name="Clip_111" start="38131/30s" duration="9/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1258500/3000s" name="Clip_112" start="13607/10s" duration="97/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1268200/3000s" name="Clip_113" start="7422/5s" duration="15100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1283300/3000s" name="Clip_114" start="1548s" duration="14/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1297300/3000s" name="Clip_115" start="23332/15s" duration="5/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1304800/3000s" name="Clip_116" start="23479/15s" duration="5/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1312300/3000s" name="Clip_117" start="15727/10s" duration="34/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1319100/3000s" name="Clip_118" start="15751/10s" duration="77/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1326800/3000s" name="Clip_113" start="4468300/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1326900/3000s" name="Clip_119" start="48413/30s" duration="7900/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1334800/3000s" name="Clip_120" start="48557/30s" duration="28/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1340400/3000s" name="Clip_121" start="48617/30s" duration="49/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1345300/3000s" name="Clip_122" start="24379/15s" duration="13200/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1358500/3000s" name="Clip_123" start="16299/10s" duration="49/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1363400/3000s" name="Clip_124" start="24488/15s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1368500/3000s" name="Clip_125" start="24581/15s" duration="28/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1374100/3000s" name="Clip_126" start="16413/10s" duration="137/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1387800/3000s" name="Clip_127" start="16461/10s" duration="41/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1391900/3000s" name="Clip_122" start="4889000/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="464s" name="Clip_128" start="49469/30s" duration="4800/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1396800/3000s" name="Clip_129" start="24763/15s" duration="34/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1403600/3000s" name="Clip_130" start="24827/15s" duration="21/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1409900/3000s" name="Clip_131" start="24883/15s" duration="101/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1420000/3000s" name="Clip_132" start="10015/6s" duration="53/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1430600/3000s" name="Clip_128" start="4951700/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1430700/3000s" name="Clip_133" start="25268/15s" duration="41/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1438900/3000s" name="Clip_134" start="52117/30s" duration="46/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1448100/3000s" name="Clip_135" start="53137/30s" duration="73/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="490s" name="Clip_136" start="17793/10s" duration="13200/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1483200/3000s" name="Clip_137" start="10769/6s" duration="58/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1494800/3000s" name="Clip_138" start="54317/30s" duration="5/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1502300/3000s" name="Clip_139" start="54497/30s" duration="9/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1505000/3000s" name="Clip_140" start="10909/6s" duration="13/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1511500/3000s" name="Clip_141" start="5599/3s" duration="17/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1520000/3000s" name="Clip_142" start="9352/5s" duration="23/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1524600/3000s" name="Clip_143" start="11279/6s" duration="34/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1531400/3000s" name="Clip_144" start="18823/10s" duration="49/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1546100/3000s" name="Clip_145" start="57653/30s" duration="83/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1562700/3000s" name="Clip_146" start="29767/15s" duration="29/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1568500/3000s" name="Clip_147" start="29911/15s" duration="53/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1573800/3000s" name="Clip_136" start="5351100/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1573900/3000s" name="Clip_148" start="30026/15s" duration="14/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1587900/3000s" name="Clip_149" start="30212/15s" duration="52/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1598300/3000s" name="Clip_150" start="10113/5s" duration="59/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1610100/3000s" name="Clip_151" start="30406/15s" duration="2/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1612100/3000s" name="Clip_152" start="30499/15s" duration="77/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1619800/3000s" name="Clip_153" start="30614/15s" duration="82/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1636200/3000s" name="Clip_154" start="12281/6s" duration="34/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1643000/3000s" name="Clip_155" start="61501/30s" duration="17/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1646400/3000s" name="Clip_156" start="30778/15s" duration="28/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1652000/3000s" name="Clip_157" start="61619/30s" duration="13/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1655900/3000s" name="Clip_158" start="10279/5s" duration="22/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1660300/3000s" name="Clip_159" start="10289/5s" duration="16700/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="559s" name="Clip_160" start="12385/6s" duration="5/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1684500/3000s" name="Clip_161" start="10338/5s" duration="21/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1690800/3000s" name="Clip_162" start="62107/30s" duration="49/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1695700/3000s" name="Clip_163" start="20723/10s" duration="47/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1705100/3000s" name="Clip_164" start="4159/2s" duration="89/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1714000/3000s" name="Clip_165" start="10428/5s" duration="257/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1739700/3000s" name="Clip_159" start="6190100/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1739800/3000s" name="Clip_166" start="62849/30s" duration="17300/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1757100/3000s" name="Clip_167" start="31564/15s" duration="5/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1764600/3000s" name="Clip_168" start="10576/5s" duration="169/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1781500/3000s" name="Clip_169" start="6383/3s" duration="77/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1789200/3000s" name="Clip_170" start="21327/10s" duration="101/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1809400/3000s" name="Clip_166" start="6302200/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1809500/3000s" name="Clip_171" start="32183/15s" duration="13/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1816000/3000s" name="Clip_172" start="64441/30s" duration="41/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1824200/3000s" name="Clip_173" start="32272/15s" duration="28/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="3" offset="1217/2s" name="Zoom Z007" start="3600s" duration="43/30s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.12 1.12"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1829800/3000s" name="Clip_174" start="32311/15s" duration="29/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="2" offset="9149/15s" name="Zoom Z007" start="3600s" duration="29/30s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.12 1.12"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1832700/3000s" name="Clip_175" start="6466/3s" duration="16/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="6109/10s" name="Zoom Z007" start="3600s" duration="16/15s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.12 1.12"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1835900/3000s" name="Clip_176" start="21867/10s" duration="7/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="18359/30s" name="Zoom Z007" start="3600s" duration="61/30s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.12 1.12"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1842900/3000s" name="Clip_177" start="32882/15s" duration="61/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1849000/3000s" name="Clip_178" start="10979/5s" duration="37/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1852700/3000s" name="Clip_179" start="33077/15s" duration="49/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1867400/3000s" name="Clip_180" start="33196/15s" duration="41/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1871500/3000s" name="Clip_181" start="11121/5s" duration="83/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1879800/3000s" name="Clip_182" start="33422/15s" duration="41/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1888000/3000s" name="Clip_183" start="11156/5s" duration="13/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1891900/3000s" name="Clip_184" start="11166/5s" duration="161/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="636s" name="Clip_119" start="4849200/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1908100/3000s" name="Clip_185" start="13439/6s" duration="33/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1918000/3000s" name="Clip_186" start="33662/15s" duration="5500/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1923500/3000s" name="Clip_187" start="33752/15s" duration="61/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1929600/3000s" name="Clip_188" start="11264/5s" duration="73/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1936900/3000s" name="Clip_189" start="22591/10s" duration="11/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1939100/3000s" name="Clip_190" start="33931/15s" duration="113/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1950400/3000s" name="Clip_191" start="22707/10s" duration="57/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1967500/3000s" name="Clip_192" start="11448/5s" duration="91/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1985700/3000s" name="Clip_193" start="69361/30s" duration="23/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1990300/3000s" name="Clip_194" start="6962/3s" duration="157/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2006000/3000s" name="Clip_195" start="11656/5s" duration="8/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2014000/3000s" name="Clip_196" start="4689/2s" duration="23/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2018600/3000s" name="Clip_197" start="11783/5s" duration="131/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2044800/3000s" name="Clip_198" start="23713/10s" duration="17/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2053300/3000s" name="Clip_199" start="35614/15s" duration="41/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="3427/5s" name="Zoom Z008" start="3600s" duration="2/5s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.25 1.25"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2057400/3000s" name="Clip_200" start="71293/30s" duration="59/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="2" offset="3429/5s" name="Zoom Z008" start="3600s" duration="1/2s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.25 1.25"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2069200/3000s" name="Clip_201" start="71533/30s" duration="29/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2075000/3000s" name="Clip_186" start="6737900/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2075100/3000s" name="Clip_202" start="36056/15s" duration="83/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2091700/3000s" name="Clip_203" start="12047/5s" duration="199/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2111600/3000s" name="Clip_204" start="24177/10s" duration="89/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2120500/3000s" name="Clip_205" start="24233/10s" duration="73/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2127800/3000s" name="Clip_206" start="72863/30s" duration="17/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2131200/3000s" name="Clip_207" start="72907/30s" duration="17/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2132900/3000s" name="Clip_208" start="14687/6s" duration="41/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2137000/3000s" name="Clip_069" start="2590300/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2137100/3000s" name="Clip_209" start="73483/30s" duration="2400/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2139500/3000s" name="Clip_210" start="24553/10s" duration="5/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="714s" name="Clip_211" start="73801/30s" duration="53/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2147300/3000s" name="Clip_212" start="24629/10s" duration="19/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2156800/3000s" name="Clip_213" start="74689/30s" duration="149/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2171700/3000s" name="Clip_209" start="7350700/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2171800/3000s" name="Clip_214" start="12476/5s" duration="11/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2174000/3000s" name="Clip_215" start="2498s" duration="53/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2179300/3000s" name="Clip_216" start="75031/30s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="3634/5s" name="Zoom Z009" start="3600s" duration="4/3s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.18 1.18"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2184400/3000s" name="Clip_217" start="12893/5s" duration="19/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="10922/15s" name="Zoom Z009" start="3600s" duration="43/15s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.18 1.18"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2203400/3000s" name="Clip_061" start="2074700/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2203500/3000s" name="Clip_218" start="38779/15s" duration="24700/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2228200/3000s" name="Clip_219" start="15563/6s" duration="73/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2235500/3000s" name="Clip_220" start="7792/3s" duration="9/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2238200/3000s" name="Clip_221" start="80087/30s" duration="197/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2257900/3000s" name="Clip_222" start="40178/15s" duration="5/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2265400/3000s" name="Clip_223" start="80447/30s" duration="101/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2275500/3000s" name="Clip_218" start="7780500/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2275600/3000s" name="Clip_224" start="13427/5s" duration="22/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="760s" name="Clip_225" start="13509/5s" duration="143/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2308600/3000s" name="Clip_226" start="81361/30s" duration="11/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2310800/3000s" name="Clip_227" start="16313/6s" duration="71/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="775s" name="Clip_228" start="40886/15s" duration="94/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2343800/3000s" name="Clip_229" start="13689/5s" duration="13/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2347700/3000s" name="Clip_230" start="82267/30s" duration="21/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="7861/10s" name="Zoom Z010" start="3600s" duration="59/10s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.2 1.2"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2379200/3000s" name="Clip_231" start="41309/15s" duration="28/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2384800/3000s" name="Clip_232" start="8275/3s" duration="23/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2389400/3000s" name="Clip_233" start="27699/10s" duration="34/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2396200/3000s" name="Clip_234" start="27723/10s" duration="21/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2402500/3000s" name="Clip_235" start="41707/15s" duration="14/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2416500/3000s" name="Clip_236" start="83627/30s" duration="101/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2426600/3000s" name="Clip_237" start="8390/3s" duration="77/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="814s" name="Clip_238" start="8407/3s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2447100/3000s" name="Clip_239" start="14057/5s" duration="52/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2457500/3000s" name="Clip_240" start="84467/30s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2462600/3000s" name="Clip_241" start="14089/5s" duration="137/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="830s" name="Clip_242" start="28281/10s" duration="121/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2502100/3000s" name="Clip_243" start="17011/6s" duration="38/5s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2524900/3000s" name="Clip_244" start="28699/10s" duration="29/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2530700/3000s" name="Clip_245" start="28723/10s" duration="33/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2540600/3000s" name="Clip_246" start="86303/30s" duration="52/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2551000/3000s" name="Clip_247" start="43532/15s" duration="21/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2557300/3000s" name="Clip_248" start="2912s" duration="13/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2561200/3000s" name="Clip_249" start="17579/6s" duration="41/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2565300/3000s" name="Clip_250" start="14704/5s" duration="97/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="8567/10s" name="Zoom Z011" start="3600s" duration="33/5s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.15 1.15"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2594400/3000s" name="Clip_251" start="88561/30s" duration="157/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2610100/3000s" name="Clip_252" start="44398/15s" duration="9100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2619200/3000s" name="Clip_253" start="44447/15s" duration="17/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2627700/3000s" name="Clip_254" start="17851/6s" duration="37/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2646200/3000s" name="Clip_255" start="44726/15s" duration="5/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2648700/3000s" name="Clip_256" start="89483/30s" duration="28/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2654300/3000s" name="Clip_257" start="14949/5s" duration="9/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2657000/3000s" name="Clip_258" start="29963/10s" duration="6700/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2663700/3000s" name="Clip_259" start="45157/15s" duration="76/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2678900/3000s" name="Clip_260" start="15082/5s" duration="2/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2680900/3000s" name="Clip_261" start="3024s" duration="34/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2687700/3000s" name="Clip_262" start="30267/10s" duration="13/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2700700/3000s" name="Clip_263" start="9116/3s" duration="83/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2717300/3000s" name="Clip_264" start="18269/6s" duration="13/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2721200/3000s" name="Clip_265" start="9176/3s" duration="8/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2729200/3000s" name="Clip_266" start="45953/15s" duration="57/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2746300/3000s" name="Clip_267" start="9256/3s" duration="101/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2756400/3000s" name="Clip_268" start="18533/6s" duration="29/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2759300/3000s" name="Clip_258" start="8995600/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2759400/3000s" name="Clip_269" start="30957/10s" duration="113/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2770700/3000s" name="Clip_270" start="47296/15s" duration="83/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="9279/10s" name="Zoom Z012" start="3600s" duration="6/5s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.25 1.25"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2787300/3000s" name="Clip_271" start="15799/5s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="2" offset="9291/10s" name="Zoom Z012" start="3600s" duration="2/5s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.25 1.25"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2792400/3000s" name="Clip_272" start="15857/5s" duration="149/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2807300/3000s" name="Clip_252" start="8888700/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2807400/3000s" name="Clip_273" start="16506/5s" duration="4800/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2812200/3000s" name="Clip_274" start="50149/15s" duration="41/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2820400/3000s" name="Clip_273" start="9908400/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2820500/3000s" name="Clip_275" start="50209/15s" duration="3100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2823600/3000s" name="Clip_276" start="20101/6s" duration="9/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2826300/3000s" name="Clip_277" start="33531/10s" duration="49/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="947s" name="Clip_278" start="10076/3s" duration="41/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2845100/3000s" name="Clip_275" start="10044900/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2845200/3000s" name="Clip_279" start="50404/15s" duration="29/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2848100/3000s" name="Clip_280" start="100853/30s" duration="21/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2854400/3000s" name="Clip_281" start="100949/30s" duration="11/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2856600/3000s" name="Clip_282" start="33661/10s" duration="9/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2859300/3000s" name="Clip_283" start="33689/10s" duration="37/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2863000/3000s" name="Clip_284" start="10238/3s" duration="11/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2865200/3000s" name="Clip_285" start="102779/30s" duration="37/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <gap name="Gap" offset="2883700/3000s" start="3600s" duration="100/3000s"/>
+                        <asset-clip ref="r2" offset="2883800/3000s" name="Clip_286" start="17229/5s" duration="53/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2894400/3000s" name="Clip_287" start="51742/15s" duration="77/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2909800/3000s" name="Clip_288" start="51827/15s" duration="19/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2928800/3000s" name="Clip_289" start="10391/3s" duration="77/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <gap name="Gap" offset="2936500/3000s" start="3600s" duration="100/3000s"/>
+                        <asset-clip ref="r2" offset="2936600/3000s" name="Clip_290" start="52003/15s" duration="29/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2942400/3000s" name="Clip_291" start="17347/5s" duration="14/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2956400/3000s" name="Clip_292" start="17371/5s" duration="21/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2962700/3000s" name="Clip_293" start="17383/5s" duration="41/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2966800/3000s" name="Clip_294" start="17392/5s" duration="20/3s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2986800/3000s" name="Clip_295" start="17436/5s" duration="29/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="2992600/3000s" name="Clip_296" start="17454/5s" duration="19/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3021100/3000s" name="Clip_297" start="52513/15s" duration="61/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3027200/3000s" name="Clip_298" start="105271/30s" duration="89/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3036100/3000s" name="Clip_299" start="105487/30s" duration="61/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3042200/3000s" name="Clip_300" start="7037/2s" duration="5/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3049700/3000s" name="Clip_301" start="7043/2s" duration="247/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3123800/3000s" name="Clip_302" start="17757/5s" duration="133/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3137100/3000s" name="Clip_303" start="3559s" duration="25700/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3162800/3000s" name="Clip_304" start="3583s" duration="21/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3169100/3000s" name="Clip_305" start="7173/2s" duration="137/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3182800/3000s" name="Clip_306" start="53956/15s" duration="11/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3185000/3000s" name="Clip_303" start="10702700/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3185100/3000s" name="Clip_307" start="35981/10s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3190200/3000s" name="Clip_308" start="18052/5s" duration="5500/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3195700/3000s" name="Clip_309" start="21697/6s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3200800/3000s" name="Clip_310" start="54287/15s" duration="58/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3212400/3000s" name="Clip_311" start="18192/5s" duration="53/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3223000/3000s" name="Clip_312" start="54874/15s" duration="41/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3231200/3000s" name="Clip_308" start="10836700/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3231300/3000s" name="Clip_313" start="110033/30s" duration="23500/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="5412/5s" name="Zoom Z013" start="3600s" duration="1s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.2 1.2"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3254800/3000s" name="Clip_314" start="55139/15s" duration="58/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="16274/15s" name="Zoom Z014" start="3600s" duration="58/15s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.12 1.12"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3266400/3000s" name="Clip_315" start="11084/3s" duration="13/6s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3272900/3000s" name="Clip_313" start="11026800/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="1091s" name="Clip_316" start="110917/30s" duration="4300/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3277300/3000s" name="Clip_317" start="37359/10s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3282400/3000s" name="Clip_318" start="56066/15s" duration="46/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3291600/3000s" name="Clip_319" start="18978/5s" duration="17/10s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3296700/3000s" name="Clip_320" start="19039/5s" duration="88/15s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            <video ref="r5" lane="1" offset="10989/10s" name="Zoom Z015" start="3600s" duration="88/15s" role="adjustments.adjustments-1">
+                                <param name="disableDRT" key="3733" value="1"/>
+                                <adjust-transform scale="1.15 1.15"/>
+                                <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                            </video>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3314300/3000s" name="Clip_321" start="38149/10s" duration="137/30s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3328000/3000s" name="Clip_316" start="11096000/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3328100/3000s" name="Clip_322" start="19172/5s" duration="19000/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3347100/3000s" name="Clip_323" start="19236/5s" duration="5/2s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                        <asset-clip ref="r2" offset="3354600/3000s" name="Clip_322" start="11522200/3000s" duration="100/3000s" format="r4" tcFormat="NDF" audioRole="dialogue">
+                            <adjust-colorConform enabled="1" autoOrManual="manual" conformType="conformNone" peakNitsOfPQSource="1000" peakNitsOfSDRToPQSource="203"/>
+                        </asset-clip>
+                    </spine>
+                </sequence>
+            </project>
+        </event>
+        <smart-collection name="Projects" match="all">
+            <match-clip rule="is" type="project"/>
+        </smart-collection>
+        <smart-collection name="All Video" match="any">
+            <match-media rule="is" type="videoOnly"/>
+            <match-media rule="is" type="videoWithAudio"/>
+        </smart-collection>
+        <smart-collection name="Audio Only" match="all">
+            <match-media rule="is" type="audioOnly"/>
+        </smart-collection>
+        <smart-collection name="Stills" match="all">
+            <match-media rule="is" type="stills"/>
+        </smart-collection>
+        <smart-collection name="Favorites" match="all">
+            <match-ratings value="favorites"/>
+        </smart-collection>
+        <smart-collection name="Missing Analysis" match="all">
+            <match-analysis-type rule="isMissing" value="any"/>
+        </smart-collection>
+    </library>
+</fcpxml>
