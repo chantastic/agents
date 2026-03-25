@@ -7,6 +7,8 @@ description: Research and collect b-roll assets from video transcripts. Extracts
 
 Research and collect b-roll assets from a video transcript. Extracts entities, collects visual assets, and generates timeline markers.
 
+> **Status:** Experimental / non-canonical. This skill is kept as a standalone workflow and is **not** part of the current canonical `video-pipeline` contract. If revived later, its project layout should be standardized before re-integrating it.
+
 ## Prerequisites
 
 - `yt-dlp` — for video downloads

@@ -1,11 +1,11 @@
 ---
 name: video-pipeline
-description: Orchestrate a full video production pipeline from raw recording to polished edit. Coordinates video-cut and video-polish stages, manages the manifest, and structures project files. Use when producing a video from a raw recording.
+description: Orchestrate the video editing pipeline from raw recording through cut, polish, and zoom. Coordinates stage skills, manages the manifest, and structures project files. Use when producing an edit from a raw recording.
 ---
 
 # Video Pipeline
 
-Orchestrate a raw recording through cut → polish → final output.
+Orchestrate a raw recording through cut → polish → zoom.
 
 ## Required Environment
 
@@ -49,7 +49,17 @@ project/
 │   ├── frames/
 │   ├── zooms.json
 │   └── timeline_zoomed.fcpxml
-└── broll/                     ← future: broll-research outputs
+└── publish/                   ← created later by `video-publish`, after manual FCP review/export
+    ├── transcript.json        ← derived: transcript of the final edit
+    ├── utterances.txt
+    ├── chapters.json
+    ├── chapters.txt           ← YouTube-formatted chapter list
+    ├── description.md
+    ├── captions.srt
+    ├── captions.vtt
+    └── thumbnails/
+        ├── concepts.json
+        └── T001.png ...
 ```
 
 ### Decisions as Contract
@@ -179,6 +189,12 @@ Polish never reads or modifies `cut/edit_list.json`. It only adds decisions.
 
 Invoke the `video-zoom` skill. It reads the polished edit list and preview from the manifest, analyzes the transcript and frames for zoom opportunities, and generates an FCPXML with adjustment clips. This stage is FCPXML-only — no OTIO equivalent exists for adjustment clips. The OTIO timeline from polish remains the portable format.
 
+#### After the pipeline: publish
+
+The `video-publish` skill runs **standalone**, not as part of this pipeline. There is a human step between zoom and publish — the user opens the zoomed FCPXML in Final Cut Pro, reviews/adjusts, and exports the final video. Once the export exists, invoke `video-publish` directly.
+
+Publish reads context from the manifest where available (especially `thesis` and `keyterms`) but does not write to it. Speaker attribution is inferred by `video-publish` from the export context (filename/stream naming), defaulting to `chantastic`, and asking the operator if uncertain. Its outputs are just files — captions, chapters, description, thumbnails.
+
 ### Step 3: Report
 
 After all stages complete, report:
@@ -190,11 +206,17 @@ After all stages complete, report:
 | Polished duration | from polish stats |
 | Total removed | original − polished (% of original) |
 
-**Final outputs** (from manifest paths):
+**Produced now** (from manifest paths):
 - `zoom/timeline_zoomed.fcpxml` — open in Final Cut Pro (includes zoom adjustment clips)
 - `polish/final/timeline.otio` — portable timeline (no zooms)
 - `polish/final/preview.mp4` — rendered preview
 - `manifest.json` — full audit trail
+
+**Operator handoff**:
+1. Open `zoom/timeline_zoomed.fcpxml` in Final Cut Pro
+2. Review and adjust the edit manually
+3. Export the final video from FCP
+4. Run `video-publish` on that export to generate publish assets
 
 ## Resuming
 
@@ -219,4 +241,5 @@ If the user asks to re-run a stage (e.g., "re-cut with different editorial decis
 - All paths in the manifest are relative to the project directory. The source video path is absolute (it may live outside the project).
 - **Decisions are source, edit lists are compiled.** Each stage produces a decisions file against the original transcript. Edit lists are built by compiling all decision layers. Stages never modify each other's edit lists.
 - `edit.py apply` accepts multiple decision files. Any utterance marked "remove" in any layer is removed. This makes the compile step trivial regardless of how many stages add decisions.
-- Future stages (broll, publish) can be added to the pipeline by extending the manifest schema and adding stage directories. If a future stage needs its own decision layer, it adds to `decisions/`.
+- `publish/` is part of the overall project lifecycle, but it is created later by the standalone `video-publish` skill after operator review/export. It is not a pipeline stage in this skill.
+- Experimental branches (like older b-roll workflows) should stay out of the canonical pipeline contract until they are revived and standardized.

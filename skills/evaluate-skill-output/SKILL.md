@@ -7,6 +7,8 @@ description: Evaluate the quality of a skill's output after a run. Reads the pro
 
 Generate a structured self-evaluation of a skill run. The eval is saved alongside the skill — not in the project directory — so it persists as a learning artifact.
 
+This skill is **generic-first**. The examples below use the video pipeline because it is the most mature workflow in this workspace, but the same evaluation method applies to any skill that produces inspectable artifacts.
+
 ## Modes
 
 This skill supports two modes:
@@ -40,8 +42,11 @@ Read the skill's `SKILL.md` to understand what the skill was supposed to do — 
 Read the manifest and every intermediate file it references. For a video pipeline, this means:
 
 - `manifest.json` — stage status, stats, file paths
-- `cut/decisions.json` — every keep/remove decision with reasoning
-- `cut/utterances.txt` — the raw utterances that were evaluated
+- `transcript.json` — shared source of truth: original transcript
+- `utterances.txt` — formatted utterances from the original transcript
+- `decisions/cut.json` — rough-cut keep/remove decisions with reasoning
+- `decisions/polish.json` — polish-stage removals and word-level edits
+- `cut/edit_list.json` — compiled cut artifact
 - `polish/pass_*/eval.json` — issues found per pass
 - `polish/pass_*/preview_utterances.txt` — what the viewer experiences
 - `zoom/zooms.json` — zoom decisions with reasoning
