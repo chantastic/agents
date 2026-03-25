@@ -21,17 +21,39 @@ Source: user-corrected export from FCP (March 2026).
 <adjust-transform scale="S S"/>
 ```
 
-**Keyframed zoom** (animated scale over time):
+**Keyframed zoom — push** (continuous slow zoom, no return):
 ```xml
 <adjust-transform>
     <param name="scale">
         <keyframeAnimation>
-            <keyframe time="3600s" value="1 1"/>
-            <keyframe time="3610s" value="1.87 1.87"/>
+            <keyframe time="3600s" value="1 1" curve="smooth"/>
+            <keyframe time="3610s" value="1.5 1.5"/>
         </keyframeAnimation>
     </param>
 </adjust-transform>
 ```
+
+**Keyframed zoom — smooth** (ease in, hold, ease out):
+```xml
+<adjust-transform>
+    <param name="scale">
+        <keyframeAnimation>
+            <keyframe time="3600s" value="1 1" curve="smooth"/>
+            <keyframe time="3600.5s" value="1.5 1.5" curve="smooth"/>
+            <keyframe time="3609.7s" value="1.5 1.5" curve="smooth"/>
+            <keyframe time="3610s" value="1 1"/>
+        </keyframeAnimation>
+    </param>
+</adjust-transform>
+```
+
+When using an anchor with animated styles, keyframe `position` and `anchor` params
+alongside `scale` — animate from `"0 0"` (centered) to the anchor coordinates so the
+zoom eases toward the focal point rather than jumping to it.
+
+`curve="smooth"` on a keyframe tells FCP to use eased (Catmull-Rom) interpolation
+from that keyframe to the next. Omit for linear. Apply to the leading keyframe of
+each transition for speed-ramped feel.
 
 ### FCP coordinate system
 

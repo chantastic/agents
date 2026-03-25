@@ -43,16 +43,26 @@ Read the polished preview utterances. These are the viewer's experience — a co
 
 Read every utterance and select moments that benefit from visual emphasis.
 
+**Zoom styles:**
+
+| Style | Behavior | Use when |
+|---|---|---|
+| `punch` | Instant scale change, holds, instant return | Short emphasis: reactions, reveals, key statements |
+| `smooth` | Eases from 1.0 → scale (ramp in), holds, eases back to 1.0 (ramp out) | Longer moments: thesis statements, important explanations |
+| `push` | Continuous slow zoom from 1.0 → scale over full duration, no return | Building intensity: opening sequences, tension, anticipation |
+
+`punch` is the default. `smooth` adds `ramp_in` (default 0.5s) and `ramp_out` (default 0.3s) fields. `push` zooms continuously for the clip's duration with eased interpolation.
+
 **Zoom-worthy signals:**
 
-| Signal | Scale range | Example |
-|---|---|---|
-| Key statement / thesis | 1.40–1.50 | "Pi follows a philosophy of aggressive extensibility" |
-| Reveal / payoff | 1.50–1.65 | "And it works!" "YOLO. This is a big one." |
-| Quick reaction | 1.60–1.75 | "Sick." / "RTFM, bro." |
-| Satisfaction / assessment | 1.35–1.50 | "Pretty painless so far" |
-| Opening / closing | 1.40–1.50 | Thesis statement, sign-off |
-| Emotional emphasis | 1.50–1.65 | "We can even run Doom." |
+| Signal | Scale range | Style | Example |
+|---|---|---|---|
+| Key statement / thesis | 1.40–1.50 | smooth | "Pi follows a philosophy of aggressive extensibility" |
+| Reveal / payoff | 1.50–1.65 | punch | "And it works!" "YOLO. This is a big one." |
+| Quick reaction | 1.60–1.75 | punch | "Sick." / "RTFM, bro." |
+| Satisfaction / assessment | 1.35–1.50 | smooth | "Pretty painless so far" |
+| Opening / closing | 1.40–1.50 | push | Thesis statement, sign-off |
+| Emotional emphasis | 1.50–1.65 | punch | "We can even run Doom." |
 
 **Anti-patterns (don't zoom):**
 - Already zoomed recently (minimum ~15s gap)
@@ -103,11 +113,32 @@ Write `zoom/zooms.json`:
   "zooms": [
     {
       "id": "Z001",
+      "style": "push",
       "timeline_start": 0.0,
       "timeline_end": 6.5,
       "scale": 1.50,
       "anchor": "middle-left",
-      "reason": "Key thesis statement. Terminal showing Pi description."
+      "reason": "Opening thesis. Slow push into terminal showing Pi description."
+    },
+    {
+      "id": "Z002",
+      "style": "smooth",
+      "timeline_start": 19.4,
+      "timeline_end": 27.9,
+      "scale": 1.50,
+      "anchor": "middle-center",
+      "ramp_in": 0.5,
+      "ramp_out": 0.3,
+      "reason": "Personal motivation — smooth in and out for emphasis."
+    },
+    {
+      "id": "Z003",
+      "style": "punch",
+      "timeline_start": 100.1,
+      "timeline_end": 101.0,
+      "scale": 1.65,
+      "anchor": "middle-left",
+      "reason": "Quick reaction: 'RTFM, bro.' Hard cut for impact."
     }
   ]
 }
@@ -115,9 +146,12 @@ Write `zoom/zooms.json`:
 
 **Fields:**
 - `id` — unique identifier (Z001, Z002, ...)
+- `style` — `"punch"` (default), `"smooth"`, or `"push"`
 - `timeline_start` / `timeline_end` — position in the POLISHED timeline (seconds)
 - `scale` — zoom factor (1.0 = no zoom, 1.50 = 50% punch-in)
 - `anchor` — named preset or raw FCP units "x y"
+- `ramp_in` — (smooth only) seconds to ease in, default 0.5
+- `ramp_out` — (smooth only) seconds to ease out, default 0.3
 - `reason` — why this moment deserves a zoom
 
 **Important:** `timeline_start`/`timeline_end` are positions in the edited timeline, not source timestamps. Use the preview utterance timestamps.

@@ -145,10 +145,13 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
                 src_offset = c['src_start'] + (z_start - c['tl_start'])
                 clip_zooms[c['i']].append({
                     'id': z['id'],
+                    'style': z.get('style', 'punch'),
                     'src_offset': src_offset,
                     'duration': z_dur,
                     'scale': z.get('scale', 1.50),
                     'anchor': z.get('anchor', None),
+                    'ramp_in': z.get('ramp_in', 0.5),
+                    'ramp_out': z.get('ramp_out', 0.3),
                 })
                 break
 
@@ -206,19 +209,128 @@ def generate_fcpxml(source_path, edits_path, zooms_path, output_path, timeline_n
                 z_off = to_time(z['src_offset'], fps_num, fps_den)
                 z_dur = to_time(z['duration'], fps_num, fps_den)
                 scale = z['scale']
+                style = z.get('style', 'punch')
+                result = resolve_anchor(z['anchor'], width, height) if z.get('anchor') else None
+
                 W.append(f'                            <video ref="r3" lane="1" '
                          f'offset="{z_off}" name="Zoom {z["id"]}" '
                          f'start="3600s" duration="{z_dur}" role="adjustments">')
-                result = resolve_anchor(z['anchor'], width, height) if z.get('anchor') else None
-                if result:
-                    fx, fy = result
-                    W.append(f'                                <adjust-transform '
-                             f'position="{fx:.4f} {fy:.4f}" '
-                             f'anchor="{fx:.4f} {fy:.4f}" '
-                             f'scale="{scale} {scale}"/>')
+
+                if style == 'smooth':
+                    # Animated zoom: ease from 1.0 → scale (ramp in), hold, ease back (ramp out)
+                    ramp_in = z.get('ramp_in', 0.5)
+                    ramp_out = z.get('ramp_out', 0.3)
+                    z_dur_secs = z['duration']
+
+                    # Keyframe times relative to start="3600s"
+                    t0 = 3600.0
+                    t1 = t0 + ramp_in
+                    t2 = t0 + z_dur_secs - ramp_out
+                    t3 = t0 + z_dur_secs
+                    # Clamp: if ramps overlap, split evenly
+                    if t1 >= t2:
+                        mid = t0 + z_dur_secs / 2
+                        t1 = mid
+                        t2 = mid
+
+                    kt0 = to_time(t0, fps_num, fps_den)
+                    kt1 = to_time(t1, fps_num, fps_den)
+                    kt2 = to_time(t2, fps_num, fps_den)
+                    kt3 = to_time(t3, fps_num, fps_den)
+
+                    if result:
+                        fx, fy = result
+                        # Keyframe both position and scale for smooth anchor movement
+                        W.append(f'                                <adjust-transform>')
+                        W.append(f'                                    <param name="position">')
+                        W.append(f'                                        <keyframeAnimation>')
+                        W.append(f'                                            <keyframe time="{kt0}" value="0 0" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt1}" value="{fx:.4f} {fy:.4f}" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt2}" value="{fx:.4f} {fy:.4f}" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt3}" value="0 0"/>')
+                        W.append(f'                                        </keyframeAnimation>')
+                        W.append(f'                                    </param>')
+                        W.append(f'                                    <param name="anchor">')
+                        W.append(f'                                        <keyframeAnimation>')
+                        W.append(f'                                            <keyframe time="{kt0}" value="0 0" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt1}" value="{fx:.4f} {fy:.4f}" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt2}" value="{fx:.4f} {fy:.4f}" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt3}" value="0 0"/>')
+                        W.append(f'                                        </keyframeAnimation>')
+                        W.append(f'                                    </param>')
+                        W.append(f'                                    <param name="scale">')
+                        W.append(f'                                        <keyframeAnimation>')
+                        W.append(f'                                            <keyframe time="{kt0}" value="1 1" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt1}" value="{scale} {scale}" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt2}" value="{scale} {scale}" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt3}" value="1 1"/>')
+                        W.append(f'                                        </keyframeAnimation>')
+                        W.append(f'                                    </param>')
+                        W.append(f'                                </adjust-transform>')
+                    else:
+                        W.append(f'                                <adjust-transform>')
+                        W.append(f'                                    <param name="scale">')
+                        W.append(f'                                        <keyframeAnimation>')
+                        W.append(f'                                            <keyframe time="{kt0}" value="1 1" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt1}" value="{scale} {scale}" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt2}" value="{scale} {scale}" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt3}" value="1 1"/>')
+                        W.append(f'                                        </keyframeAnimation>')
+                        W.append(f'                                    </param>')
+                        W.append(f'                                </adjust-transform>')
+
+                elif style == 'push':
+                    # Continuous slow zoom: eases from 1.0 to scale over full duration
+                    # No ramp out — creates a slow push-in feel
+                    t0 = 3600.0
+                    t1 = t0 + z['duration']
+                    kt0 = to_time(t0, fps_num, fps_den)
+                    kt1 = to_time(t1, fps_num, fps_den)
+
+                    if result:
+                        fx, fy = result
+                        W.append(f'                                <adjust-transform>')
+                        W.append(f'                                    <param name="position">')
+                        W.append(f'                                        <keyframeAnimation>')
+                        W.append(f'                                            <keyframe time="{kt0}" value="0 0" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt1}" value="{fx:.4f} {fy:.4f}"/>')
+                        W.append(f'                                        </keyframeAnimation>')
+                        W.append(f'                                    </param>')
+                        W.append(f'                                    <param name="anchor">')
+                        W.append(f'                                        <keyframeAnimation>')
+                        W.append(f'                                            <keyframe time="{kt0}" value="0 0" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt1}" value="{fx:.4f} {fy:.4f}"/>')
+                        W.append(f'                                        </keyframeAnimation>')
+                        W.append(f'                                    </param>')
+                        W.append(f'                                    <param name="scale">')
+                        W.append(f'                                        <keyframeAnimation>')
+                        W.append(f'                                            <keyframe time="{kt0}" value="1 1" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt1}" value="{scale} {scale}"/>')
+                        W.append(f'                                        </keyframeAnimation>')
+                        W.append(f'                                    </param>')
+                        W.append(f'                                </adjust-transform>')
+                    else:
+                        W.append(f'                                <adjust-transform>')
+                        W.append(f'                                    <param name="scale">')
+                        W.append(f'                                        <keyframeAnimation>')
+                        W.append(f'                                            <keyframe time="{kt0}" value="1 1" curve="smooth"/>')
+                        W.append(f'                                            <keyframe time="{kt1}" value="{scale} {scale}"/>')
+                        W.append(f'                                        </keyframeAnimation>')
+                        W.append(f'                                    </param>')
+                        W.append(f'                                </adjust-transform>')
+
                 else:
-                    W.append(f'                                <adjust-transform '
-                             f'scale="{scale} {scale}"/>')
+                    # 'punch' (default) or 'hold' — static scale, no animation
+                    if result:
+                        fx, fy = result
+                        W.append(f'                                <adjust-transform '
+                                 f'position="{fx:.4f} {fy:.4f}" '
+                                 f'anchor="{fx:.4f} {fy:.4f}" '
+                                 f'scale="{scale} {scale}"/>')
+                    else:
+                        W.append(f'                                <adjust-transform '
+                                 f'scale="{scale} {scale}"/>')
+
                 W.append(f'                            </video>')
             W.append(f'                        </asset-clip>')
 
