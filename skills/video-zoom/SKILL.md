@@ -39,12 +39,12 @@ After completion, update `manifest.json` with stage status and file paths.
 
 A zoom should make something visible AND carry editorial weight. If it's only practical (guiding the eye to text), it feels clinical. If it's only expressive (punching in for emphasis on already-visible content), it feels like a gimmick. Both together feels like good editing.
 
-### Scale is proportional to the visibility problem
+### Scale solves a visibility problem
 
-Each tier up isn't just more emphasis — it solves a harder visibility problem while carrying more editorial weight:
-- **Guide tier (1.25-1.35)**: terminal text is readable at full scale, but the zoom says "this part matters"
-- **Emphasis tier (1.4-1.5)**: content is visible, but the zoom says "this is important"
-- **Extreme tier (1.9-4.0)**: content is NOT visible without the zoom, and it's worth seeing (e.g., a Dock icon bounce, a small UI element)
+Each zoom tier solves a progressively harder visibility problem:
+- **Guide**: content is readable but the viewer doesn't know where to look. The zoom says "this part matters."
+- **Emphasis**: content is visible but the moment is important. The zoom says "pay attention."
+- **Extreme**: content is genuinely not visible at full scale (a small icon, a fleeting animation). The zoom makes it possible to see. Scale is proportional to how small the target is.
 
 ### Zooms are phrases, not punctuation marks
 
@@ -52,11 +52,11 @@ A zoom should span a *thought*, not a clip. Use overhang to extend a zoom across
 
 ### Scale follows section, anchor follows content
 
-Hold the same scale within a topical section. Change only the anchor y-position to follow content as it scrolls or shifts. This creates visual rhythm — the viewer's brain registers "we're in the same topic" because the zoom level is constant. Change scale when the *section* changes, not when the *clip* changes.
+Hold the same scale within a topical section. Change only the anchor position to follow content as it scrolls or shifts. This creates visual rhythm — the viewer's brain registers "we're in the same topic" because the zoom level is constant. Change scale when the *section* changes, not when the *clip* changes.
 
 ### Webcam zooms frame the video
 
-The webcam tier appears at the start (personal introduction), punctuates the middle (reflective moments), and closes the video (sign-off). The tool is the subject; the person is the frame.
+The webcam tier bookends the video: opening (personal introduction), occasional mid-video punctuation (reflective moments), and closing (sign-off). The tool is the subject; the person is the frame.
 
 ## Process
 
@@ -69,8 +69,8 @@ Read the polished preview utterances. These are the viewer's experience — a co
 Before selecting individual zoom points, segment the transcript into topical sections. Each section gets a consistent zoom treatment.
 
 For each section, classify the visual content:
-- **terminal_focused**: speaker discusses or interacts with visible terminal/screen content
-- **camera_moment**: personal statement, reaction, emotional beat (full camera or PiP emphasis)
+- **screen_focused**: speaker discusses or interacts with visible screen content
+- **camera_moment**: personal statement, reaction, emotional beat
 - **mixed**: alternating between screen and camera within the section
 
 ### Step 3: Assign zoom tiers per section
@@ -79,20 +79,20 @@ Each section gets a base tier. Individual moments within a section can override 
 
 **Zoom tiers:**
 
-| Tier | Scale (DesignStudio Content Scale) | Animation | When used |
-|---|---|---|---|
-| **Webcam** | 0.65–0.80 (into face from PiP or full camera) | eased in+out | Personal/emotional moments, reflections, opening/closing |
-| **Guide** | 1.25–1.35 | instant in, ease out (short) or eased in+out (sustained reads) | Working, reading, exploring terminal content |
-| **Emphasis** | 1.4–1.5 | instant in, ease out or instant hold | Key reveals, important reactions, first encounters |
-| **Extreme** | 1.9–4.0 | instant hold | Small/fleeting UI targets that carry editorial weight. Rare (1–2 per video). |
+| Tier | Intent | Animation |
+|---|---|---|
+| **Webcam** | Zoom into camera/face. Personal moments. | eased in+out |
+| **Guide** | Direct attention to screen content. Working, reading. | instant in; ease out for short moments, eased in+out for sustained reads |
+| **Emphasis** | Highlight an important moment. Key reveals, reactions. | instant in, ease out or instant out |
+| **Extreme** | Make a small/fleeting target visible. Rare (1–2 per video). | instant in, instant out |
 
-**Tier selection rules:**
-- `terminal_focused` sections → **Guide** tier baseline
-- `camera_moment` sections → **Webcam** tier
-- Key reveals within any section → override to **Emphasis**
+**Tier selection:**
+- `screen_focused` sections → **Guide** baseline
+- `camera_moment` sections → **Webcam**
+- Key reveals or reactions within any section → override to **Emphasis**
 - Tiny, fleeting visual details the viewer would miss → **Extreme**
 
-**Scale note:** DesignStudio Content Scale reads directly as magnification (1.25 = 1.25x zoom in). Values < 1.0 zoom in on camera/PiP content. This is NOT the same as FCP's transform scale.
+**Scale calibration:** The exact scale values depend on the recording layout (screen resolution, panel arrangement, camera position, PiP size). Extract frames and judge by eye: guide tier should make the focal area noticeably closer without losing surrounding context; emphasis should feel like a deliberate punch; extreme should make the target fill enough of the frame to be legible. See `evals/` for calibration data from past videos.
 
 ### Step 4: Select zoom points and anchors
 
@@ -105,37 +105,27 @@ For each zoom point:
    ffmpeg -y -ss <seconds> -i <preview.mp4> -frames:v 1 -vf "scale=960:-1" -q:v 10 zoom/frames/<id>.jpg
    ```
 
-2. **Analyze the frame** to determine anchor position:
+2. **Read the frame** to determine anchor position. The anchor should point at the content the speaker is discussing or reacting to.
 
-   **Terminal/screen content (guide and emphasis tiers):**
-   - Anchor x: position of the relevant panel (left terminal ≈ 0.0, right browser ≈ 0.99)
-   - Anchor y: position of the relevant content within the panel (top of output ≈ 0.1-0.2, middle ≈ 0.3-0.5, bottom/status bar ≈ 0.7-0.9)
-   - As content scrolls within a section, shift y to follow it. Keep scale constant.
+   For screen content: anchor to the relevant panel and the vertical position of the relevant text or UI element. As content scrolls within a section, shift the anchor to follow it while keeping scale constant (**scroll-follow pairs**).
 
-   **Webcam/camera (webcam tier):**
-   - Full camera shots: anchor center-x (0.5), y high enough to preserve head room (typically 0.73-0.91)
-   - PiP camera: anchor to PiP position (typically top-right ≈ 0.97-0.99 x, 0.83-0.92 y)
-   - **Head room rule**: the zoom must not crop below mid-forehead. Anchor y high enough that the top of the head stays near the frame edge at the target scale. A little forehead crop is fine; half-forehead looks wrong.
+   For camera/webcam: anchor high enough to preserve head room. The zoom must not crop below mid-forehead — a little forehead crop is acceptable, but half-forehead looks wrong. The exact y-value depends on how the speaker is framed.
 
-   **Small UI targets (extreme tier):**
-   - Anchor precisely on the target element (button, icon, notification)
-   - Scale inversely proportional to target size on screen
+   For small UI targets (extreme tier): anchor precisely on the target element. Scale inversely proportional to the target's size on screen.
 
 3. **Set animation based on the moment's energy:**
 
-   | Energy | Animation | Use |
-   |---|---|---|
-   | High (reactions, reveals) | instant in, ease out | Snaps to content, gently releases |
-   | Sustained (reading, exploring) | eased in+out | Breathes with the moment |
-   | Flash (very short emphasis) | instant in, instant out | Quick hit, hard cut |
-   | Comedy/shock | instant in, instant out | Hard cut for impact |
+   | Moment | Animation |
+   |---|---|
+   | Reaction, reveal, first encounter | instant in, ease out |
+   | Sustained reading, exploration | eased in+out |
+   | Quick flash (<2s) | instant in, instant out |
+   | Comedy, shock, visual punchline | instant in, instant out |
+   | Personal reflection (webcam) | eased in+out |
 
-4. **Set duration with overhang:**
-   - The zoom should span the topical phrase, not stop at clip boundaries
-   - Short moments: 1.5-3s
-   - Working moments: 5-10s  
-   - Sustained reads: 10-20s
-   - Overhang into adjacent clips to bridge jump cuts
+4. **Set duration with overhang.** The zoom should span the topical phrase, not stop at clip boundaries. Overhang into adjacent clips bridges jump cuts and creates continuity. Most zooms should extend past their parent clip.
+
+5. **Use matched pairs.** When the speaker repeats the same type of action (e.g., typing a command twice), use identical zoom parameters. The visual callback reinforces the pattern.
 
 ### Step 5: Write zoom decisions
 
@@ -146,7 +136,6 @@ Write `zoom/zooms.json`:
   "zooms": [
     {
       "id": "Z001",
-      "style": "push",
       "tier": "webcam",
       "timeline_start": 0.0,
       "timeline_end": 6.5,
@@ -158,7 +147,6 @@ Write `zoom/zooms.json`:
     },
     {
       "id": "Z002",
-      "style": "punch",
       "tier": "guide",
       "timeline_start": 100.0,
       "timeline_end": 112.0,
@@ -170,7 +158,6 @@ Write `zoom/zooms.json`:
     },
     {
       "id": "Z003",
-      "style": "punch",
       "tier": "emphasis",
       "timeline_start": 200.0,
       "timeline_end": 201.5,
@@ -186,13 +173,12 @@ Write `zoom/zooms.json`:
 
 **Fields:**
 - `id` — unique identifier (Z001, Z002, ...)
-- `style` — `"push"` (opening only), `"punch"` (most zooms), or `"smooth"` (sustained reads)
-- `tier` — `"webcam"`, `"guide"`, `"emphasis"`, or `"extreme"` (documents intent)
-- `timeline_start` / `timeline_end` — position in the POLISHED timeline (seconds). The zoom may overhang past `timeline_end` into subsequent clips.
-- `scale` — DesignStudio Content Scale. >1.0 zooms into screen content, <1.0 zooms into camera/PiP.
-- `anchor` — DesignStudio Content Position as "x y" (0.0-1.0 range, 0,0 = top-left)
-- `anim_in` — `"0"` (instant) or `"default"` (eased). Default: `"0"` for guide/emphasis, `"default"` for webcam.
-- `anim_out` — `"0"` (instant) or `"default"` (eased). Default: `"default"`.
+- `tier` — `"webcam"`, `"guide"`, `"emphasis"`, or `"extreme"`
+- `timeline_start` / `timeline_end` — position in the polished timeline (seconds). The zoom may overhang past `timeline_end` into subsequent clips.
+- `scale` — DesignStudio Content Scale. >1.0 zooms into screen content. <1.0 zooms into camera/PiP content.
+- `anchor` — DesignStudio Content Position as `"x y"`. Coordinate system is plugin-specific — values are passed through to the FCPXML generator as-is. See `zooms.py` and the FCPXML reference for how these map to the plugin parameters.
+- `anim_in` — `"0"` (instant) or `"default"` (eased)
+- `anim_out` — `"0"` (instant) or `"default"` (eased)
 - `reason` — why this moment deserves a zoom
 
 **Important:** `timeline_start`/`timeline_end` are positions in the edited timeline, not source timestamps. Use the preview utterance timestamps.
@@ -240,38 +226,6 @@ Report:
 - Path to FCPXML output
 - Remind user to open in Final Cut Pro
 
-## Editorial Patterns
-
-### Video arc via webcam tier
-
-The webcam tier bookends the video and punctuates the middle:
-```
-OPEN:   Webcam (strongest) → Webcam → Webcam/transition
-BODY:   Guide ↔ Emphasis ↔ occasional Webcam punctuation
-CLOSE:  Webcam
-```
-
-Opening webcam zooms can decrease in intensity across 2-3 clips (e.g., 0.65 → 0.71 → 0.78) to ease the viewer from "who is this person" into "what are they doing."
-
-### Scroll-follow pairs
-
-When the speaker reads through a long response, use consecutive zooms at the same scale with y-position shifting to follow the content as it scrolls. This creates a "reading together" effect.
-
-### Matched pairs for repeated actions
-
-When the speaker performs the same type of action twice (e.g., typing a greeting into the terminal), use identical zoom parameters. The visual callback says "this is the same gesture."
-
-### Energy tiers within a section
-
-Within a single exploration section, the zoom energy can decelerate:
-1. **First encounter** (emphasis 1.4, instant, short) — excitement
-2. **Working** (guide 1.25, instant, short) — settling in
-3. **Sustained reading** (guide 1.25, eased, long) — absorbing content
-
-### Emphasis tier returns for key reveals
-
-The emphasis tier (1.4-1.5) isn't front-loaded — it reappears throughout the video for important moments: first interactions, Claude's analysis, the cross-agent compatibility answer. It can target either the terminal (content reveal) or the webcam PiP (reaction flash).
-
 ## FCPXML Generation Notes
 
 The `zooms.py` service generates FCPXML from scratch (not by modifying OTIO output). Key decisions:
@@ -294,3 +248,4 @@ Reference file: `~/.agents/services/references/fcpxml/README.md`
 - Zoom decisions are subjective — the user will likely adjust timing, scale, and anchors in FCP
 - Frame extraction uses the preview video (edited timeline), not the source
 - The zoom stage does not modify the edit list or re-render preview — it only adds a visual layer
+- Calibration data from past videos (exact scale values, position ranges for specific layouts) is stored in `evals/`, not in this skill. The skill describes the system; the evals store the numbers.
