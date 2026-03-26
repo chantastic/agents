@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "date": "2026-03-25",
+  "skill": "skills-workspace",
+  "project_slug": "operator-uplift-session",
+  "eval_type": "review",
+  "reviewer": {
+    "agent": "openai-codex-gpt-5-4-high",
+    "settings": {
+      "ov": 3
+    }
+  },
+  "summary": {
+    "outcome": "excellent",
+    "one_line": "The session materially improved the workspace operating system by clarifying contracts, eval memory, calibration boundaries, and operator-agent doctrine."
+  },
+  "artifacts_reviewed": [
+    "AGENTS.md",
+    "OPERATING_PRINCIPLES.md",
+    "skills/video-pipeline/SCHEMA.md",
+    "skills/evaluate-skill-output/SCHEMA.md",
+    "skills/video-cut/SKILL.md",
+    "skills/video-polish/SKILL.md",
+    "skills/video-zoom/SKILL.md",
+    "skills/*/evals/*.md",
+    "skills/*/evals/*.json",
+    "git history for recent system commits"
+  ],
+  "metrics": {
+    "system_commits_created_or_reviewed": 5,
+    "new_contract_docs": 2,
+    "new_principles_docs": 1,
+    "new_eval_sidecars_backfilled": 6,
+    "new_system_level_evals": 1
+  },
+  "categories": {
+    "contract_clarity": {
+      "assessment": "strong"
+    },
+    "eval_system": {
+      "assessment": "strong"
+    },
+    "epistemic_hygiene": {
+      "assessment": "strong"
+    },
+    "operator_agent_collaboration": {
+      "assessment": "promoted"
+    },
+    "workspace_doctrine": {
+      "assessment": "newly explicit"
+    }
+  },
+  "issues": [
+    {
+      "id": "issue_001",
+      "category": "promotion_path",
+      "severity": "medium",
+      "title": "Promotion path from eval to doctrine is still implicit",
+      "description": "The session surfaced the need for a standard describing when a lesson graduates from local calibration into cross-skill principle.",
+      "operator_takeaway": "The next philosophical step is to make promotion criteria explicit."
+    },
+    {
+      "id": "issue_002",
+      "category": "handoff_pattern",
+      "severity": "medium",
+      "title": "Operator handoff exists strongly in video but is not yet generalized",
+      "description": "The pattern is real, but it remains domain-local in implementation.",
+      "operator_takeaway": "Watch whether handoff becomes a cross-workflow primitive before canonizing it further."
+    },
+    {
+      "id": "issue_003",
+      "category": "ask_infer_default",
+      "severity": "low",
+      "title": "Ask / infer / default is powerful but not yet fully elevated",
+      "description": "The rubric emerged clearly in discussion but has not yet been promoted into the top-level runtime constitution as a named rule.",
+      "operator_takeaway": "Pressure-test it in real runs before moving it upward."
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "P1",
+      "scope": "documentation",
+      "target": "OPERATING_PRINCIPLES.md",
+      "action": "Add a future section on how lessons are promoted from eval to skill to cross-skill doctrine."
+    },
+    {
+      "priority": "P1",
+      "scope": "workflow",
+      "target": "operator handoff",
+      "action": "Watch for repeated non-video handoff patterns before standardizing a general handoff artifact or protocol."
+    },
+    {
+      "priority": "P2",
+      "scope": "documentation",
+      "target": "AGENTS.md",
+      "action": "Consider promoting ask / infer / default once it proves stable across more workflows."
+    }
+  ],
+  "feedback_hooks": [
+    {
+      "category": "principles_promotion",
+      "question": "Which ideas from OPERATING_PRINCIPLES.md continue to feel true after several more real runs?",
+      "how_to_compare": "Revisit future system-level evals and see which principles recur naturally in decisions and edits."
+    },
+    {
+      "category": "operator_handoff",
+      "question": "Does operator handoff become a recurring pattern outside video?",
+      "how_to_compare": "Track future workflows for explicit human-tool boundaries that need resumable packaging."
+    }
+  ],
+  "domain": {
+    "workspace": {
+      "core_phrases": [
+        "The operator owns intent. The agent owns execution.",
+        "Human intervention is part of the system, not a failure of the system.",
+        "Truth should live where the best evidence exists.",
+        "Contracts matter more than local cleverness.",
+        "Structure the counts. Narrate the meaning.",
+        "The system should encode the kind of certainty it has."
+      ]
+    }
+  }
+}

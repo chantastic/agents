@@ -34,6 +34,8 @@ The video skills form a pipeline: `video-pipeline` → `video-cut` → `video-po
 
 Previously `rough-cut` existed here (whisper-cli + silencedetect). It was removed — `video-cut` fully replaces it.
 
+For the cross-skill collaboration doctrine and the rationale behind these rules, see `OPERATING_PRINCIPLES.md`.
+
 ## Principles
 
 ### Project artifacts live with the project, learning artifacts live with the skill
