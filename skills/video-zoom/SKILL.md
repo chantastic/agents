@@ -7,6 +7,17 @@ description: Add zoom and punch-in effects to a video edit via FCPXML adjustment
 
 Add zoom/punch-in effects to a polished video edit using FCPXML adjustment clips.
 
+## Epistemic Status
+
+This skill intentionally separates **principle**, **heuristic**, **preference**, and **temporary calibration**.
+
+- **Principles** belong here in `SKILL.md` — durable ideas that should survive across projects
+- **Heuristics** belong here too — useful defaults that may vary by format and should be applied with judgment
+- **Preferences** should be stated as taste, not law
+- **Temporary calibration** (exact scale ranges, density, anchor clusters, plugin quirks for a specific layout) belongs in `evals/`
+
+When in doubt: keep the system here, keep the numbers in `evals/`.
+
 ## Required Environment
 
 - `ffmpeg` and `ffprobe` — installed
@@ -96,7 +107,7 @@ Each section gets a base tier. Individual moments within a section can override 
 
 ### Step 4: Select zoom points and anchors
 
-**Target density: 3–4 zooms per minute.** Prefer more frequent, gentler zooms over sparse, aggressive ones.
+**Starting heuristic: aim for roughly 3–4 zooms per minute for this style of screen-led video.** Prefer more frequent, gentler zooms over sparse, aggressive ones, but adjust based on layout, pacing, and operator taste. See `evals/` for current calibration.
 
 For each zoom point:
 
@@ -248,4 +259,5 @@ Reference file: `~/.agents/services/references/fcpxml/README.md`
 - Zoom decisions are subjective — the user will likely adjust timing, scale, and anchors in FCP
 - Frame extraction uses the preview video (edited timeline), not the source
 - The zoom stage does not modify the edit list or re-render preview — it only adds a visual layer
-- Calibration data from past videos (exact scale values, position ranges for specific layouts) is stored in `evals/`, not in this skill. The skill describes the system; the evals store the numbers.
+- Calibration data from past videos (exact scale values, density ranges, position clusters for specific layouts, plugin quirks, operator preferences) is stored in `evals/`, not in this skill. The skill describes the system; the evals store the numbers.
+- If a sentence sounds like a permanent law but is really a style preference for the current format, move that detail to `evals/` and keep the durable principle here.

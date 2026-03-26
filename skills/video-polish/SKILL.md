@@ -9,6 +9,17 @@ Evaluate and refine a video edit by listening to what actually came out.
 
 The core insight: the first pass (video-cut) reads utterances as isolated keep/remove decisions. This skill reads the *output as a viewer experiences it* — a continuous flow where duplicates, stumbles, and pacing problems become obvious.
 
+## Epistemic Status
+
+This skill intentionally separates **principle**, **heuristic**, **preference**, and **temporary calibration**.
+
+- **Principles** belong here in `SKILL.md` — re-transcribe the actual output, evaluate flow continuously, write decisions against the original transcript
+- **Heuristics** belong here too — screen narration, LLM output narration, exploration loops, and transitional bridges are common pacing-drag candidates
+- **Preferences** should be stated as taste, not law — some formats benefit from more authenticity and more visible fumbling than others
+- **Temporary calibration** (how aggressively to cut a given format, what kinds of exploration to preserve, current operator taste) belongs in `evals/`
+
+When in doubt: preserve the evaluation method here, and treat aggressiveness as calibratable.
+
 ## Architecture: Decisions, Not Segment Mutation
 
 Polish produces its own **decisions file** (`decisions/polish.json`) in the same format as `decisions/cut.json`. Both are layers of keep/remove decisions against the **original transcript** (`transcript.json`) at the project root.
@@ -44,7 +55,7 @@ Read from `manifest.json` in the project directory:
 - `decisions` — array of existing decision layer paths
 - `stages.cut.preview` — path to the cut preview for re-transcription
 
-The thesis is always available when running after the cut stage — it is inferred from the kept utterances, not provided by the user. This means editorial pacing evaluation (category E) is always active.
+The thesis is always available when running after the cut stage — it is inferred from the kept utterances, not provided by the user. This means editorial pacing evaluation (category E) is available on every normal run, even though the exact aggressiveness remains format- and taste-dependent.
 
 If no manifest exists, ask the user for the source video path and look for `cut/` outputs in the working directory.
 
@@ -117,15 +128,15 @@ False starts that weren't caught because they spanned two kept utterances: "And 
 Utterances under ~0.8 seconds that exist only as isolated filler: a lone "Cool." or "K." that doesn't connect to adjacent content. Not all short clips are filler — "YOLO" or "Sick" after a reveal add personality and should stay.
 
 **E. Pacing drag (editorial)**
-Evaluate against the thesis (from `manifest.json`). This is the highest-value category — editorial pacing cuts account for ~70% of the time saved in the polish pass.
+Evaluate against the thesis (from `manifest.json`). In past runs this has been the highest-value category, but the exact payoff depends on format, operator taste, and how much authentic exploration the video should preserve. See `evals/` for current calibration.
 
-**E1. Screen narration** — the speaker reads visible screen content aloud. The viewer can already see the terminal/browser. If the speaker is narrating documentation, feature lists, or command output line-by-line, the narration adds nothing. Remove the narration; the screen speaks for itself. Exception: if the speaker adds commentary or reaction between lines ("Oh, that's interesting" — keep the reaction, cut the reading).
+**E1. Screen narration** — when the speaker reads visible screen content aloud, treat it as a **pacing-drag candidate**. If the speaker is only duplicating documentation, feature lists, or command output line-by-line, much of that can usually go because the viewer can already read it. Keep narration that adds interpretation, reaction, framing, or personality.
 
-**E2. LLM output narration** — the speaker narrates what Claude/GPT wrote back. The viewer hasn't seen the prompt context, so a detailed summary of the LLM's recommendations is meaningless to them. Keep the speaker's *reaction or assessment* of the output ("You've assembled a seriously impressive pipeline — thank you, Claude"), cut the narration of the output itself ("It says to port your skills to Pi format, highest value, lowest effort...").
+**E2. LLM output narration** — when the speaker narrates what Claude/GPT wrote back, treat it as a **pacing-drag candidate**. Viewers often care more about the speaker's reaction or judgment than a long summary of model output they never saw in context. Keep the reaction/assessment; compress or remove the low-context recap.
 
-**E3. Exploration loops** — repeated attempts at the same task. The narrative pattern "tried → failed → tried → failed → tried → succeeded" should compress to "tried → failed → succeeded." The viewer needs to see one failure to understand the struggle, not every attempt. Keep the first attempt, the key failure moment, and the resolution. Cut the intermediate retries.
+**E3. Exploration loops** — repeated attempts at the same task are often compressible. A common pattern is to keep the first attempt, the meaningful failure, and the resolution, then trim the intermediate retries. But preserve more of the loop when the fumbling itself is entertaining, revealing, or part of the promise of the video.
 
-**E4. Transitional bridges** — empty phrases between sections ("Okay. We'll come back to that. I wanna try some of these other modes out."). If the next section starts with enough context, the bridge is unnecessary. Cut it.
+**E4. Transitional bridges** — empty phrases between sections are often removable when the next section starts with enough context. Treat them as candidates, not an automatic cut rule.
 
 **E5. Other drag:**
 - Extended tangents unrelated to the thesis
@@ -303,3 +314,4 @@ List final output file paths. If running standalone, remind user to open `.fcpxm
 - This skill does not make content-level editorial decisions about what topics to cover. It tightens *how the existing content flows*. Major content restructuring belongs in `video-cut`.
 - Dead air removal (silence gaps between words) is folded into the compile step when needed. It is not a separate pass — in practice, transcript-based cuts leave very little intra-segment silence.
 - The `word_map.json` from the previous version of this skill is no longer needed. Word-level edits are handled natively by `edit.py apply` via the `word_edits` section.
+- Exact editorial aggressiveness is calibration, not doctrine. Use `evals/` to track what the operator actually kept, restored, or further cut for this format.

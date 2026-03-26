@@ -7,6 +7,17 @@ description: Create a rough cut from a video recording. Transcribes with Deepgra
 
 Create a publication-ready rough cut from a raw recording.
 
+## Epistemic Status
+
+This skill intentionally separates **principle**, **heuristic**, **preference**, and **temporary calibration**.
+
+- **Principles** belong here in `SKILL.md` — rough cut first, editorial later; decisions are source; cut contiguous thoughts, not sentence confetti
+- **Heuristics** belong here too — duplicate takes, false starts, fragments, and mistake reactions are common removal categories
+- **Preferences** should be stated as taste, not law — some creators want more personality left in the rough cut than others
+- **Temporary calibration** (what counts as too fragmentary, when a reaction adds charm, when a short utterance is really a list item, how conservative to be) belongs in `evals/`
+
+When in doubt: keep the rough-cut method here, and let edge-case aggressiveness be calibrated from real reviews.
+
 ## Required Environment
 
 - `DEEPGRAM_API_KEY` — set in environment
@@ -78,10 +89,10 @@ Read `utterances.txt`. Each line is one utterance with index, timestamps, durati
 Read every utterance. For each, decide **keep** or **remove**.
 
 **Removal rules (rough cut only — no editorial decisions at this stage):**
-- **Duplicate takes**: Multiple attempts at the same sentence. Keep the LAST complete version. This includes semantically equivalent phrasings — "wanted to dive into" and "had a desire to dive into" are the same take.
-- **False starts**: Speaker begins a sentence but abandons it. The next utterance restarts the same thought more completely.
-- **Fragments**: Isolated single words or sub-second utterances that aren't meaningful (not interjections like "okay", "nice", "wow").
-- **Reactions to mistakes**: "Oh my gosh" after stumbling, nervous laughter between takes — remove unless it adds personality.
+- **Duplicate takes**: Multiple attempts at the same sentence. Usually keep the LAST complete version. This includes semantically equivalent phrasings — "wanted to dive into" and "had a desire to dive into" are the same take.
+- **False starts**: Speaker begins a sentence but abandons it. The next utterance restarts the same thought more completely. But do not remove a short utterance just because the next one is fuller — labels, names, and list items can add distinct information.
+- **Fragments**: Isolated single words or sub-second utterances that aren't meaningful are usually removable. But short utterances can still carry tone, rhythm, or useful emphasis.
+- **Reactions to mistakes**: "Oh my gosh" after stumbling, nervous laughter between takes — usually remove unless it adds personality, rhythm, or a sense of real-time process the viewer would enjoy.
 
 Editorial decisions (tangential sections, pacing, repeated observations) are **not** made here. They happen in the polish stage, after the thesis has been inferred from the content.
 
@@ -200,3 +211,4 @@ Report to the user:
 - Shared sources (`transcript.json`, `utterances.txt`, `decisions/cut.json`) live at the project root. Build artifacts (`edit_list.json`, `preview.mp4`, timelines) live in `cut/`. The user can review `decisions/cut.json` to understand every cut.
 - The cut stage always does a rough cut. Editorial decisions happen in the polish stage, informed by the inferred thesis.
 - **Decisions are the contract.** The edit list is a compiled artifact that merges contiguous utterances into segments. Downstream stages (polish) produce their own decisions against the original transcript, and a single compile step merges all layers.
+- Edge-case judgment is calibration, not doctrine. Use `evals/` to capture where the operator restored a short utterance, kept a reaction, or treated a would-be false start as a meaningful label.
