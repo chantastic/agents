@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "date": "2026-03-25",
+  "skill": "video-zoom",
+  "project_slug": "pi-first-look-zoom-analysis",
+  "eval_type": "review",
+  "reviewer": {
+    "agent": "unknown",
+    "settings": {}
+  },
+  "source": {
+    "path": "2026-03-23 11-57-49.mp4"
+  },
+  "summary": {
+    "outcome": "good",
+    "one_line": "The operator's final zoom edit revealed a strong tiered system; the main miss was underestimating frequency and section-level consistency."
+  },
+  "artifacts_reviewed": [
+    "agent zooms",
+    "operator final FCPXML export",
+    "16 extracted frames from operator zoom points"
+  ],
+  "process_adherence": {
+    "followed": [
+      "read final FCPXML title parameters",
+      "performed frame-by-frame analysis on a sample of operator zooms",
+      "translated observations into reusable zoom design rules"
+    ],
+    "deviations": []
+  },
+  "metrics": {
+    "agent_zoom_count": 27,
+    "operator_zoom_count": 56,
+    "agent_zoom_density_per_min": 1.6,
+    "operator_zoom_density_per_min": 4.0,
+    "sampled_zoom_count": 16,
+    "overhang_ratio_pct": 59
+  },
+  "categories": {
+    "frequency": {
+      "assessment": "too low"
+    },
+    "section_consistency": {
+      "assessment": "critical insight"
+    },
+    "overhang": {
+      "assessment": "critical insight"
+    },
+    "animation_rules": {
+      "assessment": "strong"
+    },
+    "webcam_constraints": {
+      "assessment": "important"
+    }
+  },
+  "issues": [
+    {
+      "id": "issue_001",
+      "category": "frequency",
+      "severity": "high",
+      "title": "Suggested zoom frequency was far too low",
+      "description": "The operator used roughly twice as many zooms, showing that this format benefits from frequent visual guidance.",
+      "operator_takeaway": "Prefer more frequent, gentler zooms over sparse aggressive ones."
+    },
+    {
+      "id": "issue_002",
+      "category": "consistency",
+      "severity": "medium",
+      "title": "Section-level consistency matters more than per-zoom uniqueness",
+      "description": "The operator reused scale ranges and anchor patterns within topics instead of treating every zoom as a unique event.",
+      "operator_takeaway": "Plan zooms by section first, then by moment."
+    },
+    {
+      "id": "issue_003",
+      "category": "continuity",
+      "severity": "medium",
+      "title": "Overhang is a primary continuity tool",
+      "description": "Most operator zooms extended across adjacent clips, smoothing jump cuts and making thoughts feel continuous.",
+      "operator_takeaway": "Think in phrases rather than clip boundaries."
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "P1",
+      "scope": "skill",
+      "target": "video-zoom",
+      "action": "Increase target zoom density to about 3–4 per minute."
+    },
+    {
+      "priority": "P1",
+      "scope": "skill",
+      "target": "video-zoom",
+      "action": "Make section-based zoom planning and scale consistency first-class guidance."
+    },
+    {
+      "priority": "P1",
+      "scope": "skill",
+      "target": "video-zoom",
+      "action": "Treat overhang as a default continuity technique rather than a special case."
+    },
+    {
+      "priority": "P2",
+      "scope": "skill",
+      "target": "video-zoom",
+      "action": "Encode webcam head-room constraints and matched-pair/scroll-follow patterns explicitly in future planning heuristics."
+    }
+  ],
+  "feedback_hooks": [
+    {
+      "category": "zoom_density",
+      "question": "Does the 3–4/min target generalize across future layouts and video formats?",
+      "how_to_compare": "Track operator zoom counts and densities across future diff evals."
+    },
+    {
+      "category": "tier_calibration",
+      "question": "Do the tier boundaries stay stable across different recording layouts?",
+      "how_to_compare": "Compare future section-scale clusters in sidecars."
+    }
+  ],
+  "domain": {
+    "video": {
+      "zoom": {
+        "tiers": {
+          "webcam": {
+            "scale_range": "0.65-0.80",
+            "count": 6
+          },
+          "guide": {
+            "scale_range": "1.20-1.35",
+            "count": 35
+          },
+          "emphasis": {
+            "scale_range": "1.40-1.50",
+            "count": 12
+          },
+          "extreme": {
+            "scale_range": "1.90-4.00",
+            "count": 3
+          }
+        },
+        "animation_patterns": {
+          "instant_in_instant_out": 28,
+          "instant_in_ease_out": 14,
+          "eased_in_and_out": 13,
+          "ease_in_instant_out": 1
+        },
+        "overhang_ratio_pct": 59
+      }
+    }
+  }
+}

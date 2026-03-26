@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "date": "2026-03-25",
+  "skill": "video-pipeline",
+  "project_slug": "pi-first-look",
+  "eval_type": "diff",
+  "reviewer": {
+    "agent": "unknown",
+    "settings": {}
+  },
+  "source": {
+    "path": "2026-03-23 11-57-49.mp4",
+    "duration_seconds": 3853
+  },
+  "summary": {
+    "outcome": "mixed",
+    "one_line": "The generated edit was solid mechanically, but the operator's final timeline showed that polish was too conservative and zooms were too sparse."
+  },
+  "artifacts_reviewed": [
+    "agent edit list",
+    "operator FCPXML export",
+    "zoom outputs"
+  ],
+  "process_adherence": {
+    "followed": [
+      "compared agent output against the operator's final edit",
+      "categorized differences into editorial and zoom calibration learnings"
+    ],
+    "deviations": []
+  },
+  "metrics": {
+    "original_duration_seconds": 3853,
+    "agent_edit_duration_seconds": 1032,
+    "operator_edit_duration_seconds": 846,
+    "extra_time_operator_cut_seconds": 190,
+    "operator_tighter_pct_vs_agent": 18.4,
+    "agent_zoom_count": 27,
+    "operator_zoom_count": 56,
+    "agent_zoom_density_per_min": 1.6,
+    "operator_zoom_density_per_min": 4.0
+  },
+  "categories": {
+    "duplicate_takes": {
+      "assessment": "high agreement"
+    },
+    "false_starts": {
+      "assessment": "mostly strong"
+    },
+    "screen_narration": {
+      "assessment": "under-cut"
+    },
+    "llm_output_narration": {
+      "assessment": "under-cut"
+    },
+    "exploration_fumbling": {
+      "assessment": "under-cut"
+    },
+    "transitional_bridges": {
+      "assessment": "under-cut"
+    },
+    "zoom_frequency": {
+      "assessment": "far too low"
+    }
+  },
+  "issues": [
+    {
+      "id": "issue_001",
+      "stage": "polish",
+      "category": "screen_narration",
+      "severity": "high",
+      "title": "Visible screen-reading survived the edit",
+      "description": "The operator cut roughly 55 seconds of narration where the viewer could already read the content on screen.",
+      "operator_takeaway": "Screen narration is a first-class pacing-drag category for this format."
+    },
+    {
+      "id": "issue_002",
+      "stage": "polish",
+      "category": "llm_output_narration",
+      "severity": "high",
+      "title": "Claude output narration survived the edit",
+      "description": "The operator removed roughly 50 seconds of narrated LLM recommendations that were interesting to the speaker but low-context for viewers.",
+      "operator_takeaway": "Keep the reaction; cut most of the narrated output."
+    },
+    {
+      "id": "issue_003",
+      "stage": "cut",
+      "category": "false_start_boundary",
+      "severity": "medium",
+      "title": "A list item was misread as a false start",
+      "description": "The short 'JSON RPC' utterance added distinct information and should have stayed.",
+      "operator_takeaway": "Not every short preface is a false start; labels and list items can stand on their own."
+    },
+    {
+      "id": "issue_004",
+      "stage": "zoom",
+      "category": "frequency",
+      "severity": "high",
+      "title": "Zoom density was about half the operator's preference",
+      "description": "The operator used 56 zooms versus 27 suggested zooms, with similar or gentler base scales but much higher frequency.",
+      "operator_takeaway": "More frequent, section-consistent zooms beat sparse aggressive ones."
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "P1",
+      "scope": "skill",
+      "target": "video-polish",
+      "action": "Add explicit pacing-drag subtypes for screen narration, LLM output narration, exploration loops, and transitional bridges."
+    },
+    {
+      "priority": "P1",
+      "scope": "skill",
+      "target": "video-zoom",
+      "action": "Raise zoom target density to roughly 3–4 per minute and default to more frequent guide-tier coverage."
+    },
+    {
+      "priority": "P1",
+      "scope": "skill",
+      "target": "video-cut",
+      "action": "Refine false-start rules so short labels/list items are not removed when they add distinct information."
+    },
+    {
+      "priority": "P2",
+      "scope": "workflow",
+      "target": "zoom calibration",
+      "action": "Store operator-adjusted scales, animation choices, and anchor patterns as reusable calibration data."
+    }
+  ],
+  "feedback_hooks": [
+    {
+      "category": "editorial_recall",
+      "question": "Do future diff evals keep showing under-cut screen narration and LLM output narration?",
+      "how_to_compare": "Count false negatives by category across diff sidecars."
+    },
+    {
+      "category": "zoom_taste",
+      "question": "Is the operator consistently preferring grouped, instant, section-consistent zooms?",
+      "how_to_compare": "Compare future zoom sidecars against operator exports."
+    }
+  ],
+  "domain": {
+    "video": {
+      "diff": {
+        "false_negatives_seconds": {
+          "screen_narration": 55,
+          "llm_output_narration": 50,
+          "sharing_export_exploration": 25,
+          "steering_evaluation": 12,
+          "extension_loading_attempts": 16.5,
+          "transitional_bridges": 15
+        },
+        "false_positives_seconds": {
+          "list_item_misread_as_false_start": 1.7
+        }
+      },
+      "zoom": {
+        "agent_count": 27,
+        "operator_count": 56,
+        "recommended_density_per_min": "3-4"
+      }
+    }
+  }
+}

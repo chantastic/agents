@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "date": "2026-03-25",
+  "skill": "youtube-upload",
+  "project_slug": "pi-first-look",
+  "eval_type": "self",
+  "reviewer": {
+    "agent": "unknown",
+    "settings": {}
+  },
+  "source": {
+    "path": "~/Downloads/2026-03-24 2026 test/2026-05-22 Pi First Look.mp4",
+    "duration_seconds": 844
+  },
+  "summary": {
+    "outcome": "good",
+    "one_line": "The upload succeeded end-to-end and the audio fix was high-value, but the review flow was batched too aggressively and a few UX details were skipped."
+  },
+  "artifacts_reviewed": [
+    "publish/titles.json",
+    "publish/description.md",
+    "publish/brief.json",
+    "publish/captions.srt",
+    "publish/thumbnails/*"
+  ],
+  "process_adherence": {
+    "followed": [
+      "verified auth before upload",
+      "located assets in parallel",
+      "normalized audio without modifying the original export",
+      "uploaded captions and thumbnail after video upload",
+      "enforced unlisted privacy"
+    ],
+    "deviations": [
+      {
+        "step": "description review",
+        "severity": "medium",
+        "description": "Description review and thumbnail selection were batched into one prompt instead of separate focused steps."
+      },
+      {
+        "step": "thumbnail presentation",
+        "severity": "medium",
+        "description": "Reference frames were available but not shown visually."
+      },
+      {
+        "step": "processing status",
+        "severity": "low",
+        "description": "The optional processing status check was not offered after upload."
+      }
+    ]
+  },
+  "metrics": {
+    "video_duration_seconds": 844,
+    "file_size_mb": 1045.8,
+    "title_options_presented": 7,
+    "thumbnail_options_presented": 4,
+    "input_lufs": -39.2,
+    "output_lufs": -14.0,
+    "loudness_delta_db": 25.2,
+    "captions_uploaded": 1,
+    "thumbnail_uploaded": 1
+  },
+  "categories": {
+    "auth_verification": {
+      "assessment": "strong"
+    },
+    "asset_discovery": {
+      "assessment": "strong"
+    },
+    "audio_normalization": {
+      "assessment": "high-value"
+    },
+    "ux_flow": {
+      "assessment": "mixed"
+    },
+    "ffmpeg_parsing": {
+      "assessment": "fragile"
+    }
+  },
+  "issues": [
+    {
+      "id": "issue_001",
+      "category": "ux_flow",
+      "severity": "medium",
+      "title": "Description review and thumbnail selection were batched",
+      "description": "The user had less focused attention on the description than the skill intended.",
+      "operator_takeaway": "Some review moments deserve their own prompt even if batching is faster."
+    },
+    {
+      "id": "issue_002",
+      "category": "ffmpeg_parsing",
+      "severity": "medium",
+      "title": "Loudnorm JSON extraction was fragile",
+      "description": "The old tail-based pattern almost missed required measurement fields and needed a second parsing pass.",
+      "operator_takeaway": "Examples in prompts should prefer robust parsing patterns over terse but brittle shell snippets."
+    },
+    {
+      "id": "issue_003",
+      "category": "thumbnail_selection",
+      "severity": "medium",
+      "title": "Thumbnail frames were described but not shown",
+      "description": "The user chose from text descriptions even though images were available.",
+      "operator_takeaway": "If the asset is visual, present it visually."
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "P1",
+      "scope": "skill",
+      "target": "youtube-upload",
+      "action": "Split description review and thumbnail selection into separate prompts."
+    },
+    {
+      "priority": "P1",
+      "scope": "skill",
+      "target": "youtube-upload",
+      "action": "Show thumbnail frame images inline when they are available."
+    },
+    {
+      "priority": "P1",
+      "scope": "documentation",
+      "target": "youtube-upload",
+      "action": "Standardize on a robust loudnorm JSON extraction pattern using grep instead of tail."
+    },
+    {
+      "priority": "P2",
+      "scope": "service",
+      "target": "youtube upload destination",
+      "action": "Add channel selection support for multi-channel accounts."
+    }
+  ],
+  "feedback_hooks": [
+    {
+      "category": "ux_flow",
+      "question": "Did batching description and thumbnail review feel efficient or rushed to the operator?",
+      "how_to_compare": "Ask directly after a future run with separate prompts."
+    },
+    {
+      "category": "thumbnail_selection",
+      "question": "Would showing actual frames change the user's thumbnail choice?",
+      "how_to_compare": "Compare future frame-shown selections against prior text-only choices."
+    }
+  ],
+  "domain": {
+    "youtube_upload": {
+      "audio_normalized": true,
+      "input_lufs": -39.2,
+      "output_lufs": -14.0,
+      "video_uploaded": true,
+      "captions_uploaded": true,
+      "thumbnail_uploaded": true,
+      "privacy": "unlisted",
+      "video_id": "XzZgLDL0wZY"
+    }
+  }
+}

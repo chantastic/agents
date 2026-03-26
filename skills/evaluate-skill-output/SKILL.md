@@ -9,6 +9,12 @@ Generate a structured self-evaluation of a skill run. The eval is saved alongsid
 
 This skill is **generic-first**. The examples below use the video pipeline because it is the most mature workflow in this workspace, but the same evaluation method applies to any skill that produces inspectable artifacts.
 
+Every eval should produce **paired artifacts** with the same basename:
+- `.../evals/<date>-<slug>.md` — narrative analysis for humans/LLMs
+- `.../evals/<date>-<slug>.json` — structured sidecar for aggregation, comparison, and calibration
+
+The markdown tells the story. The JSON makes the story countable.
+
 ## Modes
 
 This skill supports two modes:
@@ -110,15 +116,16 @@ For each area where user feedback would improve future runs, define what data to
 
 ### Step 6: Write the eval
 
-Save to the skill's evals directory:
+Save to the skill's evals directory as paired artifacts with the **same basename**:
 
 ```
 ~/.agents/skills/<skill-name>/evals/<date>-<project-slug>.md
+~/.agents/skills/<skill-name>/evals/<date>-<project-slug>.json
 ```
 
-The filename uses the date and a slug derived from the project (e.g., `2026-03-25-pi-first-look.md`).
+The filename uses the date and a slug derived from the project (e.g., `2026-03-25-pi-first-look.md` + `2026-03-25-pi-first-look.json`).
 
-#### Eval format
+#### Markdown eval format
 
 ```markdown
 # Eval: <Project Name>
@@ -168,6 +175,39 @@ The filename uses the date and a slug derived from the project (e.g., `2026-03-2
 <Specific changes to the skill, services, or process>
 ```
 
+#### JSON sidecar format
+
+Use the schema in `SCHEMA.md` in this directory. Keep it **best effort** and generic-first: populate the core fields on every run, and add domain-specific data only when it is meaningful.
+
+Minimum recommended shape:
+
+```json
+{
+  "version": 1,
+  "date": "2026-03-25",
+  "skill": "video-pipeline",
+  "project_slug": "pi-first-look",
+  "eval_type": "self",
+  "reviewer": {
+    "agent": "openai-codex-gpt-5-4-high",
+    "settings": {}
+  },
+  "summary": {
+    "outcome": "good",
+    "one_line": "Strong cut, conservative polish, under-dense zooms."
+  },
+  "recommendations": [
+    {
+      "priority": "P1",
+      "scope": "skill",
+      "target": "video-polish",
+      "action": "Add screen narration as an explicit pacing_drag subtype."
+    }
+  ],
+  "domain": {}
+}
+```
+
 ### Step 7: Check for prior evals
 
 Read any existing evals in the skill's evals directory:
@@ -186,7 +226,8 @@ Add a **"Cross-run patterns"** section if there are prior evals to compare again
 ### Step 8: Report
 
 Tell the user:
-- Where the eval was saved
+- Where the eval markdown was saved
+- Where the JSON sidecar was saved
 - Top 3 issues to address
 - What feedback would be most valuable (from the learning hooks)
 - Whether recurring patterns were found across evals

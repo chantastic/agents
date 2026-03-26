@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "date": "2026-03-25",
+  "skill": "video-pipeline",
+  "project_slug": "pi-first-look",
+  "eval_type": "self",
+  "reviewer": {
+    "agent": "unknown",
+    "settings": {}
+  },
+  "source": {
+    "path": "2026-03-23 11-57-49.mp4",
+    "duration_seconds": 3853
+  },
+  "summary": {
+    "outcome": "mixed",
+    "one_line": "Strong cut and useful polish, but conservative editorial judgment and process deviations left quality on the table."
+  },
+  "artifacts_reviewed": [
+    "cut outputs",
+    "polish pass outputs",
+    "zoom frame analysis"
+  ],
+  "process_adherence": {
+    "followed": [
+      "re-transcribed output to evaluate the edit as a viewer would experience it",
+      "saved concrete learning hooks for future diff evals"
+    ],
+    "deviations": [
+      {
+        "step": "thesis confirmation",
+        "severity": "medium",
+        "description": "The inferred thesis was reported but not explicitly confirmed with the operator before polish continued."
+      },
+      {
+        "step": "pass 3 verification",
+        "severity": "high",
+        "description": "The final polish pass was not re-transcribed and verified before finalizing."
+      }
+    ]
+  },
+  "metrics": {
+    "original_duration_seconds": 3853,
+    "final_duration_seconds": 1034,
+    "duration_removed_seconds": 2819,
+    "duration_removed_pct": 73.2,
+    "passes_run": 3
+  },
+  "categories": {
+    "duplicate_detection": {
+      "assessment": "strong"
+    },
+    "polish_issue_detection": {
+      "count": 6,
+      "assessment": "useful"
+    },
+    "pacing_judgment": {
+      "assessment": "mixed"
+    },
+    "process_adherence": {
+      "assessment": "mixed"
+    },
+    "zoom_timing_precision": {
+      "assessment": "uncertain"
+    }
+  },
+  "issues": [
+    {
+      "id": "issue_001",
+      "stage": "polish",
+      "category": "segment_mapping",
+      "severity": "high",
+      "title": "Joke removal botched in pass 2",
+      "description": "A contiguous time segment contained both removable joke material and the needed conclusion, forcing an extra pass.",
+      "operator_takeaway": "Think in merged segment content, not only utterance indices."
+    },
+    {
+      "id": "issue_002",
+      "stage": "workflow",
+      "category": "environment",
+      "severity": "medium",
+      "title": "1Password friction burned time",
+      "description": "Repeated auth retrievals created avoidable delay.",
+      "operator_takeaway": "Cache secrets retrieved once during a run when the workflow will need them repeatedly."
+    },
+    {
+      "id": "issue_003",
+      "stage": "polish",
+      "category": "pacing_drag",
+      "severity": "medium",
+      "title": "Model config section may have been over-compressed",
+      "description": "Some authentic exploration likely got removed along with redundant fumbling.",
+      "operator_takeaway": "For first-look videos, authenticity can be part of the product; not all fumbling is drag."
+    },
+    {
+      "id": "issue_004",
+      "stage": "zoom",
+      "category": "timing_alignment",
+      "severity": "medium",
+      "title": "Zoom timing may drift after later polish changes",
+      "description": "Zooms were based on a preview transcript that changed slightly after the final polish pass.",
+      "operator_takeaway": "Any visual layer attached after editorial changes should be validated against the final timeline state."
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "P1",
+      "scope": "workflow",
+      "target": "polish",
+      "action": "Verify merged segment content before finalizing removals when utterance indices map into contiguous edit segments."
+    },
+    {
+      "priority": "P1",
+      "scope": "operator",
+      "target": "runtime environment",
+      "action": "Cache retrieved secrets instead of re-reading them multiple times during one run."
+    },
+    {
+      "priority": "P1",
+      "scope": "workflow",
+      "target": "polish verification",
+      "action": "Do not skip the final re-transcription convergence check, even for small pass-3 edits."
+    },
+    {
+      "priority": "P2",
+      "scope": "service",
+      "target": "timeline diffing",
+      "action": "Add tooling to diff reviewer FCPXML exports against generated timelines for ground-truth calibration."
+    }
+  ],
+  "feedback_hooks": [
+    {
+      "category": "pacing_drag",
+      "question": "Where did polish over-cut or under-cut once the operator reviewed in FCP?",
+      "how_to_compare": "Diff the generated timeline against the operator's exported FCPXML."
+    },
+    {
+      "category": "zoom_calibration",
+      "question": "Which suggested zooms survived, moved, or changed scale?",
+      "how_to_compare": "Compare generated zooms against the operator's final FCPXML export."
+    }
+  ],
+  "domain": {
+    "video": {
+      "editing": {
+        "original_duration_seconds": 3853,
+        "final_duration_seconds": 1034
+      },
+      "polish": {
+        "passes_run": 3,
+        "verification_skipped_on_final_pass": true
+      }
+    }
+  }
+}

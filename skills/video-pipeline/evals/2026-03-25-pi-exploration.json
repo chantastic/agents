@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "date": "2026-03-25",
+  "skill": "video-pipeline",
+  "project_slug": "pi-exploration",
+  "eval_type": "self",
+  "reviewer": {
+    "agent": "unknown",
+    "settings": {}
+  },
+  "source": {
+    "path": "~/Downloads/test video-pipeline/2026-03-23 11-57-49.mp4",
+    "duration_seconds": 3853
+  },
+  "summary": {
+    "outcome": "mixed",
+    "one_line": "Cut stage and infrastructure were strong, but polish added almost no value without a thesis and zoom density/scale lagged behind the intended style."
+  },
+  "artifacts_reviewed": [
+    "manifest.json",
+    "cut outputs",
+    "polish outputs",
+    "zoom outputs"
+  ],
+  "process_adherence": {
+    "followed": [
+      "measured cut, polish, and zoom metrics",
+      "captured bugs fixed during the run",
+      "recorded follow-up recommendations and experiments"
+    ],
+    "deviations": []
+  },
+  "metrics": {
+    "original_duration_seconds": 3853,
+    "cut_duration_seconds": 1182,
+    "final_duration_seconds": 1177,
+    "duration_removed_seconds": 2676,
+    "duration_removed_pct": 69.5,
+    "utterances_total": 463,
+    "utterances_kept": 408,
+    "utterances_removed": 55,
+    "polish_issues_found": 5,
+    "polish_issues_applied": 4,
+    "zoom_count": 18,
+    "zoom_density_per_min": 0.9
+  },
+  "categories": {
+    "cut_stage": {
+      "assessment": "strong"
+    },
+    "polish_stage": {
+      "assessment": "weak"
+    },
+    "zoom_stage": {
+      "assessment": "under-calibrated"
+    },
+    "infrastructure": {
+      "assessment": "strong"
+    },
+    "thesis_dependency": {
+      "assessment": "important"
+    }
+  },
+  "issues": [
+    {
+      "id": "issue_001",
+      "stage": "polish",
+      "category": "editorial_pacing",
+      "severity": "high",
+      "title": "Polish was near-worthless without a thesis",
+      "description": "The full render → transcribe → evaluate loop removed only 5.4 seconds because the highest-value pacing category was disabled.",
+      "operator_takeaway": "Run expensive evaluation loops only when the stage has enough editorial context to act meaningfully."
+    },
+    {
+      "id": "issue_002",
+      "stage": "zoom",
+      "category": "calibration",
+      "severity": "medium",
+      "title": "Zoom scales were too conservative",
+      "description": "The run used old 1.10–1.30 defaults and under-delivered on emphasis.",
+      "operator_takeaway": "If defaults change, regenerate downstream artifacts or make the dependency explicit."
+    },
+    {
+      "id": "issue_003",
+      "stage": "zoom",
+      "category": "density",
+      "severity": "medium",
+      "title": "Zoom density was sparse",
+      "description": "18 zooms over ~20 minutes left a 229-second dead zone and undershot the emerging editorial taste.",
+      "operator_takeaway": "More frequent, gentler zooms can add production value without feeling gimmicky."
+    },
+    {
+      "id": "issue_004",
+      "stage": "extension",
+      "category": "testing",
+      "severity": "medium",
+      "title": "The extension had never been smoke tested",
+      "description": "Broken handler registration and message sending existed from the first commit and only surfaced during this run.",
+      "operator_takeaway": "Thin smoke tests catch embarrassing integration bugs before a real run does."
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "P1",
+      "scope": "workflow",
+      "target": "video-polish",
+      "action": "Make the full polish loop conditional on having a meaningful thesis, or degrade to a lighter stumble-only pass."
+    },
+    {
+      "priority": "P1",
+      "scope": "workflow",
+      "target": "video-pipeline",
+      "action": "Add stage skip flags such as --skip-polish and --skip-zoom."
+    },
+    {
+      "priority": "P1",
+      "scope": "workflow",
+      "target": "video-zoom",
+      "action": "Regenerate zooms when calibration defaults change or avoid baking those defaults too early."
+    },
+    {
+      "priority": "P2",
+      "scope": "service",
+      "target": "video editor extension",
+      "action": "Add a smoke test that verifies handler registration and message sending."
+    }
+  ],
+  "feedback_hooks": [
+    {
+      "category": "thesis_inference",
+      "question": "Does a real thesis materially improve polish-stage pacing decisions on fresh videos?",
+      "how_to_compare": "Compare future rough-cut-only runs against thesis-informed polish runs."
+    },
+    {
+      "category": "zoom_calibration",
+      "question": "What zoom density and scale ranges survive operator review across multiple videos?",
+      "how_to_compare": "Track future operator edits and compare against zoom sidecars."
+    }
+  ],
+  "domain": {
+    "video": {
+      "editing": {
+        "utterances_total": 463,
+        "utterances_kept": 408,
+        "utterances_removed": 55
+      },
+      "zoom": {
+        "zoom_count": 18,
+        "density_per_min": 0.9,
+        "largest_gap_seconds": 229
+      },
+      "bugs_fixed_during_run": [
+        "video-editor.ts handler registration",
+        "video-editor.ts message sending",
+        "timeline integer-frame accumulation"
+      ]
+    }
+  }
+}

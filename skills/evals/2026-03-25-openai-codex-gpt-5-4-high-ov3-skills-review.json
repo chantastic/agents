@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "date": "2026-03-25",
+  "skill": "skills-workspace",
+  "project_slug": "skills-workspace-review",
+  "eval_type": "review",
+  "reviewer": {
+    "agent": "openai-codex-gpt-5-4-high",
+    "settings": {
+      "ov": 3
+    }
+  },
+  "summary": {
+    "outcome": "good",
+    "one_line": "Strong operator-grade skill workspace with real eval loops; main risk is contract drift across skills."
+  },
+  "artifacts_reviewed": [
+    "AGENTS.md",
+    "skills/video-pipeline/SKILL.md",
+    "skills/video-polish/SKILL.md",
+    "skills/video-zoom/SKILL.md",
+    "skills/youtube-upload/SKILL.md",
+    "skills/evaluate-skill-output/SKILL.md",
+    "skills/xstate-naming/SKILL.md",
+    "skills/broll-research/SKILL.md",
+    "skills/make-it-personal/SKILL.md",
+    "skills/video-pipeline/evals/*",
+    "skills/video-zoom/evals/*",
+    "skills/youtube-upload/evals/*"
+  ],
+  "metrics": {
+    "skills_reviewed_count": 14,
+    "skills_with_evals_count": 3,
+    "eval_markdown_files_count": 6
+  },
+  "categories": {
+    "artifact_discipline": {
+      "assessment": "strong"
+    },
+    "prompt_quality": {
+      "assessment": "strong"
+    },
+    "contract_drift": {
+      "assessment": "high-risk"
+    },
+    "structured_evals": {
+      "assessment": "missing"
+    },
+    "metadata_consistency": {
+      "assessment": "mixed"
+    }
+  },
+  "issues": [
+    {
+      "id": "issue_001",
+      "category": "contract_drift",
+      "severity": "high",
+      "title": "Cross-skill path and schema drift",
+      "description": "Some skills still reference older artifact paths and older assumptions about stage outputs.",
+      "operator_takeaway": "The biggest scaling problem is preserving a stable contract between smart prompts."
+    },
+    {
+      "id": "issue_002",
+      "category": "structured_evals",
+      "severity": "medium",
+      "title": "Eval intelligence trapped in markdown",
+      "description": "The stored evals are insightful but mostly prose, which limits aggregation and cross-run comparison.",
+      "operator_takeaway": "Keep the prose, but add machine-readable sidecars so patterns can compound."
+    },
+    {
+      "id": "issue_003",
+      "category": "overfitting",
+      "severity": "medium",
+      "title": "Risk of overfitting to flagship Pi videos",
+      "description": "Several strong heuristics come from one recurring format and could harden into universal defaults.",
+      "operator_takeaway": "Separate durable process from project- or layout-specific calibration."
+    },
+    {
+      "id": "issue_004",
+      "category": "metadata_consistency",
+      "severity": "low",
+      "title": "Uneven discoverability and frontmatter",
+      "description": "A few skills and reference docs do not follow the same metadata conventions as the rest of the workspace.",
+      "operator_takeaway": "Consistency matters most once the workflows are real and reused across agents."
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": "P0",
+      "scope": "documentation",
+      "target": "video-pipeline",
+      "action": "Write a canonical contract/schema doc for the active video workflow."
+    },
+    {
+      "priority": "P1",
+      "scope": "documentation",
+      "target": "video skills + eval skill",
+      "action": "Patch stale skill docs so their paths, stage boundaries, and ownership rules match the current architecture."
+    },
+    {
+      "priority": "P2",
+      "scope": "workflow",
+      "target": "eval artifacts",
+      "action": "Add structured JSON sidecars alongside markdown evals."
+    },
+    {
+      "priority": "P3",
+      "scope": "workflow",
+      "target": "skill calibration",
+      "action": "Separate durable rules from local calibration data to reduce overfitting."
+    },
+    {
+      "priority": "P4",
+      "scope": "documentation",
+      "target": "skill metadata",
+      "action": "Normalize frontmatter/discoverability conventions."
+    }
+  ],
+  "feedback_hooks": [
+    {
+      "category": "operator_priorities",
+      "question": "Which of the identified risks is most painful in actual day-to-day use?",
+      "how_to_compare": "Use that answer to sequence repo maintenance work."
+    }
+  ],
+  "domain": {
+    "workspace": {
+      "most_mature_area": "video workflow",
+      "least_proven_areas": [
+        "broll-research",
+        "content-*",
+        "make-it-personal"
+      ]
+    }
+  }
+}
