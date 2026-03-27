@@ -69,8 +69,9 @@ These imply a stable reference lens: a skill you consult for style, conventions,
 
 ### Transformation skills
 
-Use verb-prefixed names that describe the bounded action:
+Use action names that describe the bounded transformation:
 - `create-*`
+- `make-*`
 - `prepare-*`
 - `get-*`
 - `write-*`
@@ -81,10 +82,15 @@ Use verb-prefixed names that describe the bounded action:
 
 Examples:
 - `create-marketing-brief`
+- `make-it-personal`
 - `prepare-post`
 - `get-broll-assets`
 
 These imply a local transformation: take inputs, do work, produce outputs.
+
+Useful subtype signal:
+- `create-*` usually means creating a new artifact
+- `make-*` usually means interactive refinement or alignment of existing material toward a target quality
 
 ### Coordinator skills
 
@@ -97,7 +103,7 @@ Examples:
 
 `run-*` signals that the skill owns sequencing, handoffs, retries, or shared state.
 
-Avoid using `prepare-*` or `create-*` for coordinator skills — those sound like transformations, not workflow owners. Avoid using `consult-*` for a skill that actually mutates files or coordinates a workflow — that would blur role boundaries. Prefer `run-*` as the default coordinator signal.
+Avoid using `prepare-*`, `create-*`, or `make-*` for coordinator skills — those sound like transformations, not workflow owners. Avoid using `consult-*` for a skill that actually mutates files or coordinates a workflow — that would blur role boundaries. Prefer `run-*` as the default coordinator signal.
 
 ### Role declaration
 
@@ -288,7 +294,7 @@ The coordinator's job is mapping between the manifest's shape and each skill's i
 
 ## Checklist for new skills
 
-- [ ] Name matches role (`consult-*` for reference skills, `run-*` for coordinators, verb-prefixed action for transformations)
+- [ ] Name matches role (`consult-*` for reference skills, `run-*` for coordinators, action prefix for transformations such as `create-*` or `make-*`)
 - [ ] Role is explicit in the opening section when role affects evaluation
 - [ ] `## Inputs` table with Required/Discovery columns (for transformation/coordinator skills)
 - [ ] `## Outputs` table with source-vs-artifact distinction (for transformation/coordinator skills)

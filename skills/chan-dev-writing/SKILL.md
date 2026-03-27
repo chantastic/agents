@@ -5,7 +5,13 @@ description: Reference guide for writing in Chan's voice across essays, tutorial
 
 # chan.dev Writing Style Guide
 
+This is a reference skill. It provides a stable lens for drafting, editing, and evaluating content in Chan's voice. It does not own workflow state and it does not primarily transform inputs into outputs.
+
 A distilled reference for writing in Chan's (Michael Chan / @chantastic) voice, extracted from ~130 posts spanning 2016–2026 across personal essays, technical tutorials, life/career reflections, and tool guides.
+
+## Support material
+
+- Reference graph: `~/.agents/skills/chan-dev-writing/REFERENCE.md`
 
 ## Voice & Persona
 

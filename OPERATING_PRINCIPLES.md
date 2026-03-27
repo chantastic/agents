@@ -284,17 +284,22 @@ Use naming to distinguish:
 
 Recommended naming:
 - **Reference skills:** `consult-*`
-- **Transformation skills:** verb-prefixed action names like `create-*`, `prepare-*`, `get-*`, `write-*`, `cut-*`, `polish-*`, `zoom-*`, `publish-*`
+- **Transformation skills:** action names like `create-*`, `make-*`, `prepare-*`, `get-*`, `write-*`, `cut-*`, `polish-*`, `zoom-*`, `publish-*`
 - **Coordinator skills:** `run-*`
 
 Examples:
 - `consult-chan-writing-style`
 - `create-marketing-brief`
+- `make-it-personal`
 - `prepare-post`
 - `get-broll-assets`
 - `run-video-pipeline`
 
 A prefix is a useful operator signal, but it is not sufficient on its own. A skill should also identify its role explicitly when that role affects how it should be evaluated.
+
+Within transformation skills, prefixes can carry useful subtype signals:
+- `create-*` usually implies creating a new artifact
+- `make-*` usually implies interactive refinement or alignment of existing material toward a target quality
 
 This matters because each role is evaluated differently:
 - reference skills are judged on clarity, usefulness as a lens, and stability as a reusable source of judgment

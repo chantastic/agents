@@ -30,6 +30,7 @@ Also requires: `ffmpeg`, `ffprobe` on PATH, and `DEEPGRAM_API_KEY` in environmen
 | `create-marketing-brief` | Create one multi-section marketing brief for LinkedIn, Twitter/X, and recap/blog |
 | `broll-research` | B-roll asset collection from transcripts |
 | `chantastic-scripts` | Blog → YouTube script conversion |
+| `run-shutdown-ritual` | Coordinator for end-of-day triage, wrap-up, and durable routing |
 | `youtube-audit` | Channel analysis via yt-dlp |
 | `xstate-naming` | XState naming conventions |
 | `skill-authoring` | Guide for writing and refactoring skills |
