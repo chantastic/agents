@@ -26,52 +26,43 @@ When in doubt: keep the rough-cut method here, and let edge-case aggressiveness 
 
 ## Inputs
 
-This skill can be invoked standalone or as part of `video-pipeline`.
+| Input | Required | Discovery | Description |
+|-------|----------|-----------|-------------|
+| source | yes | discover: largest .mp4/.mov in cwd | Path to the raw video recording |
+| keyterms | no | suggest from context | Domain terms for Deepgram speech-to-text accuracy |
+| target_duration | no | default: aim for 10-15 min | Target length for the cut |
+| output_dir | no | default: working directory | Where to write all outputs |
 
-**Standalone**: Ask the user for video path, keyterms, and target duration.
+When run standalone, discover or ask for each input. When run via a coordinator (e.g., video-pipeline), these are provided explicitly.
 
-**Via pipeline**: Read from `manifest.json` in the working directory:
-- `source` — video file path
-- `keyterms` — domain terms for speech-to-text
-- `target_duration` — target length (optional)
-
-The thesis is **not** an input. It is inferred from the content after edit decisions are made (see Step 5b).
+Do not ask for a thesis. The thesis is inferred from the content after edit decisions are made (see Step 5b).
 
 ## Outputs
-
-Shared sources of truth go to the **project root**. Build artifacts go to `cut/`.
 
 | File | Type | Description |
 |---|---|---|
 | `transcript.json` | **source** | Deepgram transcript with word-level timestamps |
 | `utterances.txt` | **source** | Formatted utterances for review |
-| `decisions/cut.json` | **source** | LLM edit decisions with reasoning |
+| `decisions/cut.json` | **source** | LLM edit decisions with reasoning + inferred thesis |
 | `cut/edit_list.json` | artifact | Compiled segment list |
 | `cut/preview.mp4` | artifact | Rendered preview |
 | `cut/timeline.fcpxml` | artifact | Final Cut Pro timeline |
 | `cut/timeline.otio` | artifact | OpenTimelineIO timeline |
 
-After completion, update `manifest.json` with stage status, file paths, and stats. Add `decisions/cut.json` to the manifest's top-level `decisions` array.
+The inferred thesis is written into `decisions/cut.json` and reported to the operator.
 
 ## Process
 
 ### Step 1: Gather Inputs
 
-If `manifest.json` exists, read inputs from it. Otherwise, ask the user for:
-1. **Video file path** (required)
-2. **Domain terms** that may be misrecognized by speech-to-text (product names, people, technical terms). Suggest terms based on context.
-3. **Target duration** (optional — default: aim for 10-15 min for YouTube)
-
-Do **not** ask for a thesis. The thesis is inferred after edit decisions (Step 5b).
-
-Create directories `cut/` and `decisions/` if they don't exist.
+Resolve each input using the discovery rules above. Create directories `cut/` and `decisions/` if they don't exist.
 
 ### Step 2: Transcribe
 
-Transcribe to the **project root** — the transcript is a shared source of truth, not a cut-stage artifact.
+Transcribe to the **output root** — the transcript is a shared source of truth, not a cut-stage artifact.
 
 ```bash
-DEEPGRAM_API_KEY=<key> python3 ~/.agents/services/transcribe.py "<video_path>" \
+DEEPGRAM_API_KEY=<key> python3 ~/.agents/services/transcribe.py "<source>" \
   --keyterms "<comma,separated,terms>" \
   --output transcript.json
 ```
@@ -126,7 +117,7 @@ Guidelines:
 - Include the speaker's perspective or arc if one emerges. "Evaluating Pi as a VIM replacement for AI-assisted coding" captures intent.
 - Keep it concrete enough to make editorial decisions against. The polish stage will use this thesis to decide what's tangential and what's essential.
 
-Write the thesis to `manifest.json` (set the `thesis` field). Also save it in the decisions file for auditability:
+Write the thesis into the decisions file for auditability:
 
 ```json
 {
@@ -135,24 +126,20 @@ Write the thesis to `manifest.json` (set the `thesis` field). Also save it in th
 }
 ```
 
-Report the inferred thesis to the user. They can adjust it before the polish stage runs.
+Report the inferred thesis to the operator. They can adjust it before moving on.
 
 ### Step 6: Compile Edit List
-
-Compile the decisions into a segment-based edit list. This is a **build step** — decisions are the source, the edit list is the compiled output.
 
 ```bash
 python3 ~/.agents/services/edit.py apply transcript.json decisions/cut.json \
   --padding 0.05 --output cut/edit_list.json
 ```
 
-**Important:** `decisions/cut.json` is the contract between stages, not `cut/edit_list.json`. The polish stage will produce its own decisions file (`decisions/polish.json`), and a final compile step merges all decision layers into the polished edit list. The edit list merges contiguous kept utterances into single segments, losing utterance provenance — this is fine because no downstream stage needs to reverse-engineer the mapping.
-
 ### Step 7: Generate Timeline
 
 ```bash
 python3 ~/.agents/services/timeline.py \
-  --source "<video_path>" \
+  --source "<source>" \
   --edits cut/edit_list.json \
   --name "<descriptive timeline name>" \
   --output cut/timeline.otio
@@ -163,52 +150,24 @@ This generates both `cut/timeline.otio` and `cut/timeline.fcpxml`.
 ### Step 8: Render Preview
 
 ```bash
-python3 ~/.agents/services/render.py "<video_path>" \
+python3 ~/.agents/services/render.py "<source>" \
   --edits cut/edit_list.json \
   --output cut/preview.mp4
 ```
 
-### Step 9: Update Manifest and Report
+### Step 9: Report
 
-Update `manifest.json` — set the shared sources, the `thesis` field, add decisions to the `decisions` array, and write the cut stage entry:
-
-```json
-{
-  "transcript": "transcript.json",
-  "utterances": "utterances.txt",
-  "decisions": ["decisions/cut.json"],
-  "thesis": "First look at Pi as a coding harness — installing, configuring models, exploring sessions, sharing, and testing extensions.",
-  "stages": {
-    "cut": {
-      "status": "complete",
-      "edit_list": "cut/edit_list.json",
-      "preview": "cut/preview.mp4",
-      "timeline": "cut/timeline.fcpxml",
-      "stats": {
-        "original_duration": ...,
-        "edited_duration": ...,
-        "utterances_total": ...,
-        "utterances_kept": ...,
-        "utterances_removed": ...
-      }
-    }
-  }
-}
-```
-
-Report to the user:
+Report to the operator:
 - Original duration → edited duration (% removed)
 - Number of utterances kept vs removed
 - Summary of what was cut and why (grouped by category: duplicates, false starts)
-- **Inferred thesis** — ask user to confirm or adjust before polish runs
-- Paths to outputs
-- If running standalone, remind user to open the `.fcpxml` in Final Cut Pro
-- If running as part of pipeline, note that polish stage is next and will use the thesis for editorial decisions
+- **Inferred thesis** — ask operator to confirm or adjust
+- Paths to all outputs
+- Remind user to open `.fcpxml` in Final Cut Pro for review
 
 ## Notes
 
 - The FCPXML references the source video by absolute path. The source video must be accessible at that path when opening in FCP.
-- Shared sources (`transcript.json`, `utterances.txt`, `decisions/cut.json`) live at the project root. Build artifacts (`edit_list.json`, `preview.mp4`, timelines) live in `cut/`. The user can review `decisions/cut.json` to understand every cut.
 - The cut stage always does a rough cut. Editorial decisions happen in the polish stage, informed by the inferred thesis.
 - **Decisions are the contract.** The edit list is a compiled artifact that merges contiguous utterances into segments. Downstream stages (polish) produce their own decisions against the original transcript, and a single compile step merges all layers.
 - Edge-case judgment is calibration, not doctrine. Use `evals/` to capture where the operator restored a short utterance, kept a reaction, or treated a would-be false start as a meaningful label.

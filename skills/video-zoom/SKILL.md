@@ -9,14 +9,10 @@ Add zoom/punch-in effects to a polished video edit using FCPXML adjustment clips
 
 ## Epistemic Status
 
-This skill intentionally separates **principle**, **heuristic**, **preference**, and **temporary calibration**.
-
-- **Principles** belong here in `SKILL.md` — durable ideas that should survive across projects
-- **Heuristics** belong here too — useful defaults that may vary by format and should be applied with judgment
-- **Preferences** should be stated as taste, not law
-- **Temporary calibration** (exact scale ranges, density, anchor clusters, plugin quirks for a specific layout) belongs in `evals/`
-
-When in doubt: keep the system here, keep the numbers in `evals/`.
+- **Principles** — durable ideas that should survive across projects
+- **Heuristics** — useful defaults that may vary by format
+- **Preferences** — stated as taste, not law
+- **Calibration** — exact scale ranges, density, anchor clusters, plugin quirks. Belongs in `evals/`
 
 ## Required Environment
 
@@ -24,25 +20,23 @@ When in doubt: keep the system here, keep the numbers in `evals/`.
 
 ## Inputs
 
-Read from `manifest.json` in the project directory:
-- `source` — original video path
-- `thesis` — video goal (guides zoom selection)
-- `stages.polish.edit_list` — polished edit list
-- `stages.polish.preview` — polished preview video
+| Input | Required | Discovery | Description |
+|-------|----------|-----------|-------------|
+| source | yes | discover: largest .mov in cwd | Original video file |
+| edit_list | yes | discover: polish/final/edit_list.json or cut/edit_list.json | Edit list from the latest stage |
+| preview | yes | discover: polish/final/preview.mp4 or cut/preview.mp4 | Preview video from the latest stage |
+| thesis | no | ask | Video goal (guides zoom selection) |
+| output_dir | no | default: working directory | Where to write outputs |
 
-If no manifest exists, ask the user for the source video path, edit list, and preview.
+When run standalone, discover or ask for each input. When run via a coordinator, these are provided explicitly.
 
 ## Outputs
-
-All outputs go to `zoom/` within the project directory:
 
 | File | Description |
 |---|---|
 | `zoom/frames/Z001.jpg` ... | Extracted frames at each zoom point |
 | `zoom/zooms.json` | Zoom decisions with timing, scale, and anchor |
 | `zoom/timeline_zoomed.fcpxml` | FCPXML with adjustment clips (FCP-only, no OTIO) |
-
-After completion, update `manifest.json` with stage status and file paths.
 
 ## Principles
 
@@ -55,88 +49,72 @@ A zoom should make something visible AND carry editorial weight. If it's only pr
 Each zoom tier solves a progressively harder visibility problem:
 - **Guide**: content is readable but the viewer doesn't know where to look. The zoom says "this part matters."
 - **Emphasis**: content is visible but the moment is important. The zoom says "pay attention."
-- **Extreme**: content is genuinely not visible at full scale (a small icon, a fleeting animation). The zoom makes it possible to see. Scale is proportional to how small the target is.
+- **Extreme**: content is genuinely not visible at full scale (a small icon, a fleeting animation). The zoom makes it possible to see.
 
 ### Zooms are phrases, not punctuation marks
 
-A zoom should span a *thought*, not a clip. Use overhang to extend a zoom across multiple edit points, creating visual continuity across jump cuts. This makes jump cuts feel intentional — the zoom provides a through-line that tells the viewer "this is still one thought."
+A zoom should span a *thought*, not a clip. Use overhang to extend a zoom across multiple edit points, creating visual continuity across jump cuts.
 
 ### Scale follows section, anchor follows content
 
-Hold the same scale within a topical section. Change only the anchor position to follow content as it scrolls or shifts. This creates visual rhythm — the viewer's brain registers "we're in the same topic" because the zoom level is constant. Change scale when the *section* changes, not when the *clip* changes.
+Hold the same scale within a topical section. Change only the anchor position to follow content. Change scale when the *section* changes, not when the *clip* changes.
 
 ### Webcam zooms frame the video
 
-The webcam tier bookends the video: opening (personal introduction), occasional mid-video punctuation (reflective moments), and closing (sign-off). The tool is the subject; the person is the frame.
+The webcam tier bookends the video: opening, occasional mid-video punctuation, and closing.
 
 ## Process
 
-### Step 1: Read the polished preview transcript
+### Step 1: Read the preview transcript
 
-Read the polished preview utterances. These are the viewer's experience — a continuous flow where zoom-worthy moments become obvious.
+Read the preview utterances (from the preview video or a co-located transcript). These are the viewer's experience.
+
+If no transcript exists alongside the preview, transcribe it:
+
+```bash
+python3 ~/.agents/services/edit.py format <transcript> --output zoom/preview_utterances.txt
+```
 
 ### Step 2: Segment into topical sections
 
-Before selecting individual zoom points, segment the transcript into topical sections. Each section gets a consistent zoom treatment.
-
-For each section, classify the visual content:
-- **screen_focused**: speaker discusses or interacts with visible screen content
+Segment the transcript into topical sections. Classify each:
+- **screen_focused**: speaker discusses visible screen content
 - **camera_moment**: personal statement, reaction, emotional beat
-- **mixed**: alternating between screen and camera within the section
+- **mixed**: alternating
 
 ### Step 3: Assign zoom tiers per section
-
-Each section gets a base tier. Individual moments within a section can override up (never down).
-
-**Zoom tiers:**
 
 | Tier | Intent | Animation |
 |---|---|---|
 | **Webcam** | Zoom into camera/face. Personal moments. | eased in+out |
-| **Guide** | Direct attention to screen content. Working, reading. | instant in; ease out for short moments, eased in+out for sustained reads |
-| **Emphasis** | Highlight an important moment. Key reveals, reactions. | instant in, ease out or instant out |
-| **Extreme** | Make a small/fleeting target visible. Rare (1–2 per video). | instant in, instant out |
-
-**Tier selection:**
-- `screen_focused` sections → **Guide** baseline
-- `camera_moment` sections → **Webcam**
-- Key reveals or reactions within any section → override to **Emphasis**
-- Tiny, fleeting visual details the viewer would miss → **Extreme**
-
-**Scale calibration:** The exact scale values depend on the recording layout (screen resolution, panel arrangement, camera position, PiP size). Extract frames and judge by eye: guide tier should make the focal area noticeably closer without losing surrounding context; emphasis should feel like a deliberate punch; extreme should make the target fill enough of the frame to be legible. See `evals/` for calibration data from past videos.
+| **Guide** | Direct attention to screen content. | instant in; ease out |
+| **Emphasis** | Highlight an important moment. Key reveals. | instant in, ease out |
+| **Extreme** | Make small/fleeting target visible. Rare (1–2 per video). | instant in, instant out |
 
 ### Step 4: Select zoom points and anchors
 
-**Starting heuristic: aim for roughly 3–4 zooms per minute for this style of screen-led video.** Prefer more frequent, gentler zooms over sparse, aggressive ones, but adjust based on layout, pacing, and operator taste. See `evals/` for current calibration.
+**Starting heuristic: ~3–4 zooms per minute.**
 
 For each zoom point:
 
-1. **Extract a frame** from the preview at the zoom's start time:
+1. **Extract a frame**:
    ```bash
-   ffmpeg -y -ss <seconds> -i <preview.mp4> -frames:v 1 -vf "scale=960:-1" -q:v 10 zoom/frames/<id>.jpg
+   ffmpeg -y -ss <seconds> -i <preview> -frames:v 1 -vf "scale=960:-1" -q:v 10 zoom/frames/<id>.jpg
    ```
 
-2. **Read the frame** to determine anchor position. The anchor should point at the content the speaker is discussing or reacting to.
+2. **Read the frame** to determine anchor position.
 
-   For screen content: anchor to the relevant panel and the vertical position of the relevant text or UI element. As content scrolls within a section, shift the anchor to follow it while keeping scale constant (**scroll-follow pairs**).
-
-   For camera/webcam: anchor high enough to preserve head room. The zoom must not crop below mid-forehead — a little forehead crop is acceptable, but half-forehead looks wrong. The exact y-value depends on how the speaker is framed.
-
-   For small UI targets (extreme tier): anchor precisely on the target element. Scale inversely proportional to the target's size on screen.
-
-3. **Set animation based on the moment's energy:**
-
+3. **Set animation** based on moment energy:
    | Moment | Animation |
    |---|---|
-   | Reaction, reveal, first encounter | instant in, ease out |
-   | Sustained reading, exploration | eased in+out |
+   | Reaction, reveal | instant in, ease out |
+   | Sustained reading | eased in+out |
    | Quick flash (<2s) | instant in, instant out |
-   | Comedy, shock, visual punchline | instant in, instant out |
-   | Personal reflection (webcam) | eased in+out |
+   | Personal reflection | eased in+out |
 
-4. **Set duration with overhang.** The zoom should span the topical phrase, not stop at clip boundaries. Overhang into adjacent clips bridges jump cuts and creates continuity. Most zooms should extend past their parent clip.
+4. **Set duration with overhang.** Extend past clip boundaries to bridge jump cuts.
 
-5. **Use matched pairs.** When the speaker repeats the same type of action (e.g., typing a command twice), use identical zoom parameters. The visual callback reinforces the pattern.
+5. **Use matched pairs** for repeated action types.
 
 ### Step 5: Write zoom decisions
 
@@ -154,84 +132,30 @@ Write `zoom/zooms.json`:
       "anchor": "0.5 0.80",
       "anim_in": "default",
       "anim_out": "default",
-      "reason": "Opening — personal introduction, full camera."
-    },
-    {
-      "id": "Z002",
-      "tier": "guide",
-      "timeline_start": 100.0,
-      "timeline_end": 112.0,
-      "scale": 1.25,
-      "anchor": "0.004 0.19",
-      "anim_in": "0",
-      "anim_out": "default",
-      "reason": "Reading Pi features. Terminal upper area."
-    },
-    {
-      "id": "Z003",
-      "tier": "emphasis",
-      "timeline_start": 200.0,
-      "timeline_end": 201.5,
-      "scale": 1.5,
-      "anchor": "0.97 0.92",
-      "anim_in": "0",
-      "anim_out": "0",
-      "reason": "Key reveal — reaction flash to webcam PiP."
+      "reason": "Opening — personal introduction."
     }
   ]
 }
 ```
 
-**Fields:**
-- `id` — unique identifier (Z001, Z002, ...)
-- `tier` — `"webcam"`, `"guide"`, `"emphasis"`, or `"extreme"`
-- `timeline_start` / `timeline_end` — position in the polished timeline (seconds). The zoom may overhang past `timeline_end` into subsequent clips.
-- `scale` — DesignStudio Content Scale. >1.0 zooms into screen content. <1.0 zooms into camera/PiP content.
-- `anchor` — DesignStudio Content Position as `"x y"`. Coordinate system is plugin-specific — values are passed through to the FCPXML generator as-is. See `zooms.py` and the FCPXML reference for how these map to the plugin parameters.
-- `anim_in` — `"0"` (instant) or `"default"` (eased)
-- `anim_out` — `"0"` (instant) or `"default"` (eased)
-- `reason` — why this moment deserves a zoom
-
-**Important:** `timeline_start`/`timeline_end` are positions in the edited timeline, not source timestamps. Use the preview utterance timestamps.
+`timeline_start`/`timeline_end` are positions in the edited timeline, not source timestamps.
 
 ### Step 6: Generate FCPXML
 
 ```bash
 python3 ~/.agents/services/zooms.py \
-  --source "<source_video>" \
-  --edits <edit_list.json> \
+  --source "<source>" \
+  --edits <edit_list> \
   --zooms zoom/zooms.json \
   --name "<timeline name> - Zoomed" \
   --titles \
   --output zoom/timeline_zoomed.fcpxml
 ```
 
-The `--titles` flag generates zooms as **DesignStudio title clips** instead of adjustment clips. Title-based zooms are resizable in FCP's timeline — drag the edge and the animation auto-scales. Requires MotionVFX DesignStudio templates installed (Constant Zoom GG18, Zoom In 0ZZM). Falls back to keyframed adjustment clips if templates are not found.
+The `--titles` flag generates DesignStudio title clips (resizable in FCP). Omit for keyframed adjustment clips (no dependencies).
 
-Omit `--titles` to always use adjustment clips (no dependencies).
+### Step 7: Report
 
-### Step 7: Update manifest and report
-
-Update `manifest.json`:
-
-```json
-{
-  "stages": {
-    "zoom": {
-      "status": "complete",
-      "zooms": "zoom/zooms.json",
-      "timeline": "zoom/timeline_zoomed.fcpxml",
-      "stats": {
-        "zoom_count": 56,
-        "tier_distribution": {"webcam": 6, "guide": 35, "emphasis": 12, "extreme": 3},
-        "density_per_min": 4.0
-      }
-    }
-  }
-}
-```
-
-Report:
 - Number of zooms by tier
 - Density per minute
 - Path to FCPXML output
@@ -239,25 +163,19 @@ Report:
 
 ## FCPXML Generation Notes
 
-The `zooms.py` service generates FCPXML from scratch (not by modifying OTIO output). Key decisions:
-
-- **FCPXML 1.14** — requires `<media-rep>` inside `<asset>` (no `src` attribute on asset)
+- **FCPXML 1.14** — requires `<media-rep>` inside `<asset>`
 - **`library > event > project > sequence > spine`** — full hierarchy required
-- **`<asset-clip>`** in spine — not the `<clip><video>` wrapper that OTIO generates
-- **Adjustment clips** — `<video ref="..." lane="1" role="adjustments">` connected to asset-clips
-- **Connected clip offset** — uses parent clip's **source timebase**, not timeline position
-- **Overhang** — a single zoom attached to one clip can extend across adjacent clips
-- **`start="3600s"`** — FCP convention for generator start time
+- **`<asset-clip>`** in spine
+- **Adjustment clips** on lane 1
+- **`start="3600s"`** — FCP convention
 - **`colorSpace="1-1-1 (Rec. 709)"`** — required on format element
 
-Reference file: `~/.agents/services/references/fcpxml/README.md`
+Reference: `~/.agents/services/references/fcpxml/README.md`
 
 ## Notes
 
-- This stage produces FCPXML only — no OTIO equivalent exists for adjustment clips
-- The OTIO timeline from the polish stage remains the portable interchange format
-- Zoom decisions are subjective — the user will likely adjust timing, scale, and anchors in FCP
-- Frame extraction uses the preview video (edited timeline), not the source
+- This stage produces FCPXML only — no OTIO equivalent for adjustment clips
+- Zoom decisions are subjective — the user will adjust in FCP
+- Frame extraction uses the preview video, not the source
 - The zoom stage does not modify the edit list or re-render preview — it only adds a visual layer
-- Calibration data from past videos (exact scale values, density ranges, position clusters for specific layouts, plugin quirks, operator preferences) is stored in `evals/`, not in this skill. The skill describes the system; the evals store the numbers.
-- If a sentence sounds like a permanent law but is really a style preference for the current format, move that detail to `evals/` and keep the durable principle here.
+- Calibration data (scale values, density, position clusters) belongs in `evals/`

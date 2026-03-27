@@ -22,57 +22,70 @@ Also requires: `ffmpeg`, `ffprobe` on PATH, and `DEEPGRAM_API_KEY` in environmen
 
 | Skill | Purpose |
 |-------|---------|
-| `video-pipeline` | Orchestrator: coordinates cut → polish stages, manages manifest |
-| `video-cut` | First pass editing: Deepgram + LLM → FCPXML |
-| `video-polish` | Iterative refinement: re-transcribe preview, fix what first pass missed |
+| `video-pipeline` | Orchestrator: coordinates cut → polish → zoom → publish stages, manages manifest |
+| `video-cut` | Rough cut: transcribe + LLM decisions → FCPXML |
+| `video-polish` | Iterative refinement: re-transcribe, evaluate flow, fix issues |
+| `video-zoom` | Zoom/punch-in effects via FCPXML adjustment clips |
+| `video-publish` | Generate publish-ready assets (captions, chapters, titles, thumbnails) |
 | `broll-research` | B-roll asset collection from transcripts |
 | `chantastic-scripts` | Blog → YouTube script conversion |
 | `youtube-audit` | Channel analysis via yt-dlp |
 | `xstate-naming` | XState naming conventions |
+| `skill-authoring` | Guide for writing and refactoring skills |
 
-The video skills form a pipeline: `video-pipeline` → `video-cut` → `video-polish`. Call `video-pipeline` to run the full chain, or invoke individual skills directly.
+The video skills form a pipeline: `video-pipeline` orchestrates `video-cut` → `video-polish` → `video-zoom`. Each skill can also be invoked standalone — the pipeline coordinator passes cross-stage inputs between stages, but each skill only needs its declared inputs and the harness capabilities available to it, not the manifest.
 
-Previously `rough-cut` existed here (whisper-cli + silencedetect). It was removed — `video-cut` fully replaces it.
-
-For the cross-skill collaboration doctrine and the rationale behind these rules, see `OPERATING_PRINCIPLES.md`.
+`video-publish` runs standalone after the operator exports from their NLE. It is not part of the pipeline.
 
 ## Principles
 
+### Skills depend on capabilities, not coordination state
+
+A skill may depend on the harness, services, explicit inputs, convention-based discovery, and operator interaction. It may not read manifests, inspect pipeline state, or know what stage it's in. When run standalone, it discovers, derives, or asks. When run via a coordinator, cross-stage inputs are provided.
+
+See OPERATING_PRINCIPLES.md §11.
+
+### Only the coordinator knows the graph
+
+Sequencing, state tracking, retries, and inter-skill wiring live in `video-pipeline`. Individual skills don't know what ran before or after them. The manifest is the coordinator's state file — no other skill reads or writes it.
+
+See OPERATING_PRINCIPLES.md §12.
+
+### The operator is never re-asked
+
+Previously this workspace stated "manifests over re-asking" — downstream skills read the manifest directly to avoid redundant questions. The intent is the same: the operator should never be asked for something the system already knows. What changed is the mechanism. In a coordinated pipeline, the coordinator reads the manifest and passes inputs explicitly. In standalone use, the skill discovers or asks. Either way, the operator provides each piece of information once.
+
+The shift from "every skill reads the manifest" to "the coordinator reads the manifest and context-independent skills receive inputs" is an architectural upgrade, not a reversal. It separates the concern of *not re-asking* (still true) from the mechanism of *how context flows* (now cleaner).
+
+### Convention is not coupling
+
+Skills can use sensible discovery defaults ("find the largest .mp4 here") without knowing the system that produced the file. Encoding knowledge of another skill's internal structure (reading manifest fields, checking decision file paths) is coupling and belongs only in the coordinator.
+
+See OPERATING_PRINCIPLES.md §13.
+
 ### Project artifacts live with the project, learning artifacts live with the skill
 
-Video project artifacts (manifests, previews, transcripts, edit lists, timelines) live in the project directory — even if that's in `~/Downloads`. They're tied to that specific video and disposable once the video ships.
-
-But evals, self-analyses, and accuracy data are **skill development artifacts**. They teach the skills to be better. If they're stored in the project directory (especially Downloads), they vanish when the project is cleaned up and can never inform future runs. Store them alongside the skill or extension they improve (e.g., `~/.agents/skills/video-pipeline/evals/`).
+Video project artifacts (previews, transcripts, edit lists, timelines) live in the project directory. Evals, self-analyses, and calibration data live alongside the skill they improve (`~/.agents/skills/<skill>/evals/`).
 
 ### Services over abstractions
 
-Services are thin CLI wrappers around a specific external tool (Deepgram, ffmpeg, OTIO). They do one thing. They don't abstract over multiple backends — a Deepgram wrapper is a Deepgram wrapper, not a "transcription service with pluggable backends." If a different backend is needed, write a different script.
-
-This was learned the hard way: a unified transcription schema that papered over whisper and Deepgram differences lost the features (utterance boundaries, keyterms) that made Deepgram better.
+Services are thin CLI wrappers around a specific external tool (Deepgram, ffmpeg, OTIO). They do one thing. They don't abstract over multiple backends.
 
 ### Skills are prompts, not code
 
-A skill's SKILL.md is an LLM prompt with bash commands. The intelligence lives in the instructions (what to look for, how to decide), not in algorithmic code. When an LLM can do the task better than an algorithm, delete the algorithm.
-
-Example: duplicate take detection. SequenceMatcher catches "As a two decade Vim user, I've been" matching "as a two decade Vim user, I've been looking for something." But it misses "I wanted to dive into Pi" matching "I had a desire to dive into Pi." The LLM catches both. The SequenceMatcher code was deleted.
+A skill's SKILL.md is an LLM prompt with bash commands. The intelligence lives in the instructions (what to look for, how to decide), not in algorithmic code.
 
 ### LLMs for decisions, services for I/O
 
-The LLM reads data, makes decisions, writes decisions. Services handle I/O: calling APIs, reading files, rendering video. Don't put decision logic in Python when the LLM is better at it. Don't put file I/O in the LLM prompt when a script is more reliable.
-
-### Manifests over re-asking
-
-When skills form a pipeline, use a `manifest.json` as the contract between stages. The first skill gathers inputs (video path, keyterms, thesis) and writes them to the manifest. Every downstream skill reads the manifest instead of re-asking the user. The manifest also tracks stage status (complete/in_progress/failed), file paths, and stats — enabling resumption, re-runs, and auditability.
-
-File paths in the manifest are relative to the project directory. Source files that live outside the project use absolute paths.
-
-### Re-transcribe the output to evaluate it
-
-You cannot evaluate an edit by reviewing the edit list on paper. Re-transcribe the rendered preview and read it as a viewer would experience it — a continuous flow. Duplicates, stumbles, and pacing problems that are invisible when reading isolated utterances become obvious in continuous flow. This costs one Deepgram call (~$0.20) and catches issues no amount of careful decision-making will find on the first pass.
+The LLM reads data, makes decisions, writes decisions. Services handle I/O: calling APIs, reading files, rendering video.
 
 ### Build for the best case
 
-Use the best available tool (Deepgram, Claude). Don't add fallback paths for cheaper/offline alternatives inside the same service — that creates untested code paths that produce worse results silently. If offline is needed, build a separate skill explicitly labeled as lower quality.
+Use the best available tool (Deepgram, Claude). Don't add fallback paths for cheaper/offline alternatives inside the same service.
+
+### Re-transcribe the output to evaluate it
+
+Render the preview, transcribe it, read as continuous flow. This catches issues no amount of decision-reviewing will find.
 
 ## Video Editing — Hard-Won Knowledge
 
@@ -101,7 +114,7 @@ Use the best available tool (Deepgram, Claude). Don't add fallback paths for che
 - **Mechanical dead-air removal is nearly worthless.** Deepgram's utterance boundaries are already tight around speech. Internal silence gaps >0.4s totaled 1.6s across 349 segments in a 20-min edit. The perceived "dead air" is a pacing problem, not a silence problem.
 - **Word-level timestamps enable mid-utterance surgery.** Deepgram returns start/end for every word. Use these to trim self-corrections ("good to dig and we should be good to go" → "good to go") that live inside a single utterance and are invisible to utterance-level decisions.
 - **Convergence is fast.** Usually one fix cycle (evaluate → fix → verify). Issues are systematic (missed duplicates, pacing), not cascading. Allow up to 3 cycles but expect 1.
-- **Project structure matters.** Use `cut/`, `polish/pass_N/`, `polish/final/` directories. Flat files in a root directory don't compose, collide across runs, and lose lineage. A manifest.json tracks which file fed which.
+- **Project structure matters.** Use `cut/`, `polish/pass_N/`, `polish/final/` directories. Flat files in a root directory don't compose, collide across runs, and lose lineage.
 
 ### Output
 

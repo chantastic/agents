@@ -218,3 +218,102 @@ The question is not "is this perfectly general?"
 The question is "does this make the operator stronger without making the system harder to trust?"
 
 That is the standard.
+
+---
+
+## 11. Skills depend on capabilities, not coordination state.
+
+A skill may depend on the harness and services. What it may not do is depend on hidden workflow state owned by a coordinator.
+
+This means:
+- A skill may call services to derive local data it needs
+- A skill does not read coordinator-owned state files like manifests
+- A skill does not know what ran before it or what runs after
+- A skill receives its cross-stage context from whoever invokes it — coordinator, operator, or future sub-agent
+- A skill's `## Inputs` section is its contract
+
+The benefit is composability. A context-independent skill can be:
+- Run standalone by a human ("here's my video, cut it")
+- Orchestrated by a coordinator ("here are the outputs from the last stage, polish them")
+- Parallelized by a sub-agent system (future optimization, not a requirement)
+
+If a skill needs data that can reasonably be derived from the artifact in front of it, it should prefer a service over pushing that burden onto the operator.
+
+Examples:
+- `video-publish` may transcribe an export if no transcript exists
+- `video-polish` may re-transcribe a preview
+- `video-zoom` may extract frames
+
+When a skill needs cross-stage context from a previous stage, **the coordinator provides it, the skill does not fetch it.**
+
+Convention-based discovery ("look for the biggest .mp4 here") is acceptable as a convenience default. Reading coordinator-owned state is coupling and belongs in the coordinator.
+
+---
+
+## 12. Only the coordinator knows the graph.
+
+Sequencing, state tracking, retries, and inter-skill wiring live in exactly one place: the coordinator skill.
+
+Individual skills do not know:
+- What stage they are in a pipeline
+- What ran before them
+- What runs after them
+- How to update shared state (manifests)
+
+The coordinator:
+- Reads and writes the manifest
+- Extracts the right inputs for each skill from previous outputs
+- Passes those inputs explicitly
+- Captures outputs and records them in shared state
+- Decides what to retry, skip, or resume
+
+This separation means skills can be rearranged, skipped, or run in isolation without modification. The pipeline topology lives in the coordinator, not distributed across skills.
+
+A coordinator should be identifiable as such — both in name and in description — because it is evaluated against a different standard than a transformation skill.
+
+---
+
+## 13. Names should signal role.
+
+A skill name should help the operator understand what kind of thing they are invoking.
+
+Use naming to distinguish:
+- **transformation skills** — bounded actions that produce an output
+- **coordinator skills** — workflow owners that sequence other steps and manage state
+
+Recommended naming:
+- **Transformation skills:** verb-prefixed action names like `prepare-*`, `generate-*`, `get-*`, `write-*`, `cut-*`, `polish-*`, `zoom-*`, `publish-*`
+- **Coordinator skills:** `run-*`
+
+Examples:
+- `generate-video-captions`
+- `prepare-video-publish`
+- `get-broll-assets`
+- `run-video-pipeline`
+
+A prefix is a useful operator signal, but it is not sufficient on its own. A coordinator should also explicitly identify itself in its skill definition or opening section.
+
+This matters because coordinators and transformation skills are evaluated differently:
+- transformation skills are judged on local clarity, harness use, and freedom from coordination-state coupling
+- coordinators are judged on sequencing, state ownership, retries, handoffs, and contract mapping
+
+---
+
+## 14. Convention is not coupling.
+
+A skill can use sensible defaults without knowing about the system that produced them.
+
+Discovery heuristics are fine:
+- "If no source provided, look for the largest .mp4 in the working directory"
+- "If no thesis provided, ask the operator"
+- "If no keyterms provided, suggest some from context"
+- "If no transcript exists, transcribe the provided video"
+
+These are conventions — reasonable assumptions about directory structure, file naming, and locally derivable artifacts.
+
+Coupling is not fine:
+- "Read `manifest.json` and extract `stages.cut.preview`"
+- "Look at `stages.polish.status` to decide what to do"
+- "Assume cut must have run because this directory usually comes from video-pipeline"
+
+The distinction: a convention makes a guess based on what's common or derives a local artifact from the file in front of the skill. Coupling encodes knowledge of a specific workflow's internal structure or history. Skills use conventions and services. Coordinators use coupling (to the manifest they own).

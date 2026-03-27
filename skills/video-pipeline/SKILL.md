@@ -7,6 +7,8 @@ description: Orchestrate the video editing pipeline from raw recording through c
 
 Orchestrate a raw recording through cut → polish → zoom.
 
+This is the **coordinator**. It owns the manifest, the sequencing, and the wiring between stages. Individual stage skills (video-cut, video-polish, video-zoom) are pure functions — they receive inputs and produce outputs. This skill provides the inputs, captures the outputs, and updates shared state.
+
 ## Required Environment
 
 - `DEEPGRAM_API_KEY` — set in environment
@@ -15,63 +17,36 @@ Orchestrate a raw recording through cut → polish → zoom.
 
 ## Project Structure
 
-Every video project uses this directory layout. **Sources of truth live at the root. Build artifacts live in stage directories.**
-
 ```
 project/
-├── manifest.json              ← shared state across stages
+├── manifest.json              ← coordinator state (only this skill reads/writes it)
 ├── transcript.json            ← source of truth: original transcript
 ├── utterances.txt             ← formatted view of transcript
 ├── decisions/                 ← source: all decision layers
-│   ├── cut.json               ← layer 1: rough cut (fragments, false starts)
-│   └── polish.json            ← layer 2: editorial (tangents, pacing, filler)
-├── cut/                       ← build artifacts from cut stage
+│   ├── cut.json               ← layer 1: rough cut
+│   └── polish.json            ← layer 2: editorial
+├── cut/                       ← outputs from cut stage
 │   ├── edit_list.json
 │   ├── preview.mp4
 │   ├── timeline.fcpxml
 │   └── timeline.otio
-├── polish/                    ← build artifacts + working files from polish
-│   ├── pass_1/
-│   │   ├── preview_transcript.json
-│   │   ├── preview_utterances.txt
-│   │   └── eval.json
-│   ├── pass_N/
-│   │   ├── preview.mp4
-│   │   ├── preview_transcript.json
-│   │   ├── preview_utterances.txt
-│   │   └── eval.json
+├── polish/                    ← outputs from polish stage
+│   ├── pass_1/ ... pass_N/
 │   └── final/
 │       ├── edit_list.json
 │       ├── preview.mp4
 │       ├── timeline.fcpxml
 │       └── timeline.otio
-├── zoom/                      ← zoom stage outputs (FCPXML-only, no OTIO)
+├── zoom/                      ← outputs from zoom stage
 │   ├── frames/
 │   ├── zooms.json
 │   └── timeline_zoomed.fcpxml
-└── publish/                   ← created later by `video-publish`, after manual FCP review/export
-    ├── transcript.json        ← derived: transcript of the final edit
-    ├── utterances.txt
-    ├── chapters.json
-    ├── chapters.txt           ← YouTube-formatted chapter list
-    ├── description.md
-    ├── captions.srt
-    ├── captions.vtt
-    └── thumbnails/
-        ├── concepts.json
-        └── T001.png ...
+└── publish/                   ← created later by video-publish (not part of this pipeline)
 ```
 
 ### Decisions as Contract
 
-The **original transcript** (`transcript.json`) is the shared source of truth for all stages. Each stage produces a **decisions layer** in `decisions/` — a set of keep/remove decisions against the original utterance indices:
-
-```
-decisions/cut.json      → layer 1: fragments, false starts, duplicate takes
-decisions/polish.json   → layer 2: tangents, pacing drag, filler, editorial
-```
-
-Edit lists are **compiled artifacts** — produced by merging all decision layers in a single build step:
+The **original transcript** is the shared source of truth. Each stage produces a **decisions layer** in `decisions/`. Edit lists are compiled by merging all decision layers:
 
 ```bash
 python3 ~/.agents/services/edit.py apply transcript.json \
@@ -83,13 +58,13 @@ Stages never read or modify each other's edit lists. They only read the transcri
 
 ## Manifest
 
-The manifest (`manifest.json`) is the single source of truth for pipeline state. Every stage reads it first and writes it last.
+The manifest is the coordinator's state file. **No other skill reads or writes it.**
 
 ```json
 {
   "source": "/absolute/path/to/video.mp4",
   "keyterms": ["term1", "term2"],
-  "thesis": "Inferred after cut stage — null until then",
+  "thesis": null,
   "target_duration": null,
   "transcript": "transcript.json",
   "utterances": "utterances.txt",
@@ -102,27 +77,13 @@ The manifest (`manifest.json`) is the single source of truth for pipeline state.
       "timeline": "cut/timeline.fcpxml",
       "stats": { ... }
     },
-    "polish": {
-      "status": "complete|in_progress|failed",
-      "passes": 2,
-      "edit_list": "polish/final/edit_list.json",
-      "preview": "polish/final/preview.mp4",
-      "timeline": "polish/final/timeline.fcpxml",
-      "stats": { ... }
-    },
-    "zoom": {
-      "status": "complete|in_progress|failed",
-      "zooms": "zoom/zooms.json",
-      "timeline": "zoom/timeline_zoomed.fcpxml",
-      "stats": { ... }
-    }
+    "polish": { ... },
+    "zoom": { ... }
   }
 }
 ```
 
-The top-level `decisions` array lists all decision layers in order. Each stage appends its decisions path when complete. The compile step always uses this array.
-
-All file paths in the manifest are **relative to the project directory**.
+All file paths are relative to the project directory. Source video path is absolute.
 
 ## Process
 
@@ -133,10 +94,11 @@ If no `manifest.json` exists, ask the user for:
 2. **Domain keyterms** for speech-to-text (suggest terms based on context)
 3. **Target duration** (optional)
 
-Do **not** ask for a thesis. The thesis is inferred from the content after the cut stage.
+Do **not** ask for a thesis. It's inferred after cut.
 
-Create the directory structure and write the initial manifest:
+Create directories: `decisions/`, `cut/`, `polish/`, `zoom/`.
 
+Write the initial manifest:
 ```json
 {
   "source": "<absolute path>",
@@ -150,54 +112,73 @@ Create the directory structure and write the initial manifest:
 }
 ```
 
-Create directories: `decisions/`, `cut/`, `polish/`, `zoom/`.
-
 If `manifest.json` already exists, read it and resume from the last incomplete stage.
 
-### Step 2: Run stages
+### Step 2: Run cut
 
-Execute stages in order: **cut → polish → zoom**. For each stage:
+**Extract inputs for video-cut:**
+- `source` → `manifest.source`
+- `keyterms` → `manifest.keyterms`
+- `target_duration` → `manifest.target_duration`
+- `output_dir` → project directory
 
-1. Check `manifest.stages.<stage>.status`
-2. If `"complete"` — skip (or ask user if they want to re-run)
-3. If missing or `"in_progress"` — invoke the stage skill
-4. After completion, update the manifest with status, file paths, and stats
+**Invoke video-cut** with these inputs.
 
-#### Stage: cut
+**Capture outputs:**
+- `transcript.json` and `utterances.txt` at project root
+- `decisions/cut.json`
+- `cut/edit_list.json`, `cut/preview.mp4`, `cut/timeline.fcpxml`, `cut/timeline.otio`
+- Inferred thesis (from `decisions/cut.json`)
 
-Invoke the `video-cut` skill. It transcribes the video (writing `transcript.json` and `utterances.txt` at the project root), makes rough cut decisions (writing `decisions/cut.json`), and compiles them into `cut/edit_list.json` and a preview.
+**Update manifest:**
+- Set `transcript`, `utterances`
+- Set `thesis` from the cut skill's output
+- Append `decisions/cut.json` to `decisions` array
+- Write `stages.cut` with status, paths, and stats
 
-Cut performs a **rough cut only** — removing duplicate takes, false starts, and fragments. No editorial decisions yet.
+**Checkpoint:** Report the inferred thesis. Ask operator to confirm or adjust before polish.
 
-After the cut stage completes, the cut skill infers a **thesis** from the kept utterances and writes it to the manifest. This thesis describes what the video is actually about, grounded in the content the speaker chose to say. The user can review and adjust it before polish runs.
+### Step 3: Run polish
 
-#### Stage: polish
+**Extract inputs for video-polish:**
+- `source` → `manifest.source`
+- `preview` → `manifest.stages.cut.preview`
+- `transcript` → `manifest.transcript`
+- `thesis` → `manifest.thesis`
+- `decisions` → `manifest.decisions` (array of paths)
+- `keyterms` → `manifest.keyterms`
+- `output_dir` → project directory
 
-Invoke the `video-polish` skill. It reads the cut preview, transcript, **and the inferred thesis** from the manifest. With the thesis now available, polish can make editorial pacing decisions — removing tangential sections, compressing debugging loops, cutting screen-reading. This is where the bulk of editorial improvement happens.
+**Invoke video-polish** with these inputs.
 
-Polish writes `decisions/polish.json` (decision layer 2) — additional removals against the same original transcript. The final edit list is compiled from all layers:
+**Capture outputs:**
+- `decisions/polish.json`
+- `polish/final/edit_list.json`, `polish/final/preview.mp4`, `polish/final/timeline.fcpxml`, `polish/final/timeline.otio`
+- Pass count and stats
 
-```bash
-python3 ~/.agents/services/edit.py apply transcript.json \
-  decisions/cut.json decisions/polish.json \
-  --padding 0.05 --output polish/final/edit_list.json
-```
+**Update manifest:**
+- Append `decisions/polish.json` to `decisions` array
+- Write `stages.polish` with status, paths, and stats
 
-Polish never reads or modifies `cut/edit_list.json`. It only adds decisions.
+### Step 4: Run zoom
 
-#### Stage: zoom
+**Extract inputs for video-zoom:**
+- `source` → `manifest.source`
+- `edit_list` → `manifest.stages.polish.edit_list` (or `stages.cut.edit_list` if no polish)
+- `preview` → `manifest.stages.polish.preview` (or `stages.cut.preview`)
+- `thesis` → `manifest.thesis`
+- `output_dir` → project directory
 
-Invoke the `video-zoom` skill. It reads the polished edit list and preview from the manifest, analyzes the transcript and frames for zoom opportunities, and generates an FCPXML with adjustment clips. This stage is FCPXML-only — no OTIO equivalent exists for adjustment clips. The OTIO timeline from polish remains the portable format.
+**Invoke video-zoom** with these inputs.
 
-#### After the pipeline: publish
+**Capture outputs:**
+- `zoom/zooms.json`, `zoom/timeline_zoomed.fcpxml`
+- Zoom count and stats
 
-The `video-publish` skill runs **standalone**, not as part of this pipeline. There is a human step between zoom and publish — the user opens the zoomed FCPXML in Final Cut Pro, reviews/adjusts, and exports the final video. Once the export exists, invoke `video-publish` directly.
+**Update manifest:**
+- Write `stages.zoom` with status, paths, and stats
 
-Publish reads context from the manifest where available (especially `thesis` and `keyterms`) but does not write to it. Speaker attribution is inferred by `video-publish` from the export context (filename/stream naming), defaulting to `chantastic`, and asking the operator if uncertain. Its outputs are just files — captions, chapters, description, thumbnails.
-
-### Step 3: Report
-
-After all stages complete, report:
+### Step 5: Report
 
 | Metric | Value |
 |---|---|
@@ -206,13 +187,13 @@ After all stages complete, report:
 | Polished duration | from polish stats |
 | Total removed | original − polished (% of original) |
 
-**Produced now** (from manifest paths):
-- `zoom/timeline_zoomed.fcpxml` — open in Final Cut Pro (includes zoom adjustment clips)
-- `polish/final/timeline.otio` — portable timeline (no zooms)
+**Produced:**
+- `zoom/timeline_zoomed.fcpxml` — open in Final Cut Pro
+- `polish/final/timeline.otio` — portable timeline
 - `polish/final/preview.mp4` — rendered preview
 - `manifest.json` — full audit trail
 
-**Operator handoff**:
+**Operator handoff:**
 1. Open `zoom/timeline_zoomed.fcpxml` in Final Cut Pro
 2. Review and adjust the edit manually
 3. Export the final video from FCP
@@ -228,18 +209,26 @@ If invoked on a project with an existing manifest:
 
 ## Re-running a stage
 
-If the user asks to re-run a stage (e.g., "re-cut with different editorial decisions"):
+If the user asks to re-run a stage:
 1. Archive the existing stage directory (rename to `cut_prev/` or similar)
-2. Archive the decisions file (rename `decisions/cut.json` → `decisions/cut_prev.json`)
+2. Archive the decisions file
 3. Remove that stage's decisions from the manifest `decisions` array
-4. Also clear all downstream stages (re-cutting invalidates polish)
+4. Clear all downstream stages (re-cutting invalidates polish)
 5. Re-run from that stage forward
+
+## Skipping stages
+
+The operator may want to skip stages (e.g., skip polish for a quick cut, skip zoom for audio-only content). When the operator indicates a skip:
+
+1. Mark the stage as `"skipped"` in the manifest
+2. Wire the next stage's inputs from the last completed stage's outputs
+3. Do not ask "are you sure?" — the operator owns intent
+
+Example: skipping polish means zoom receives cut's edit list and preview instead of polish's.
 
 ## Notes
 
-- The manifest is the contract between skills. A stage skill should never need to ask the user for information that's already in the manifest.
-- All paths in the manifest are relative to the project directory. The source video path is absolute (it may live outside the project).
-- **Decisions are source, edit lists are compiled.** Each stage produces a decisions file against the original transcript. Edit lists are built by compiling all decision layers. Stages never modify each other's edit lists.
-- `edit.py apply` accepts multiple decision files. Any utterance marked "remove" in any layer is removed. This makes the compile step trivial regardless of how many stages add decisions.
-- `publish/` is part of the overall project lifecycle, but it is created later by the standalone `video-publish` skill after operator review/export. It is not a pipeline stage in this skill.
-- Experimental branches (like older b-roll workflows) should stay out of the canonical pipeline contract until they are revived and standardized.
+- **The manifest is the coordinator's state, not a shared contract.** Individual skills never read it. This skill extracts inputs from it and passes them explicitly.
+- **Decisions are source, edit lists are compiled.** Each stage produces a decisions file against the original transcript. Edit lists are built by compiling all decision layers.
+- **Publish is not a pipeline stage.** It runs standalone after the human exports from FCP. It can optionally receive thesis and keyterms from the operator (who may read them from the manifest, but publish doesn't).
+- **Human intervention is part of the system.** The thesis checkpoint after cut, the FCP review after zoom, and the export before publish are all modeled as explicit handoffs.
