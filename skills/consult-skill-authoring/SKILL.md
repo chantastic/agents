@@ -1,9 +1,11 @@
 ---
-name: skill-authoring
+name: consult-skill-authoring
 description: Guide for writing and refactoring skills. Covers input/output contracts, coordinator vs. standalone design, discovery heuristics, and the promotion path from calibration to principle. Use when creating a new skill, refactoring an existing one, or extracting a skill from a repeated workflow.
 ---
 
 # Skill Authoring
+
+This is a reference skill. It provides a stable lens for writing and refactoring other skills in this workspace.
 
 A guide for writing skills that work both standalone and as part of a coordinated pipeline.
 
@@ -69,28 +71,40 @@ These imply a stable reference lens: a skill you consult for style, conventions,
 
 ### Transformation skills
 
-Use action names that describe the bounded transformation:
+Use the sharpest honest action verb for the bounded transformation.
+
+Useful transformation families:
 - `create-*`
 - `make-*`
 - `prepare-*`
+- `evaluate-*`
+
+Domain-specific verbs are also valid when they are sharper:
 - `get-*`
 - `write-*`
 - `cut-*`
 - `polish-*`
 - `zoom-*`
 - `publish-*`
+- `audit-*`
 
 Examples:
 - `create-marketing-brief`
 - `make-it-personal`
 - `prepare-post`
+- `evaluate-skill-output`
+- `cut-video`
 - `get-broll-assets`
 
 These imply a local transformation: take inputs, do work, produce outputs.
 
-Useful subtype signal:
+Useful subtype signals:
 - `create-*` usually means creating a new artifact
 - `make-*` usually means interactive refinement or alignment of existing material toward a target quality
+- `prepare-*` usually means making something ready for downstream use
+- `evaluate-*` usually means diagnosis, scoring, or assessment of an existing result
+
+Rule: **specific beats generic.** Use a family prefix when it clarifies the type of transformation. Keep a domain-specific verb when it is more precise.
 
 ### Coordinator skills
 
@@ -275,13 +289,13 @@ A coordinator skill has a different structure. It owns the graph:
 
 ### Step 2: Run cut
 - Extract inputs: source, keyterms, target_duration
-- Invoke video-cut with those inputs
+- Invoke cut-video with those inputs
 - Capture outputs: transcript, decisions, thesis, preview
 - Update manifest
 
 ### Step 3: Run polish
 - Extract inputs: source, transcript, thesis, decisions[], preview, keyterms
-- Invoke video-polish with those inputs
+- Invoke polish-video with those inputs
 - Capture outputs: new decisions, final edit_list, final preview
 - Update manifest
 
@@ -294,7 +308,7 @@ The coordinator's job is mapping between the manifest's shape and each skill's i
 
 ## Checklist for new skills
 
-- [ ] Name matches role (`consult-*` for reference skills, `run-*` for coordinators, action prefix for transformations such as `create-*` or `make-*`)
+- [ ] Name matches role (`consult-*` for reference skills, `run-*` for coordinators, sharp action verb for transformations such as `create-*`, `make-*`, `prepare-*`, `evaluate-*`, or a more precise domain verb)
 - [ ] Role is explicit in the opening section when role affects evaluation
 - [ ] `## Inputs` table with Required/Discovery columns (for transformation/coordinator skills)
 - [ ] `## Outputs` table with source-vs-artifact distinction (for transformation/coordinator skills)

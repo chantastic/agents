@@ -1,5 +1,5 @@
 ---
-name: video-pipeline
+name: run-video-pipeline
 description: Orchestrate the video editing pipeline from raw recording through cut, polish, and zoom. Coordinates stage skills, manages the manifest, and structures project files. Use when producing an edit from a raw recording.
 ---
 
@@ -7,7 +7,7 @@ description: Orchestrate the video editing pipeline from raw recording through c
 
 Orchestrate a raw recording through cut → polish → zoom.
 
-This is the **coordinator**. It owns the manifest, the sequencing, and the wiring between stages. Individual stage skills (video-cut, video-polish, video-zoom) are pure functions — they receive inputs and produce outputs. This skill provides the inputs, captures the outputs, and updates shared state.
+This is the **coordinator**. It owns the manifest, the sequencing, and the wiring between stages. Individual stage skills (cut-video, polish-video, zoom-video) are context-independent transformation skills — they receive inputs, use services as needed, and produce outputs. This skill provides the inputs, captures the outputs, and updates shared state.
 
 ## Required Environment
 
@@ -116,13 +116,13 @@ If `manifest.json` already exists, read it and resume from the last incomplete s
 
 ### Step 2: Run cut
 
-**Extract inputs for video-cut:**
+**Extract inputs for cut-video:**
 - `source` → `manifest.source`
 - `keyterms` → `manifest.keyterms`
 - `target_duration` → `manifest.target_duration`
 - `output_dir` → project directory
 
-**Invoke video-cut** with these inputs.
+**Invoke cut-video** with these inputs.
 
 **Capture outputs:**
 - `transcript.json` and `utterances.txt` at project root
@@ -140,7 +140,7 @@ If `manifest.json` already exists, read it and resume from the last incomplete s
 
 ### Step 3: Run polish
 
-**Extract inputs for video-polish:**
+**Extract inputs for polish-video:**
 - `source` → `manifest.source`
 - `preview` → `manifest.stages.cut.preview`
 - `transcript` → `manifest.transcript`
@@ -149,7 +149,7 @@ If `manifest.json` already exists, read it and resume from the last incomplete s
 - `keyterms` → `manifest.keyterms`
 - `output_dir` → project directory
 
-**Invoke video-polish** with these inputs.
+**Invoke polish-video** with these inputs.
 
 **Capture outputs:**
 - `decisions/polish.json`
@@ -162,14 +162,14 @@ If `manifest.json` already exists, read it and resume from the last incomplete s
 
 ### Step 4: Run zoom
 
-**Extract inputs for video-zoom:**
+**Extract inputs for zoom-video:**
 - `source` → `manifest.source`
 - `edit_list` → `manifest.stages.polish.edit_list` (or `stages.cut.edit_list` if no polish)
 - `preview` → `manifest.stages.polish.preview` (or `stages.cut.preview`)
 - `thesis` → `manifest.thesis`
 - `output_dir` → project directory
 
-**Invoke video-zoom** with these inputs.
+**Invoke zoom-video** with these inputs.
 
 **Capture outputs:**
 - `zoom/zooms.json`, `zoom/timeline_zoomed.fcpxml`

@@ -1,9 +1,11 @@
 ---
-name: xstate-naming
+name: consult-xstate-naming
 description: XState naming conventions and scaffolding. Use when naming states, events, actions, guards, or machines in XState, or when scaffolding new state machines.
 ---
 
 # XState Naming Skill
+
+This is a reference skill. It provides a stable naming lens for XState states, events, actions, guards, and machines.
 
 You are helping the user name elements in XState state machines or scaffold new machines following a consistent naming convention grounded in linguistic principles.
 

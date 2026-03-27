@@ -1,9 +1,11 @@
 ---
-name: video-zoom
-description: Add zoom and punch-in effects to a video edit via FCPXML adjustment clips. Analyzes transcript and frames to identify zoom opportunities, determines focal points, and generates FCPXML with adjustment clips on lane 1. Use after video-polish to add visual emphasis.
+name: zoom-video
+description: Add zoom and punch-in effects to a video edit via FCPXML adjustment clips. Analyzes transcript and frames to identify zoom opportunities, determines focal points, and generates FCPXML with adjustment clips on lane 1. Use after polish-video to add visual emphasis.
 ---
 
 # Video Zoom
+
+This is a transformation skill. It adds a visual emphasis layer to an existing edit without owning workflow state.
 
 Add zoom/punch-in effects to a polished video edit using FCPXML adjustment clips.
 

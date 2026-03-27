@@ -19,7 +19,7 @@ If the workflow changes, update this file first, then update the dependent skill
 The active pipeline is:
 
 ```text
-video-cut → video-polish → video-zoom
+cut-video → polish-video → zoom-video
 ```
 
 This contract does **not** include `video-publish` as a pipeline stage. Publish happens **after** manual operator review and export in Final Cut Pro.
@@ -47,7 +47,7 @@ After `zoom`, the operator:
 
 4. **publish** — reads the exported final video and generates captions, chapters, titles, description, thumbnails, and a content brief
 
-`publish` is part of the broader project lifecycle, but **not** part of the automated `video-pipeline` stage chain.
+`publish` is part of the broader project lifecycle, but **not** part of the automated `run-video-pipeline` stage chain.
 
 ---
 
@@ -95,7 +95,7 @@ project/
 
 - `publish/` appears in the canonical project layout because it is part of the overall project lifecycle.
 - `publish/` is created later by the standalone `video-publish` skill, after operator intervention.
-- `broll/` and `broll-research/` are intentionally omitted from the canonical layout. They belong to older experiments and can be recovered from git history if needed.
+- `broll/` and `get-broll-assets/` are intentionally omitted from the canonical layout. They belong to older experiments and can be recovered from git history if needed.
 
 ---
 
@@ -176,13 +176,13 @@ All manifest paths are relative to the project directory except the source media
 - `source` — pipeline initialization
 - `keyterms` — pipeline initialization / operator input
 - `target_duration` — pipeline initialization / operator input
-- `transcript` — `video-cut`
-- `utterances` — `video-cut`
-- `thesis` — `video-cut` after reviewing kept content
+- `transcript` — `cut-video`
+- `utterances` — `cut-video`
+- `thesis` — `cut-video` after reviewing kept content
 - `decisions[]` — appended by stages that produce decision layers
-- `stages.cut.*` — `video-cut`
-- `stages.polish.*` — `video-polish`
-- `stages.zoom.*` — `video-zoom`
+- `stages.cut.*` — `cut-video`
+- `stages.polish.*` — `polish-video`
+- `stages.zoom.*` — `zoom-video`
 
 ### Not owned by manifest as a required upstream field
 
@@ -209,7 +209,7 @@ This avoids forcing earlier stages to invent speaker metadata before the best ev
 
 ### Pipeline reports must describe present-tense truth
 
-`video-pipeline` should report:
+`run-video-pipeline` should report:
 - what was produced now
 - what the operator should do next
 - what later standalone step can be run after that
@@ -237,7 +237,7 @@ It should **not** present `publish/*` outputs as if they already exist when `vid
 Experimental workflows should remain outside the canonical contract until they are revived and standardized.
 
 For now this includes:
-- older b-roll workflows (`broll/`, `broll-research/`)
+- older b-roll workflows (`broll/`, `get-broll-assets/`)
 
 If one is revived later, decide:
 1. whether it is a standalone skill or pipeline stage

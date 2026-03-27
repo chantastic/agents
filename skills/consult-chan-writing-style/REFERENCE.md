@@ -1,6 +1,6 @@
 # chan.dev Writing Style — Reference Graph
 
-Support artifact for the `chan-dev-writing` reference skill. This file is not a workflow state file. It is a reusable style map that other skills may consult as a stable reference lens.
+Support artifact for the `consult-chan-writing-style` reference skill. This file is not a workflow state file. It is a reusable style map that other skills may consult as a stable reference lens.
 
 Source: `/Users/chan/sites/chan.dev/src/content/posts/`
 Total posts: 458 | Read: ~130 | Unread: ~328

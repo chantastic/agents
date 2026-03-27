@@ -1,13 +1,13 @@
 ---
-name: youtube-upload
-description: Upload a video to YouTube from video-publish outputs. Reads publish/ assets (titles, description, captions, thumbnails), walks through selection with the user, and uploads via YouTube Data API v3. Use after video-publish when ready to upload.
+name: run-youtube-upload
+description: Coordinate a YouTube upload from run-video-publish outputs. Reads publish/ assets (titles, description, captions, thumbnails), walks through selection with the user, and uploads via YouTube Data API v3. Use after run-video-publish when ready to upload.
 ---
 
-# YouTube Upload
+# Run YouTube Upload
 
-Upload a finished video to YouTube using the assets from `video-publish`.
+This is a coordinator skill. It coordinates the final YouTube upload using the assets produced by `run-video-publish`.
 
-This skill is the delivery step after `video-publish`. It reads the `publish/` directory, presents choices to the user (title, thumbnail, privacy), and calls the YouTube upload service.
+It reads the `publish/` directory, presents choices to the user (title, thumbnail, privacy), and calls the YouTube upload service.
 
 ## Required Environment
 
@@ -36,7 +36,12 @@ This opens a browser, user authorizes, tokens are saved next to the client secre
 
 ## Inputs
 
-This skill expects a `publish/` directory from `video-publish`:
+| Input | Required | Discovery | Description |
+|---|---|---|---|
+| `publish_dir` | yes | discover: `publish/` in cwd | Directory of assets produced by `run-video-publish` |
+| `video_file` | yes | ask or discover alongside publish assets | Final export video to upload |
+
+This skill expects a `publish/` directory from `run-video-publish`:
 
 ```
 publish/
@@ -50,7 +55,14 @@ publish/
     └── T001.png ...    ← generated thumbnails (if available)
 ```
 
-Also needs the **export video file** (the same `.mp4/.mov` used by video-publish).
+Also needs the **export video file** (the same `.mp4/.mov` used by `run-video-publish`).
+
+## Outputs
+
+| Output | Type | Description |
+|---|---|---|
+| uploaded video | artifact | The completed YouTube upload configured with chosen assets |
+| selection record | artifact | The chosen title, thumbnail, privacy, and metadata confirmed during the run |
 
 ## Process
 

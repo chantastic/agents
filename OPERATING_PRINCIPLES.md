@@ -241,8 +241,8 @@ If a skill needs data that can reasonably be derived from the artifact in front 
 
 Examples:
 - `run-video-publish` may transcribe an export if no transcript exists
-- `video-polish` may re-transcribe a preview
-- `video-zoom` may extract frames
+- `polish-video` may re-transcribe a preview
+- `zoom-video` may extract frames
 
 When a skill needs cross-stage context from a previous stage, **the coordinator provides it, the skill does not fetch it.**
 
@@ -284,14 +284,30 @@ Use naming to distinguish:
 
 Recommended naming:
 - **Reference skills:** `consult-*`
-- **Transformation skills:** action names like `create-*`, `make-*`, `prepare-*`, `get-*`, `write-*`, `cut-*`, `polish-*`, `zoom-*`, `publish-*`
 - **Coordinator skills:** `run-*`
+- **Transformation skills:** use the sharpest honest action verb
+
+Useful transformation families:
+- `create-*` — create a new artifact
+- `make-*` — interactively refine or align existing material toward a target quality
+- `prepare-*` — make something ready for downstream use
+- `evaluate-*` — assess an existing artifact, run, or result
+
+Domain-specific verbs are also valid when they are sharper than a generic family prefix:
+- `cut-*`
+- `polish-*`
+- `zoom-*`
+- `get-*`
+- `audit-*`
+- `publish-*`
 
 Examples:
 - `consult-chan-writing-style`
 - `create-marketing-brief`
 - `make-it-personal`
 - `prepare-post`
+- `evaluate-skill-output`
+- `cut-video`
 - `get-broll-assets`
 - `run-video-pipeline`
 
@@ -300,6 +316,11 @@ A prefix is a useful operator signal, but it is not sufficient on its own. A ski
 Within transformation skills, prefixes can carry useful subtype signals:
 - `create-*` usually implies creating a new artifact
 - `make-*` usually implies interactive refinement or alignment of existing material toward a target quality
+- `prepare-*` usually implies readiness or packaging for downstream use
+- `evaluate-*` usually implies diagnosis, scoring, or assessment of an existing result
+
+Rule: **specific beats generic.**
+Use a family prefix when it genuinely clarifies the type of transformation. Keep a domain-specific verb when it is more precise.
 
 This matters because each role is evaluated differently:
 - reference skills are judged on clarity, usefulness as a lens, and stability as a reusable source of judgment
@@ -347,6 +368,6 @@ These are conventions — reasonable assumptions about directory structure, file
 Coupling is not fine:
 - "Read `manifest.json` and extract `stages.cut.preview`"
 - "Look at `stages.polish.status` to decide what to do"
-- "Assume cut must have run because this directory usually comes from video-pipeline"
+- "Assume cut must have run because this directory usually comes from run-video-pipeline"
 
 The distinction: a convention makes a guess based on what's common or derives a local artifact from the file in front of the skill. Coupling encodes knowledge of a specific workflow's internal structure or history. Skills use conventions and services. Coordinators use coupling (to the manifest they own).

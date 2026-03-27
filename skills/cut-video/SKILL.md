@@ -1,9 +1,11 @@
 ---
-name: video-cut
+name: cut-video
 description: Create a rough cut from a video recording. Transcribes with Deepgram, uses the LLM to remove duplicate takes, false starts, and fragments, infers a thesis, and outputs FCPXML for Final Cut Pro. Use when editing video recordings or removing retakes before polish.
 ---
 
 # Video Cut
+
+This is a transformation skill. It takes a source recording and produces the first durable cut artifacts.
 
 Create a publication-ready rough cut from a raw recording.
 
@@ -33,7 +35,7 @@ When in doubt: keep the rough-cut method here, and let edge-case aggressiveness 
 | target_duration | no | default: aim for 10-15 min | Target length for the cut |
 | output_dir | no | default: working directory | Where to write all outputs |
 
-When run standalone, discover or ask for each input. When run via a coordinator (e.g., video-pipeline), these are provided explicitly.
+When run standalone, discover or ask for each input. When run via a coordinator (e.g., run-video-pipeline), these are provided explicitly.
 
 Do not ask for a thesis. The thesis is inferred from the content after edit decisions are made (see Step 5b).
 

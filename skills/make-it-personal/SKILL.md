@@ -13,7 +13,7 @@ This is a transformation skill. It interviews Chan to extract the personal layer
 |---|---|---|---|
 | `draft` | yes | ask | The current draft that feels too generic, technical, or sanitized |
 | `source` | no | ask | Raw transcript, notes, or source material behind the draft |
-| `reference` | no | default: `~/.agents/skills/chan-dev-writing/SKILL.md` | Reference skill for voice evaluation |
+| `reference` | no | default: `~/.agents/skills/consult-chan-writing-style/SKILL.md` | Reference skill for voice evaluation |
 | `output_path` | no | ask only when writing is approved | Path for a new rewritten draft |
 
 ## Outputs
@@ -43,7 +43,7 @@ Read both the draft AND the raw transcript/source (video transcript, notes, etc)
 
 ### 2. Evaluate against the writing style
 
-Consult `~/.agents/skills/chan-dev-writing/SKILL.md` and assess:
+Consult `~/.agents/skills/consult-chan-writing-style/SKILL.md` and assess:
 - Is the voice right? (conversational, confessional, direct)
 - Are the sentences varied? (fragments + momentum)
 - Is there a personal frame or just feature descriptions?
@@ -93,12 +93,12 @@ After the session, append the interview Q&A to `~/.agents/skills/make-it-persona
 
 ## Notes
 
-- Consulting `chan-dev-writing` is a reference dependency, not workflow coupling. It is a stable lens for judgment.
+- Consulting `consult-chan-writing-style` is a reference dependency, not workflow coupling. It is a stable lens for judgment.
 - Do not overwrite the original draft. Always write to a new file when writing is approved.
 - The interview log lives with the skill because it is capability memory, not project state.
 
 ## Reference
 
-- Writing style guide: `~/.agents/skills/chan-dev-writing/SKILL.md`
-- Reference graph: `~/.agents/skills/chan-dev-writing/REFERENCE.md`
+- Writing style guide: `~/.agents/skills/consult-chan-writing-style/SKILL.md`
+- Reference graph: `~/.agents/skills/consult-chan-writing-style/REFERENCE.md`
 - Past interviews: `~/.agents/skills/make-it-personal/interviews/`

@@ -1,13 +1,15 @@
 ---
-name: broll-research
+name: get-broll-assets
 description: Research and collect b-roll assets from video transcripts. Extracts entities (companies, products, people) and downloads logos, screenshots, social media posts, and videos. Generates FCPXML markers for video editing. Use when preparing b-roll for a video project.
 ---
 
 # B-Roll Research
 
+This is a transformation skill. It takes transcript/context inputs and produces a b-roll asset package plus timeline markers.
+
 Research and collect b-roll assets from a video transcript. Extracts entities, collects visual assets, and generates timeline markers.
 
-> **Status:** Experimental / non-canonical. This skill is kept as a standalone workflow and is **not** part of the current canonical `video-pipeline` contract. If revived later, its project layout should be standardized before re-integrating it.
+> **Status:** Experimental / non-canonical. This skill is kept as a standalone workflow and is **not** part of the current canonical `run-video-pipeline` contract. If revived later, its project layout should be standardized before re-integrating it.
 
 ## Prerequisites
 
@@ -17,7 +19,7 @@ Research and collect b-roll assets from a video transcript. Extracts entities, c
 
 For screenshot and social media collection, the nix-shell in this skill directory provides Bun + Playwright:
 ```bash
-nix-shell ~/.agents/skills/broll-research/shell.nix
+nix-shell ~/.agents/skills/get-broll-assets/shell.nix
 ```
 
 ## Process
@@ -25,7 +27,7 @@ nix-shell ~/.agents/skills/broll-research/shell.nix
 ### Step 1: Locate Transcript
 
 Check for a transcript in the current directory:
-1. `transcript.json` (from video-cut skill / Deepgram)
+1. `transcript.json` (from cut-video skill / Deepgram)
 2. Any `.json` file with `utterances` or `words` keys
 3. Ask the user for the path
 
@@ -50,7 +52,7 @@ For each entity, record:
 - Mention count
 - Context (the sentence where it first appears)
 
-Write to `broll-research/entities.json`:
+Write to `get-broll-assets/entities.json`:
 ```json
 [{
   "name": "WorkOS",
@@ -66,7 +68,7 @@ Rank by mention count × relevance. Focus on the top 10-15 entities.
 ### Step 3: Create Working Directory
 
 ```
-broll-research/
+get-broll-assets/
 ├── entities.json
 ├── assets/
 │   ├── logos/
@@ -114,11 +116,11 @@ Each marker should have:
 
 Use `~/.agents/services/timeline.py` concepts but for markers specifically, generate FCPXML directly since OTIO marker support varies by adapter.
 
-Save as `broll-research/markers.fcpxml`.
+Save as `get-broll-assets/markers.fcpxml`.
 
 ### Step 6: Generate Report
 
-Write `broll-research/report.md`:
+Write `get-broll-assets/report.md`:
 
 ```markdown
 # B-Roll Research Report
@@ -140,7 +142,7 @@ Transcript: {transcript_path}
 - {Entity}: {what couldn't be found}
 
 ## Next Steps
-1. Review assets in broll-research/assets/
+1. Review assets in get-broll-assets/assets/
 2. Import markers.fcpxml into Final Cut Pro alongside your video timeline
 3. Markers show where each entity appears — add b-roll at those points
 ```
@@ -152,6 +154,6 @@ Summarize what was collected, what's missing, and the paths to all outputs.
 ## Notes
 
 - Entity extraction is done by the LLM reading the transcript — no spaCy, no NER library needed.
-- The Deepgram transcript (from video-cut) has better text quality (smart formatting, proper nouns) than whisper, making entity extraction more reliable.
+- The Deepgram transcript (from cut-video) has better text quality (smart formatting, proper nouns) than whisper, making entity extraction more reliable.
 - Screenshot and social collection require Playwright via nix-shell. If unavailable, skip those and note it in the report.
-- All asset paths in markers are relative to the broll-research directory.
+- All asset paths in markers are relative to the get-broll-assets directory.

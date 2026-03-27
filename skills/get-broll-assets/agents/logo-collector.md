@@ -28,7 +28,7 @@ For each entity in `entities.json`:
 
 You will receive two parameters:
 1. **Entities JSON path**: Path to `entities.json` with extracted entities
-2. **Assets directory**: Base directory for downloads (e.g., `./broll-research/assets/`)
+2. **Assets directory**: Base directory for downloads (e.g., `./get-broll-assets/assets/`)
 
 ## Process
 

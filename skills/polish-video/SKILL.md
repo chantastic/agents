@@ -1,13 +1,15 @@
 ---
-name: video-polish
-description: Iteratively refine a video edit by re-transcribing the preview, evaluating quality as a viewer would experience it, and fixing issues like missed duplicates, mid-utterance stumbles, filler clips, and pacing drag. Use after video-cut to tighten an edit.
+name: polish-video
+description: Iteratively refine a video edit by re-transcribing the preview, evaluating quality as a viewer would experience it, and fixing issues like missed duplicates, mid-utterance stumbles, filler clips, and pacing drag. Use after cut-video to tighten an edit.
 ---
 
 # Video Polish
 
+This is a transformation skill. It takes an existing edit and refines its flow by evaluating the output as a viewer would experience it.
+
 Evaluate and refine a video edit by listening to what actually came out.
 
-The core insight: the first pass (video-cut) reads utterances as isolated keep/remove decisions. This skill reads the *output as a viewer experiences it* — a continuous flow where duplicates, stumbles, and pacing problems become obvious.
+The core insight: the first pass (cut-video) reads utterances as isolated keep/remove decisions. This skill reads the *output as a viewer experiences it* — a continuous flow where duplicates, stumbles, and pacing problems become obvious.
 
 ## Epistemic Status
 
@@ -240,5 +242,5 @@ List final output paths. Remind user to open `.fcpxml` in Final Cut Pro for revi
 - **Decisions are the contract, not segments.** Polish writes decisions against the original transcript, the same unit as cut. The edit list is compiled at the end.
 - Every intermediate is preserved. The user can trace any cut: `eval.json` → `decisions/polish.json` + earlier decisions → `transcript.json`.
 - The re-transcription step is essential. Do not skip it to save cost.
-- This skill tightens *how existing content flows*. Major content restructuring belongs in video-cut.
+- This skill tightens *how existing content flows*. Major content restructuring belongs in cut-video.
 - Exact editorial aggressiveness is calibration, not doctrine. Use `evals/` for current taste.

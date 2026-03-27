@@ -22,20 +22,22 @@ Also requires: `ffmpeg`, `ffprobe` on PATH, and `DEEPGRAM_API_KEY` in environmen
 
 | Skill | Purpose |
 |-------|---------|
-| `video-pipeline` | Orchestrator: coordinates cut → polish → zoom → publish stages, manages manifest |
-| `video-cut` | Rough cut: transcribe + LLM decisions → FCPXML |
-| `video-polish` | Iterative refinement: re-transcribe, evaluate flow, fix issues |
-| `video-zoom` | Zoom/punch-in effects via FCPXML adjustment clips |
+| `run-video-pipeline` | Coordinator: coordinates cut -> polish -> zoom, manages manifest |
+| `cut-video` | Rough cut: transcribe + LLM decisions -> FCPXML |
+| `polish-video` | Iterative refinement: re-transcribe, evaluate flow, fix issues |
+| `zoom-video` | Zoom/punch-in effects via FCPXML adjustment clips |
 | `run-video-publish` | Coordinator for publish-prep assets (captions, chapters, titles, thumbnails, brief) |
 | `create-marketing-brief` | Create one multi-section marketing brief for LinkedIn, Twitter/X, and recap/blog |
-| `broll-research` | B-roll asset collection from transcripts |
-| `chantastic-scripts` | Blog → YouTube script conversion |
+| `run-youtube-upload` | Coordinator for final YouTube upload from publish assets |
+| `get-broll-assets` | B-roll asset collection from transcripts |
+| `create-chantastic-script` | Blog -> YouTube script conversion |
 | `run-shutdown-ritual` | Coordinator for end-of-day triage, wrap-up, and durable routing |
-| `youtube-audit` | Channel analysis via yt-dlp |
-| `xstate-naming` | XState naming conventions |
-| `skill-authoring` | Guide for writing and refactoring skills |
+| `audit-youtube-channel` | Channel analysis via yt-dlp |
+| `consult-xstate-naming` | XState naming conventions reference |
+| `consult-chan-writing-style` | Chan.dev voice and writing reference |
+| `consult-skill-authoring` | Guide for writing and refactoring skills |
 
-The video skills form a pipeline: `video-pipeline` orchestrates `video-cut` → `video-polish` → `video-zoom`. Each skill can also be invoked standalone — the pipeline coordinator passes cross-stage inputs between stages, but each skill only needs its declared inputs and the harness capabilities available to it, not the manifest.
+The video skills form a pipeline: `run-video-pipeline` orchestrates `cut-video` -> `polish-video` -> `zoom-video`. Each stage skill can also be invoked standalone — the coordinator passes cross-stage inputs between stages, but each stage skill only needs its declared inputs and the harness capabilities available to it, not the manifest.
 
 `run-video-publish` runs after the operator exports from their NLE. It is not part of the video editing pipeline, but it does coordinate the publish-prep workflow for that final export.
 
@@ -51,7 +53,7 @@ See OPERATING_PRINCIPLES.md §11.
 
 ### Only the coordinator knows the graph
 
-Sequencing, state tracking, retries, and inter-skill wiring live in `video-pipeline`. Individual skills don't know what ran before or after them. The manifest is the coordinator's state file — no other skill reads or writes it.
+Sequencing, state tracking, retries, and inter-skill wiring live in `run-video-pipeline`. Individual skills don't know what ran before or after them. The manifest is the coordinator's state file — no other skill reads or writes it.
 
 See OPERATING_PRINCIPLES.md §12.
 

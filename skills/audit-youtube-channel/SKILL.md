@@ -1,9 +1,11 @@
 ---
-name: youtube-audit
+name: audit-youtube-channel
 description: "Comprehensive YouTube channel analysis using yt-dlp. Use when auditing a YouTube channel's content catalog, analyzing video formats, assessing performance, or developing content strategy. Accepts a channel URL or @handle."
 ---
 
 # YouTube Audit Skill
+
+This is a transformation skill. It analyzes a YouTube channel and produces a structured audit report.
 
 Analyze any YouTube channel's full video catalog. Extracts metadata via `yt-dlp`, categorizes content formats, assesses performance, and generates a structured report.
 

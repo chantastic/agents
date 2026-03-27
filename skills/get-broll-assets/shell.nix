@@ -1,7 +1,7 @@
 { pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShell {
-  name = "broll-research-env";
+  name = "get-broll-assets-env";
 
   buildInputs = [
     # Python with spaCy for entity extraction

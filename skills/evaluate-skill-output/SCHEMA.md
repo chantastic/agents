@@ -30,7 +30,7 @@ Every eval should be saved as two files with the **same basename**:
 {
   "version": 1,
   "date": "2026-03-25",
-  "skill": "video-pipeline",
+  "skill": "run-video-pipeline",
   "project_slug": "pi-first-look",
   "eval_type": "self",
   "reviewer": {
@@ -189,7 +189,7 @@ Recommended shape:
 {
   "priority": "P1",
   "scope": "skill",
-  "target": "video-polish",
+  "target": "polish-video",
   "action": "Add screen narration as an explicit pacing_drag subtype."
 }
 ```

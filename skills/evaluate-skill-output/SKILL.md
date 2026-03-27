@@ -1,9 +1,11 @@
 ---
 name: evaluate-skill-output
-description: Evaluate the quality of a skill's output after a run. Reads the project manifest and all intermediate artifacts, self-assesses across categories, and saves a structured analysis alongside the skill for future learning. Use after completing a skill-driven pipeline (e.g., video-pipeline) to capture what worked, what didn't, and what to learn from the user's edits.
+description: Evaluate the quality of a skill's output after a run. Reads the project manifest and all intermediate artifacts, self-assesses across categories, and saves a structured analysis alongside the skill for future learning. Use after completing a skill-driven pipeline (e.g., run-video-pipeline) to capture what worked, what didn't, and what to learn from the user's edits.
 ---
 
 # Evaluate Skill Output
+
+This is a transformation skill. It reads a completed skill run and produces a structured evaluation artifact for future learning.
 
 Generate a structured self-evaluation of a skill run. The eval is saved alongside the skill — not in the project directory — so it persists as a learning artifact.
 
@@ -185,7 +187,7 @@ Minimum recommended shape:
 {
   "version": 1,
   "date": "2026-03-25",
-  "skill": "video-pipeline",
+  "skill": "run-video-pipeline",
   "project_slug": "pi-first-look",
   "eval_type": "self",
   "reviewer": {
@@ -200,7 +202,7 @@ Minimum recommended shape:
     {
       "priority": "P1",
       "scope": "skill",
-      "target": "video-polish",
+      "target": "polish-video",
       "action": "Add screen narration as an explicit pacing_drag subtype."
     }
   ],
@@ -288,4 +290,4 @@ Include the categorized differences, calibration data, and specific recommendati
 - Evals are **skill development artifacts**, not project artifacts. They live in `~/.agents/skills/<skill-name>/evals/`, not in the project directory. This is a core principle — see AGENTS.md.
 - The eval should be honest and specific. "Could be better" is useless. "I removed 15 segments for pacing drag but suspect 5 of them contained authentic exploration the viewer would enjoy" is useful.
 - When the user provides their edited FCPXML back, a follow-up eval can diff against the original to fill in the learning hooks with ground truth data.
-- This skill works for any skill that produces artifacts — not just video-pipeline. The stage-by-stage assessment adapts to whatever the skill's process defines.
+- This skill works for any skill that produces artifacts — not just run-video-pipeline. The stage-by-stage assessment adapts to whatever the skill's process defines.

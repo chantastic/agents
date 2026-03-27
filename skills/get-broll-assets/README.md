@@ -6,7 +6,7 @@ Autonomous research skill that analyzes video transcripts and collects b-roll as
 
 1. **Enter the nix-shell** (one-time per session):
    ```bash
-   cd ~/skills/broll-research
+   cd ~/skills/get-broll-assets
    nix-shell
    ```
 
@@ -20,7 +20,7 @@ Autonomous research skill that analyzes video transcripts and collects b-roll as
 3. **Use the skill**:
    ```bash
    # From within nix-shell
-   claude-code /broll-research --transcript /path/to/transcript.json
+   claude-code /get-broll-assets --transcript /path/to/transcript.json
    ```
 
 ## Architecture
@@ -47,9 +47,9 @@ All dependencies are managed via Nix:
 
 ## Output
 
-Creates a `broll-research/` directory with:
+Creates a `get-broll-assets/` directory with:
 ```
-broll-research/
+get-broll-assets/
 ├── entities.json          # Extracted entities with timestamps
 ├── assets/
 │   ├── logos/            # Company/product logos
@@ -64,8 +64,8 @@ broll-research/
 
 Test entity extraction:
 ```bash
-nix-shell ~/skills/broll-research/shell.nix --run \
-  "python3 ~/skills/broll-research/scripts/extract-entities.py /tmp/audio_for_whisper.wav.json /tmp/entities.json"
+nix-shell ~/skills/get-broll-assets/shell.nix --run \
+  "python3 ~/skills/get-broll-assets/scripts/extract-entities.py /tmp/audio_for_whisper.wav.json /tmp/entities.json"
 ```
 
 ## Notes

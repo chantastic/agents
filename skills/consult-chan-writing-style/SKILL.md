@@ -1,5 +1,5 @@
 ---
-name: chan-dev-writing
+name: consult-chan-writing-style
 description: Reference guide for writing in Chan's voice across essays, tutorials, notes, and reflections. Use when drafting, editing, or evaluating content for chan.dev.
 ---
 
@@ -11,7 +11,7 @@ A distilled reference for writing in Chan's (Michael Chan / @chantastic) voice, 
 
 ## Support material
 
-- Reference graph: `~/.agents/skills/chan-dev-writing/REFERENCE.md`
+- Reference graph: `~/.agents/skills/consult-chan-writing-style/REFERENCE.md`
 
 ## Voice & Persona
 
