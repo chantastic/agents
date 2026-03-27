@@ -26,7 +26,8 @@ Also requires: `ffmpeg`, `ffprobe` on PATH, and `DEEPGRAM_API_KEY` in environmen
 | `video-cut` | Rough cut: transcribe + LLM decisions → FCPXML |
 | `video-polish` | Iterative refinement: re-transcribe, evaluate flow, fix issues |
 | `video-zoom` | Zoom/punch-in effects via FCPXML adjustment clips |
-| `video-publish` | Generate publish-ready assets (captions, chapters, titles, thumbnails) |
+| `run-video-publish` | Coordinator for publish-prep assets (captions, chapters, titles, thumbnails, brief) |
+| `create-marketing-brief` | Create one multi-section marketing brief for LinkedIn, Twitter/X, and recap/blog |
 | `broll-research` | B-roll asset collection from transcripts |
 | `chantastic-scripts` | Blog → YouTube script conversion |
 | `youtube-audit` | Channel analysis via yt-dlp |
@@ -35,7 +36,9 @@ Also requires: `ffmpeg`, `ffprobe` on PATH, and `DEEPGRAM_API_KEY` in environmen
 
 The video skills form a pipeline: `video-pipeline` orchestrates `video-cut` → `video-polish` → `video-zoom`. Each skill can also be invoked standalone — the pipeline coordinator passes cross-stage inputs between stages, but each skill only needs its declared inputs and the harness capabilities available to it, not the manifest.
 
-`video-publish` runs standalone after the operator exports from their NLE. It is not part of the pipeline.
+`run-video-publish` runs after the operator exports from their NLE. It is not part of the video editing pipeline, but it does coordinate the publish-prep workflow for that final export.
+
+`create-marketing-brief` consumes the publish/content brief and produces one markdown document with platform-specific sections for downstream marketing use.
 
 ## Principles
 

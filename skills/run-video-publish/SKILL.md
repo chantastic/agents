@@ -1,13 +1,15 @@
 ---
-name: video-publish
-description: Generate publish-ready assets from a final video export. Transcribes the final edit, generates chapters, captions (SRT), title options, thumbnails, and a content brief for downstream platform skills. Use standalone after exporting from your NLE.
+name: run-video-publish
+description: Coordinate publish preparation from a final video export. Transcribes the final edit, generates chapters, captions (SRT), title options, thumbnails, and a content brief for downstream marketing work. Use after exporting from your NLE.
 ---
 
-# Video Publish
+# Run Video Publish
 
-Generate publish-ready assets from a final video export.
+Coordinate publish preparation from a final video export.
 
-This skill runs **standalone** — not as part of the video-pipeline. There is a human step between zoom and publish (reviewing in FCP, exporting), so publish is invoked separately.
+This is a coordinator skill. It sequences the publish-prep workflow for a final export: transcript, captions, chapters, titles, description, thumbnails, and the content brief handoff artifact.
+
+There is a human step between zoom and publish (reviewing in FCP, exporting), so this skill is invoked separately after export.
 
 ## Required Environment
 
@@ -201,7 +203,13 @@ If `GOOGLE_API_KEY` is set, generate with Imagen. Otherwise skip — concepts pr
 
 ### Step 10: Generate content brief
 
-Write `publish/brief.json` — the hand-off to downstream platform skills (`content-linkedin`, `content-twitter`, `content-recap`):
+Write `publish/brief.json` — the hand-off artifact for downstream marketing work.
+
+Downstream brief contract:
+- `create-marketing-brief` relies on: `thesis`, `speakers`, `chapters`, `key_quotes`, `key_moments`, `topics`, `links`, `titles`
+- include `transcript_path` so downstream work can optionally read the full transcript without guessing
+
+Write `publish/brief.json`:
 
 ```json
 {
@@ -232,12 +240,12 @@ Write `publish/brief.json` — the hand-off to downstream platform skills (`cont
 
 Remind user:
 - Review titles and chapters before uploading
-- Run `content-linkedin`, `content-twitter`, `content-recap` using `publish/brief.json`
+- Run `create-marketing-brief` using `publish/brief.json`
 - Thumbnail concepts ready for manual selection/editing
 
 ## Notes
 
 - **Standalone by design.** Publish is a terminal stage. Nothing reads its outputs programmatically.
 - **Transcript JSON is kept.** Queried for chapters, thumbnail moments, key quotes, and available for future use.
-- **Content brief is the hand-off.** Downstream platform skills read `brief.json` — they don't process the full transcript.
+- **Content brief is the hand-off.** Downstream marketing work reads `brief.json` — no one should have to guess from the transcript when the brief already exists.
 - **Graceful degradation.** No thesis? Ask. No Google API key? Skip thumbnail generation. No keyterms? Transcribe without them.

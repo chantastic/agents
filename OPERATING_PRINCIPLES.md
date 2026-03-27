@@ -240,7 +240,7 @@ The benefit is composability. A context-independent skill can be:
 If a skill needs data that can reasonably be derived from the artifact in front of it, it should prefer a service over pushing that burden onto the operator.
 
 Examples:
-- `video-publish` may transcribe an export if no transcript exists
+- `run-video-publish` may transcribe an export if no transcript exists
 - `video-polish` may re-transcribe a preview
 - `video-zoom` may extract frames
 
@@ -282,12 +282,12 @@ Use naming to distinguish:
 - **coordinator skills** — workflow owners that sequence other steps and manage state
 
 Recommended naming:
-- **Transformation skills:** verb-prefixed action names like `prepare-*`, `generate-*`, `get-*`, `write-*`, `cut-*`, `polish-*`, `zoom-*`, `publish-*`
+- **Transformation skills:** verb-prefixed action names like `create-*`, `prepare-*`, `get-*`, `write-*`, `cut-*`, `polish-*`, `zoom-*`, `publish-*`
 - **Coordinator skills:** `run-*`
 
 Examples:
-- `generate-video-captions`
-- `prepare-video-publish`
+- `create-marketing-brief`
+- `prepare-post`
 - `get-broll-assets`
 - `run-video-pipeline`
 

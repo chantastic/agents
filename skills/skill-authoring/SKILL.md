@@ -59,8 +59,8 @@ A skill name should tell the operator what kind of thing it is.
 ### Transformation skills
 
 Use verb-prefixed names that describe the bounded action:
+- `create-*`
 - `prepare-*`
-- `generate-*`
 - `get-*`
 - `write-*`
 - `cut-*`
@@ -69,8 +69,8 @@ Use verb-prefixed names that describe the bounded action:
 - `publish-*`
 
 Examples:
-- `generate-video-captions`
-- `prepare-video-publish`
+- `create-marketing-brief`
+- `prepare-post`
 - `get-broll-assets`
 
 These imply a local transformation: take inputs, do work, produce outputs.
@@ -86,7 +86,7 @@ Examples:
 
 `run-*` signals that the skill owns sequencing, handoffs, retries, or shared state.
 
-Avoid using `prepare-*` or `generate-*` for coordinator skills — those sound like transformations, not workflow owners. `coordinate-*` and `orchestrate-*` are accurate but heavier. Prefer `run-*` as the default coordinator signal.
+Avoid using `prepare-*` or `create-*` for coordinator skills — those sound like transformations, not workflow owners. `coordinate-*` and `orchestrate-*` are accurate but heavier. Prefer `run-*` as the default coordinator signal.
 
 ### Role declaration
 

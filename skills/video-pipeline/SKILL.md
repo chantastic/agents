@@ -41,7 +41,7 @@ project/
 │   ├── frames/
 │   ├── zooms.json
 │   └── timeline_zoomed.fcpxml
-└── publish/                   ← created later by video-publish (not part of this pipeline)
+└── publish/                   ← created later by run-video-publish (not part of this pipeline)
 ```
 
 ### Decisions as Contract
@@ -197,7 +197,7 @@ If `manifest.json` already exists, read it and resume from the last incomplete s
 1. Open `zoom/timeline_zoomed.fcpxml` in Final Cut Pro
 2. Review and adjust the edit manually
 3. Export the final video from FCP
-4. Run `video-publish` on that export to generate publish assets
+4. Run `run-video-publish` on that export to generate publish assets
 
 ## Resuming
 
