@@ -1,6 +1,7 @@
 ---
 name: run-video-pipeline
 description: Orchestrate the video editing pipeline from raw recording through cut, polish, and zoom. Coordinates stage skills, manages the manifest, and structures project files. Use when producing an edit from a raw recording.
+role: coordinator
 ---
 
 # Video Pipeline

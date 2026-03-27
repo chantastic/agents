@@ -1,6 +1,7 @@
 ---
-name: consult-skill-authoring
+name: consult-skill-author
 description: Guide for writing and refactoring skills. Covers input/output contracts, coordinator vs. standalone design, discovery heuristics, and the promotion path from calibration to principle. Use when creating a new skill, refactoring an existing one, or extracting a skill from a repeated workflow.
+role: reference
 ---
 
 # Skill Authoring
@@ -121,7 +122,23 @@ Avoid using `prepare-*`, `create-*`, or `make-*` for coordinator skills — thos
 
 ### Role declaration
 
-A prefix is helpful, but a skill should also identify its role explicitly in the opening section when the role affects how it should be evaluated.
+A prefix is helpful, but a skill should also identify its role explicitly when the role affects how it should be evaluated.
+
+Prefer an explicit frontmatter field:
+
+```yaml
+role: reference
+```
+
+```yaml
+role: transformation
+```
+
+```yaml
+role: coordinator
+```
+
+The opening section should still make the role legible to a human reader.
 
 Example:
 
@@ -151,6 +168,7 @@ skills/
 ---
 name: my-skill
 description: One-line description. Use when [trigger].
+role: transformation
 ---
 
 # Skill Name
@@ -309,6 +327,7 @@ The coordinator's job is mapping between the manifest's shape and each skill's i
 ## Checklist for new skills
 
 - [ ] Name matches role (`consult-*` for reference skills, `run-*` for coordinators, sharp action verb for transformations such as `create-*`, `make-*`, `prepare-*`, `evaluate-*`, or a more precise domain verb)
+- [ ] `role:` frontmatter is present and correct
 - [ ] Role is explicit in the opening section when role affects evaluation
 - [ ] `## Inputs` table with Required/Discovery columns (for transformation/coordinator skills)
 - [ ] `## Outputs` table with source-vs-artifact distinction (for transformation/coordinator skills)

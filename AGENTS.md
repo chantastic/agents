@@ -35,7 +35,7 @@ Also requires: `ffmpeg`, `ffprobe` on PATH, and `DEEPGRAM_API_KEY` in environmen
 | `audit-youtube-channel` | Channel analysis via yt-dlp |
 | `consult-xstate-naming` | XState naming conventions reference |
 | `consult-chan-writing-style` | Chan.dev voice and writing reference |
-| `consult-skill-authoring` | Guide for writing and refactoring skills |
+| `consult-skill-author` | Guide for writing and refactoring skills |
 
 The video skills form a pipeline: `run-video-pipeline` orchestrates `cut-video` -> `polish-video` -> `zoom-video`. Each stage skill can also be invoked standalone — the coordinator passes cross-stage inputs between stages, but each stage skill only needs its declared inputs and the harness capabilities available to it, not the manifest.
 

@@ -1,6 +1,7 @@
 ---
 name: polish-video
 description: Iteratively refine a video edit by re-transcribing the preview, evaluating quality as a viewer would experience it, and fixing issues like missed duplicates, mid-utterance stumbles, filler clips, and pacing drag. Use after cut-video to tighten an edit.
+role: transformation
 ---
 
 # Video Polish

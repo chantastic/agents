@@ -1,6 +1,7 @@
 ---
 name: create-chantastic-script
 description: Transform blog posts or documentation into YouTube scripts matching Chantastic's tutorial style for WorkOS. Use when writing video scripts, converting blog content to video format, or drafting YouTube tutorials.
+role: transformation
 ---
 
 # Chantastic Script Skill

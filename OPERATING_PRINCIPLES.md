@@ -313,6 +313,11 @@ Examples:
 
 A prefix is a useful operator signal, but it is not sufficient on its own. A skill should also identify its role explicitly when that role affects how it should be evaluated.
 
+Prefer an explicit frontmatter field:
+- `role: reference`
+- `role: transformation`
+- `role: coordinator`
+
 Within transformation skills, prefixes can carry useful subtype signals:
 - `create-*` usually implies creating a new artifact
 - `make-*` usually implies interactive refinement or alignment of existing material toward a target quality

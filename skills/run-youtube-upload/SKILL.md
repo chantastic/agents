@@ -1,6 +1,7 @@
 ---
 name: run-youtube-upload
 description: Coordinate a YouTube upload from run-video-publish outputs. Reads publish/ assets (titles, description, captions, thumbnails), walks through selection with the user, and uploads via YouTube Data API v3. Use after run-video-publish when ready to upload.
+role: coordinator
 ---
 
 # Run YouTube Upload

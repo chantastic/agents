@@ -1,6 +1,7 @@
 ---
 name: zoom-video
 description: Add zoom and punch-in effects to a video edit via FCPXML adjustment clips. Analyzes transcript and frames to identify zoom opportunities, determines focal points, and generates FCPXML with adjustment clips on lane 1. Use after polish-video to add visual emphasis.
+role: transformation
 ---
 
 # Video Zoom

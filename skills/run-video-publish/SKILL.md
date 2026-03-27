@@ -1,6 +1,7 @@
 ---
 name: run-video-publish
 description: Coordinate publish preparation from a final video export. Transcribes the final edit, generates chapters, captions (SRT), title options, thumbnails, and a content brief for downstream marketing work. Use after exporting from your NLE.
+role: coordinator
 ---
 
 # Run Video Publish

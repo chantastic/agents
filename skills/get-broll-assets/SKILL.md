@@ -1,6 +1,7 @@
 ---
 name: get-broll-assets
 description: Research and collect b-roll assets from video transcripts. Extracts entities (companies, products, people) and downloads logos, screenshots, social media posts, and videos. Generates FCPXML markers for video editing. Use when preparing b-roll for a video project.
+role: transformation
 ---
 
 # B-Roll Research

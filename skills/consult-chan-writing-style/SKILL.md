@@ -1,6 +1,7 @@
 ---
 name: consult-chan-writing-style
 description: Reference guide for writing in Chan's voice across essays, tutorials, notes, and reflections. Use when drafting, editing, or evaluating content for chan.dev.
+role: reference
 ---
 
 # chan.dev Writing Style Guide

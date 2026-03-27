@@ -1,6 +1,7 @@
 ---
 name: run-shutdown-ritual
 description: Coordinate a daily shutdown ritual (à la Cal Newport's Deep Work). Two modes — triage incoming links/notes into durable storage, and wrap by scanning recent filesystem activity. Use when closing out the day or clearing browser tabs.
+role: coordinator
 ---
 
 # Run Shutdown Ritual

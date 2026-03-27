@@ -1,6 +1,7 @@
 ---
 name: create-marketing-brief
 description: Create a single marketing brief document from a content brief. Produces platform-specific sections for LinkedIn, Twitter/X, and recap/blog so each section embodies the goals of that platform. Use after run-video-publish or with any compatible content brief.
+role: transformation
 ---
 
 # Create Marketing Brief

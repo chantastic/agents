@@ -1,6 +1,7 @@
 ---
 name: evaluate-skill-output
 description: Evaluate the quality of a skill's output after a run. Reads the project manifest and all intermediate artifacts, self-assesses across categories, and saves a structured analysis alongside the skill for future learning. Use after completing a skill-driven pipeline (e.g., run-video-pipeline) to capture what worked, what didn't, and what to learn from the user's edits.
+role: transformation
 ---
 
 # Evaluate Skill Output

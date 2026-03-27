@@ -1,6 +1,7 @@
 ---
 name: cut-video
 description: Create a rough cut from a video recording. Transcribes with Deepgram, uses the LLM to remove duplicate takes, false starts, and fragments, infers a thesis, and outputs FCPXML for Final Cut Pro. Use when editing video recordings or removing retakes before polish.
+role: transformation
 ---
 
 # Video Cut

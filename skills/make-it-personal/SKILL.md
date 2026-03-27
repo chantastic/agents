@@ -1,6 +1,7 @@
 ---
 name: make-it-personal
 description: Interview Chan to extract the personal layer beneath technical or professional content. Use when a draft exists but reads like a product review, recap, or tutorial — and needs the "you" underneath.
+role: transformation
 ---
 
 # Make It Personal
