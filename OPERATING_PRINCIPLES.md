@@ -278,28 +278,56 @@ A coordinator should be identifiable as such — both in name and in description
 A skill name should help the operator understand what kind of thing they are invoking.
 
 Use naming to distinguish:
+- **reference skills** — stable lenses for style, conventions, naming, vocabulary, and judgment
 - **transformation skills** — bounded actions that produce an output
 - **coordinator skills** — workflow owners that sequence other steps and manage state
 
 Recommended naming:
+- **Reference skills:** `consult-*`
 - **Transformation skills:** verb-prefixed action names like `create-*`, `prepare-*`, `get-*`, `write-*`, `cut-*`, `polish-*`, `zoom-*`, `publish-*`
 - **Coordinator skills:** `run-*`
 
 Examples:
+- `consult-chan-writing-style`
 - `create-marketing-brief`
 - `prepare-post`
 - `get-broll-assets`
 - `run-video-pipeline`
 
-A prefix is a useful operator signal, but it is not sufficient on its own. A coordinator should also explicitly identify itself in its skill definition or opening section.
+A prefix is a useful operator signal, but it is not sufficient on its own. A skill should also identify its role explicitly when that role affects how it should be evaluated.
 
-This matters because coordinators and transformation skills are evaluated differently:
+This matters because each role is evaluated differently:
+- reference skills are judged on clarity, usefulness as a lens, and stability as a reusable source of judgment
 - transformation skills are judged on local clarity, harness use, and freedom from coordination-state coupling
 - coordinators are judged on sequencing, state ownership, retries, handoffs, and contract mapping
 
 ---
 
-## 14. Convention is not coupling.
+## 14. Reference dependencies are composition, not coupling.
+
+A skill may depend on stable reference skills or reference documents for judgment, style, conventions, or vocabulary.
+
+This is not the same as reading coordinator-owned state.
+
+Examples of valid composition:
+- `make-it-personal` consulting a writing-style reference skill
+- a naming skill consulting a conventions document
+- a publishing skill consulting a voice/style reference
+
+Examples of invalid coupling:
+- reading `manifest.json` to determine what stage ran before
+- inspecting another skill's stage status to decide behavior
+- assuming workflow history from coordinator-owned state
+
+The distinction:
+- **reference dependency** = using a stable lens to improve judgment
+- **coordination dependency** = relying on hidden workflow state to decide execution
+
+Reference dependencies are good composition. Coordination dependencies belong in the coordinator.
+
+---
+
+## 15. Convention is not coupling.
 
 A skill can use sensible defaults without knowing about the system that produced them.
 

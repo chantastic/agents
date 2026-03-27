@@ -56,6 +56,17 @@ A skill should be invocable by a coordinator OR by a human with the same interfa
 
 A skill name should tell the operator what kind of thing it is.
 
+### Reference skills
+
+Use the `consult-*` prefix.
+
+Examples:
+- `consult-chan-writing-style`
+- `consult-xstate-naming`
+- `consult-workos-voice`
+
+These imply a stable reference lens: a skill you consult for style, conventions, naming, vocabulary, or judgment.
+
 ### Transformation skills
 
 Use verb-prefixed names that describe the bounded action:
@@ -86,11 +97,11 @@ Examples:
 
 `run-*` signals that the skill owns sequencing, handoffs, retries, or shared state.
 
-Avoid using `prepare-*` or `create-*` for coordinator skills — those sound like transformations, not workflow owners. `coordinate-*` and `orchestrate-*` are accurate but heavier. Prefer `run-*` as the default coordinator signal.
+Avoid using `prepare-*` or `create-*` for coordinator skills — those sound like transformations, not workflow owners. Avoid using `consult-*` for a skill that actually mutates files or coordinates a workflow — that would blur role boundaries. Prefer `run-*` as the default coordinator signal.
 
 ### Role declaration
 
-A prefix is helpful, but a coordinator should also identify itself explicitly in the skill definition or opening section.
+A prefix is helpful, but a skill should also identify its role explicitly in the opening section when the role affects how it should be evaluated.
 
 Example:
 
@@ -101,7 +112,7 @@ This is a coordinator skill. It owns sequencing, retries, shared state, and hand
 Stage skills do not read the manifest; this skill does.
 ```
 
-Coordinators and transformation skills are evaluated against different standards. Make the role legible.
+Reference, transformation, and coordinator skills are evaluated against different standards. Make the role legible.
 
 ## Skill structure
 
@@ -277,12 +288,13 @@ The coordinator's job is mapping between the manifest's shape and each skill's i
 
 ## Checklist for new skills
 
-- [ ] Name matches role (`run-*` for coordinators, verb-prefixed action for transformations)
-- [ ] Role is explicit in the opening section if the skill is a coordinator
-- [ ] `## Inputs` table with Required/Discovery columns
-- [ ] `## Outputs` table with source-vs-artifact distinction
-- [ ] No manifest reads or writes in transformation skills
-- [ ] No references to coordinator-owned state in transformation skills
+- [ ] Name matches role (`consult-*` for reference skills, `run-*` for coordinators, verb-prefixed action for transformations)
+- [ ] Role is explicit in the opening section when role affects evaluation
+- [ ] `## Inputs` table with Required/Discovery columns (for transformation/coordinator skills)
+- [ ] `## Outputs` table with source-vs-artifact distinction (for transformation/coordinator skills)
+- [ ] No manifest reads or writes in transformation or reference skills
+- [ ] No references to coordinator-owned state in transformation or reference skills
+- [ ] Reference dependencies are stable lenses, not workflow-state dependencies
 - [ ] Discovery heuristics that work with manually-placed files
 - [ ] Discovery falls back to asking
 - [ ] Local missing artifacts are derived via services when reasonable
