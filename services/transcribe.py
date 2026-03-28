@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.10"
+# dependencies = []
+# ///
 """Transcribe audio/video via Deepgram Nova-3. Outputs unified JSON."""
 
 import argparse, json, os, subprocess, sys, tempfile, time, urllib.request

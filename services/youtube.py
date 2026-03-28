@@ -1,10 +1,10 @@
 #!/usr/bin/env -S uv run --script
 # /// script
-# requires-python = ">=3.9"
+# requires-python = ">=3.10"
 # dependencies = [
-#     "google-api-python-client>=2.0",
-#     "google-auth-oauthlib>=1.0",
-#     "google-auth-httplib2>=0.2",
+#   "google-api-python-client>=2.0",
+#   "google-auth-oauthlib>=1.0",
+#   "google-auth-httplib2>=0.2",
 # ]
 # ///
 """YouTube Data API v3 upload service.

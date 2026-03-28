@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.10"
+# dependencies = []
+# ///
 """Generate FCPXML with zoom adjustment clips.
 
 Builds a clean FCPXML from an edit list and zooms.json,

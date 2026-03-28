@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.10"
+# dependencies = []
+# ///
 """Render preview video from edit list via ffmpeg."""
 
 import argparse, json, os, shutil, subprocess, sys

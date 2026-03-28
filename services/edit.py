@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.10"
+# dependencies = []
+# ///
 """Format utterances for LLM review, apply LLM decisions to generate edit list.
 
 Supports layered decisions: multiple decision files are merged, with later files

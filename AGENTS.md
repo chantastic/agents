@@ -5,18 +5,29 @@ This is Chan's (chantastic) shared agent workspace. Skills and services here are
 ## Structure
 
 ```
-services/     — standalone Python CLI scripts. No agent dependency.
-  requirements.txt — pip dependencies (opentimelineio, otio-fcpx-xml-adapter)
+services/     — standalone Python CLIs. No agent dependency.
+  README.md   — service doctrine and execution model
 skills/       — Agent Skills standard (agentskills.io). Portable across agents.
 ```
 
 ## Setup
 
+Python services use `uv` inline script metadata. No global `pip install -r requirements.txt` step is required.
+
+Optional workspace shell:
+
 ```bash
-pip3 install -r ~/.agents/services/requirements.txt
+nix-shell ~/.agents/shell.nix
 ```
 
-Also requires: `ffmpeg`, `ffprobe` on PATH, and `DEEPGRAM_API_KEY` in environment.
+This provides shared system tools like:
+- `uv`
+- `python3`
+- `ffmpeg` / `ffprobe`
+- `yt-dlp`
+- `jq`
+
+Also requires service-specific environment variables where relevant (for example `DEEPGRAM_API_KEY` or `YOUTUBE_CLIENT_SECRET_PATH`).
 
 ## Active Skills
 
@@ -76,6 +87,15 @@ Video project artifacts (previews, transcripts, edit lists, timelines) live in t
 ### Services over abstractions
 
 Services are thin CLI wrappers around a specific external tool (Deepgram, ffmpeg, OTIO). They do one thing. They don't abstract over multiple backends.
+
+Services are standardized on:
+- Python CLIs
+- `uv` inline dependency metadata per script
+- workspace-level system dependencies
+- structured output to stdout or explicit files
+- logs to stderr
+
+See `services/README.md`.
 
 ### Skills are prompts, not code
 

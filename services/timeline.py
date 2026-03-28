@@ -1,4 +1,11 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#   "opentimelineio>=0.18",
+#   "otio-fcpx-xml-adapter>=1.0",
+# ]
+# ///
 """Generate OTIO and FCPXML timelines from edit lists."""
 
 import argparse, json, os, subprocess, sys
