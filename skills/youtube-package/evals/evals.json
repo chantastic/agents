@@ -1,0 +1,45 @@
+{
+  "skill_name": "youtube-package",
+  "evals": [
+    {
+      "id": 1,
+      "name": "adi-singh-clean-demo",
+      "format": "deepgram",
+      "prompt": "Generate the YouTube package for this video. Deepgram transcript is at evals/files/Adi Singh_normalized.deepgram.corrected.json. It's a demo from MCP Night.",
+      "expected_output": "Full package: 5 titles, YT description with hook + chapter markers from PARAGRAPH_TIMESTAMPS + body + links, pinned comment, social caption ≤200 chars, LinkedIn (affirming), X (challenging). Chapter timestamps must match the parser's emitted timestamps. First chapter at 0:00.",
+      "files": ["evals/files/Adi Singh_normalized.deepgram.corrected.json"]
+    },
+    {
+      "id": 2,
+      "name": "evan-bacon-with-links",
+      "format": "deepgram",
+      "prompt": "i need the youtube package for evan bacon's mcp night demo. transcript: evals/files/Evan Bacon_normalized.deepgram.corrected.json. announcement post is at https://workos.com/blog/expo-mcp. evan on x is @baconbrix.",
+      "expected_output": "Full package using only valid paragraph timestamps. Announcement URL and @baconbrix surface in the pinned comment and YouTube links section (not invented). Lowercase/casual prompt should still produce well-formatted output.",
+      "files": ["evals/files/Evan Bacon_normalized.deepgram.corrected.json"]
+    },
+    {
+      "id": 3,
+      "name": "madison-packer-no-context",
+      "format": "deepgram",
+      "prompt": "Publishing package for evals/files/Madison Packer_normalized.deepgram.corrected.json please",
+      "expected_output": "Minimal-context prompt should still produce a complete package, infer speaker/topic from the transcript, and silently omit any link items it can't fill in (no [add] placeholders).",
+      "files": ["evals/files/Madison Packer_normalized.deepgram.corrected.json"]
+    },
+    {
+      "id": 4,
+      "name": "karen-serfaty-from-srt",
+      "format": "srt",
+      "prompt": "Generate the YouTube package for evals/files/Karen Serfaty.srt — it's Karen's MCP Night demo for AgentCard (https://www.agentcard.sh).",
+      "expected_output": "Exercises the SRT parser path. Output must be structurally identical to a Deepgram-driven run: same sections, same chapter timestamp discipline (pulled from the SRT parser's PARAGRAPH_TIMESTAMPS line), same placeholder rules.",
+      "files": ["evals/files/Karen Serfaty.srt"]
+    },
+    {
+      "id": 5,
+      "name": "rhys-sullivan-from-srt",
+      "format": "srt",
+      "prompt": "Publishing package for evals/files/Rhys Sullivan.srt please. He's the founder of executor.sh (https://executor.sh).",
+      "expected_output": "Second SRT-path eval. Same constraints as eval 4. Verifies the SRT parser is robust to a different video's pacing and structure.",
+      "files": ["evals/files/Rhys Sullivan.srt"]
+    }
+  ]
+}

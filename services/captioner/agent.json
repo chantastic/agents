@@ -1,0 +1,20 @@
+{
+  "name": "captioner",
+  "description": "Generates YouTube-ready SRT captions from audio/video using Deepgram, audits contextual noun and terminology errors with Anthropic, applies corrections to Deepgram JSON, and formats captions deterministically.",
+  "version": "0.1.0",
+  "backend": {
+    "transcription": "deepgram:nova-3",
+    "audit": "anthropic:claude-sonnet-4-5-20250929"
+  },
+  "credential_policy": {
+    "source": "1Password CLI only",
+    "deepgram": "thechans.1password.com: op://Private/Deepgram API Key/credential",
+    "anthropic": "workos.1password.com: op://Employee/Anthropic API Key/credential"
+  },
+  "artifacts": [
+    "input.deepgram.json",
+    "input.term-audit.json",
+    "input.deepgram.corrected.json",
+    "input.srt"
+  ]
+}

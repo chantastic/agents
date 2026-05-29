@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chan.dev/schemas/transcript-term-audit.schema.json",
+  "title": "Transcript Terminology Audit",
+  "type": "object",
+  "required": ["version", "source", "summary", "accepted", "needs_review", "rejected_or_ignored"],
+  "additionalProperties": false,
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "source": {
+      "type": "object",
+      "required": ["path", "format"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "type": "string" },
+        "format": {
+          "type": "string",
+          "enum": ["deepgram-json", "whisper-json", "srt", "plain", "unknown-json"]
+        },
+        "duration": { "type": "number", "minimum": 0 }
+      }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "topic": { "type": "string" },
+        "glossary": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "context_files": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "model": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "provider": { "type": "string" },
+        "name": { "type": "string" },
+        "reasoning": { "type": ["string", "boolean"] },
+        "temperature": { "type": "number" }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["accepted_count", "needs_review_count", "rejected_or_ignored_count"],
+      "additionalProperties": false,
+      "properties": {
+        "accepted_count": { "type": "integer", "minimum": 0 },
+        "needs_review_count": { "type": "integer", "minimum": 0 },
+        "rejected_or_ignored_count": { "type": "integer", "minimum": 0 },
+        "notes": { "type": "string" }
+      }
+    },
+    "accepted": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/correction" }
+    },
+    "needs_review": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/correction" }
+    },
+    "rejected_or_ignored": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/rejected" }
+    }
+  },
+  "$defs": {
+    "location": {
+      "type": "object",
+      "required": ["kind"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["word", "utterance", "paragraph", "srt_cue", "plain_text", "unknown"]
+        },
+        "cue": { "type": "integer", "minimum": 1 },
+        "utterance_index": { "type": "integer", "minimum": 0 },
+        "paragraph_index": { "type": "integer", "minimum": 0 },
+        "word_start_index": { "type": "integer", "minimum": 0 },
+        "word_end_index": { "type": "integer", "minimum": 0 },
+        "char_start": { "type": "integer", "minimum": 0 },
+        "char_end": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "correction": {
+      "type": "object",
+      "required": ["id", "original", "corrected", "category", "confidence", "reason"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^corr_[0-9]{3,}$" },
+        "start": { "type": "number", "minimum": 0 },
+        "end": { "type": "number", "minimum": 0 },
+        "location": { "$ref": "#/$defs/location" },
+        "original": { "type": "string", "minLength": 1 },
+        "corrected": { "type": "string", "minLength": 1 },
+        "category": {
+          "type": "string",
+          "enum": [
+            "company_name",
+            "product_name",
+            "project_name",
+            "person_name",
+            "technical_term",
+            "acronym",
+            "capitalization",
+            "spacing_punctuation",
+            "other"
+          ]
+        },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "evidence": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "reason": { "type": "string", "minLength": 1 },
+        "apply": { "type": "boolean", "default": false }
+      }
+    },
+    "rejected": {
+      "type": "object",
+      "required": ["original", "suggested", "reason"],
+      "additionalProperties": false,
+      "properties": {
+        "original": { "type": "string" },
+        "suggested": { "type": "string" },
+        "reason": { "type": "string" },
+        "location": { "$ref": "#/$defs/location" }
+      }
+    }
+  }
+}

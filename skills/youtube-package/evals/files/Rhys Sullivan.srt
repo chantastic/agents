@@ -1,0 +1,432 @@
+1
+00:00:00,960 --> 00:00:06,560
+Something I've been thinking ton about is
+kind of how we can embed our products into
+
+2
+00:00:06,560 --> 00:00:10,960
+agents. And when you think about what
+the elements of a product are, you know,
+
+3
+00:00:10,960 --> 00:00:13,680
+you have docs. You kind of explain
+what the product is, how to use it,
+
+4
+00:00:14,135 --> 00:00:16,855
+and the natural equivalent
+of that is skills.
+
+5
+00:00:17,255 --> 00:00:20,775
+And then you have API calls, and you might
+do those through tool calling, you know,
+
+6
+00:00:20,775 --> 00:00:22,935
+through an MCP or through a CLI.
+
+7
+00:00:23,015 --> 00:00:25,895
+But it's not really been a
+great equivalent for UI yet.
+
+8
+00:00:25,895 --> 00:00:28,055
+You know, there's some
+specifications around MCP apps.
+
+9
+00:00:28,930 --> 00:00:31,570
+There's some kind of MCP UI specs.
+
+10
+00:00:31,810 --> 00:00:35,490
+But I really wanted to take a look
+at, like, specifications aside,
+
+11
+00:00:35,490 --> 00:00:39,170
+how can you start shipping
+generative UI to your users today?
+
+12
+00:00:40,450 --> 00:00:41,090
+PostHog
+
+13
+00:00:50,285 --> 00:00:50,445
+PostHog
+
+14
+00:01:04,710 --> 00:01:08,310
+And so, like, if I come over to
+my editor, uh, to my coding agent,
+
+15
+00:01:09,270 --> 00:01:22,325
+PostHog and
+
+16
+00:01:22,325 --> 00:01:25,125
+it's gonna go ahead and run some queries
+and find the answer to my question.
+
+17
+00:01:25,570 --> 00:01:27,250
+But, again, you don't get those, like,
+
+18
+00:01:27,250 --> 00:01:31,490
+visual elements to understand
+basically what's happened.
+
+19
+00:01:31,490 --> 00:01:32,610
+And we put a lot of, like,
+
+20
+00:01:32,610 --> 00:01:36,770
+work as software engineers into being able
+to effectively communicate through these
+
+21
+00:01:36,770 --> 00:01:38,930
+UI components what's
+happening in the product.
+
+22
+00:01:39,165 --> 00:01:40,845
+So it's gone and found the results.
+
+23
+00:01:41,085 --> 00:01:44,605
+But what's cool here is I can actually
+say, you know, let's see it as a chart.
+
+24
+00:01:44,925 --> 00:01:50,685
+PostHog and we'll dive into how that
+
+25
+00:01:50,685 --> 00:01:52,445
+works once it calls it.
+
+26
+00:01:52,980 --> 00:01:56,260
+But you can see it's figuring out
+basically what the shape of the data is,
+
+27
+00:01:56,260 --> 00:01:58,260
+how to call it. It's figured that out.
+
+28
+00:01:58,260 --> 00:02:01,460
+Now it's calling the render UI
+tool, and it's given me this link.
+
+29
+00:02:01,700 --> 00:02:02,020
+PostHog
+
+30
+00:02:09,115 --> 00:02:12,395
+And then I wanted to talk about,
+like, basically, what's happened here,
+
+31
+00:02:12,395 --> 00:02:13,755
+and how how does this work.
+
+32
+00:02:14,795 --> 00:02:17,275
+And so we can actually see
+what the agent wrote here.
+
+33
+00:02:17,275 --> 00:02:19,355
+So you can see that it calls render UI.
+
+34
+00:02:19,355 --> 00:02:24,820
+It calls code, runs this function,
+and then returns this URL, basically.
+
+35
+00:02:25,140 --> 00:02:28,900
+And here's, like, a nicer version on
+the side of, like, what that code is.
+
+36
+00:02:29,140 --> 00:02:33,220
+And you can see that it actually shipped
+user query, and it has this query function.
+
+37
+00:02:33,220 --> 00:02:36,260
+For those of you that have ever
+used something like tRPC or ORPC,
+
+38
+00:02:36,465 --> 00:02:40,065
+you'll recognize this as, a TypeScript
+SDK that the agent can call.
+
+39
+00:02:40,225 --> 00:02:44,385
+And what's really cool here is you can
+basically make a TypeScript SDK out of all of
+
+40
+00:02:44,385 --> 00:02:45,985
+your PostHog
+
+41
+00:03:09,405 --> 00:03:10,285
+I wanna, like,
+
+42
+00:03:10,285 --> 00:03:13,485
+peek behind the curtain and look at what
+it looks like from the perspective of the
+
+43
+00:03:13,485 --> 00:03:15,710
+agent. So the agent gets four tools.
+
+44
+00:03:15,710 --> 00:03:18,670
+It has this execute tool, and
+it has this render UI tool.
+
+45
+00:03:18,750 --> 00:03:20,990
+And then it also has a
+tool for searching docs.
+
+46
+00:03:21,470 --> 00:03:25,870
+So just one by one, it's really
+useful to ship a search docs tool.
+
+47
+00:03:25,870 --> 00:03:29,645
+Just, like, helps give the agent
+information about how to use your product.
+
+48
+00:03:30,285 --> 00:03:32,685
+This execute tool is where
+a lot of the magic happens.
+
+49
+00:03:32,685 --> 00:03:36,845
+So this is built on the executor SDK,
+and I'll go over that in a second.
+
+50
+00:03:37,005 --> 00:03:40,205
+But it basically lets you take
+any open API, GraphQL, MCP server,
+
+51
+00:03:40,205 --> 00:03:41,725
+and convert it to a TypeScript SDK.
+
+52
+00:03:41,970 --> 00:03:43,890
+And then the agent can
+basically learn, hey.
+
+53
+00:03:43,890 --> 00:03:45,570
+You can have do this tool search.
+
+54
+00:03:45,650 --> 00:03:47,650
+You can describe it to
+learn how to call it.
+
+55
+00:03:47,650 --> 00:03:51,570
+And then there's this render UI
+function that when it calls it,
+
+56
+00:03:51,570 --> 00:03:53,490
+it gets basically some
+information about, hey.
+
+57
+00:03:53,490 --> 00:03:54,370
+You write JSX.
+
+58
+00:03:55,035 --> 00:04:03,195
+TanStack Query And
+
+59
+00:04:03,195 --> 00:04:06,875
+so we can actually see it with
+a much more complex dashboard.
+
+60
+00:04:07,850 --> 00:04:11,210
+And while that works, I'll go ahead and
+actually talk about code mode for a second.
+
+61
+00:04:12,170 --> 00:04:13,930
+So this from Cloudflare's bot log.
+
+62
+00:04:13,930 --> 00:04:17,210
+They shipped this, and it's a really great
+concept to go look into and understand.
+
+63
+00:04:17,290 --> 00:04:21,395
+Basically, you're able to ship your
+entire a open API spec to agents,
+
+64
+00:04:21,395 --> 00:04:24,115
+convert it to a TypeScript SDK,
+and then have them call it.
+
+65
+00:04:24,515 --> 00:04:28,195
+And I actually wanna dive into quickly
+what that looks like from the perspective of
+
+66
+00:04:28,195 --> 00:04:31,395
+the agents. So, again, this
+is, like, that execute tool,
+
+67
+00:04:31,395 --> 00:04:34,275
+and this is just a syntax highlighted
+one, so it's a bit easier to understand.
+
+68
+00:04:35,110 --> 00:04:36,870
+And this is a really cool, like,
+
+69
+00:04:36,870 --> 00:04:41,910
+implementation of how you can let agents
+write complex queries while still kind of
+
+70
+00:04:41,910 --> 00:04:43,830
+being in the constraints that CP has.
+
+71
+00:04:43,910 --> 00:04:44,710
+And so in this case,
+
+72
+00:04:44,710 --> 00:04:47,750
+there's this Google APIs function
+that it calls to list my emails.
+
+73
+00:04:48,345 --> 00:04:49,305
+And in this case,
+
+74
+00:04:49,305 --> 00:04:52,825
+I'm trying to find response emails that
+I've gotten from OpenAI or Anthropic,
+
+75
+00:04:52,905 --> 00:04:54,425
+and so it's filtering that down.
+
+76
+00:04:55,785 --> 00:04:57,465
+And, yes, look. It's all
+built on these, like,
+
+77
+00:04:57,465 --> 00:05:00,505
+concepts that agents are
+really good at writing code,
+
+78
+00:05:00,505 --> 00:05:03,065
+and you can basically give them
+an environment to write that in.
+
+79
+00:05:03,720 --> 00:05:06,920
+And so coming back to the dashboard
+that went handmade, so, again,
+
+80
+00:05:06,920 --> 00:05:09,080
+this is just a deep link into the product.
+
+81
+00:05:09,080 --> 00:05:10,200
+This could be into Postdoc.
+
+82
+00:05:10,200 --> 00:05:11,720
+This could be into WorkOS.
+
+83
+00:05:11,720 --> 00:05:13,320
+This could be whatever product you have.
+
+84
+00:05:13,400 --> 00:05:18,120
+You basically provide them a deep link,
+and then you can run code in that deep link.
+
+85
+00:05:18,165 --> 00:05:21,925
+And so same thing here. It's running
+this it's running all of these queries.
+
+86
+00:05:22,005 --> 00:05:25,445
+You can see on the side the code, and
+we can take a quick look at the UI.
+
+87
+00:05:26,165 --> 00:05:30,165
+And then the last thing is this is
+actually kind of officially supported by them,
+
+88
+00:05:30,165 --> 00:05:33,060
+SpeedySpec. So this is an
+MCP app inside of Cloud Code.
+
+89
+00:05:33,060 --> 00:05:36,020
+And so when clients have
+native support for MSP apps,
+
+90
+00:05:36,020 --> 00:05:38,020
+you can actually embed
+it directly into clients.
+
+91
+00:05:38,180 --> 00:05:39,220
+But for any that don't,
+
+92
+00:05:39,220 --> 00:05:43,540
+you can just link out to the URL and start
+to really ship great experiences to your
+
+93
+00:05:43,540 --> 00:05:44,840
+users. Thank you.
+
