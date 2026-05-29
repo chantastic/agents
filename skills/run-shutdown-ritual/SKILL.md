@@ -101,12 +101,14 @@ Rules:
 - `~/Downloads/` — recent files, video exports, screenshots, archives
 - `~/Desktop/` — scratch notes, scripts, planning docs
 - `~/sites/chan.dev/` — git log for the day
+- Cloud/system projects — check known URLs/repos listed in Cloud System Inventory when relevant
 - Video pipeline manifests — any `manifest.json` in recent project dirs
 - Published posts — new `.md` files in `src/content/posts/`
 
 **Draft the update:**
 - Summarize today's activity into sections matching the 2026.md style
 - Append to existing week section (don't overwrite previous days)
+- Track notable changes to Chan's personal system: new tools, cloud services, domains, workflows, automations, and conventions
 - Flag ephemeral files that should move to durable storage (or be deleted)
 - Include a "Repos" section with commit/skip/push decisions and any failed maintenance output
 
@@ -133,6 +135,14 @@ Known patterns:
 - Do video project dirs need to be preserved whole, or just the manifests/publish outputs?
 
 As we do this together, update this section with answers.
+
+## Cloud System Inventory
+
+Known cloud/system surfaces to keep in view during wrap summaries:
+
+| System | URL | Notes |
+|--------|-----|-------|
+| Captioner | `https://captioner.chan.dev` | Personal captioning workflow app; built with Flue workflows. |
 
 ## File Map
 
