@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "youtube-workos",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd /Users/chan/Developer/youtube-workos && sleep 86400 | script -q /dev/null npm run dev"],
+      "port": 5173,
+      "autoPort": false
+    }
+  ]
+}
