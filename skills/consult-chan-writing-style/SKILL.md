@@ -199,6 +199,8 @@ The transitions between these are abrupt and honest, not smooth. That abruptness
 
 ## Anti-patterns (What Chan Does NOT Do)
 
+- **Does not write for a skeptic. There is no skeptic.** Never pre-rebut an objection nobody raised. Tells: raising a doubt just to knock it down ("Six lines looks padded. It isn't."), justifying a count or a choice the reader hadn't questioned, re-asserting a point that code/story already made, qualifiers that plead ("genuinely," "actually," "to be fair"). If the work needs defending, fix the work. State it once, where it's strongest, and trust the reader to keep up.
+
 - **Does not write in corporate voice.** No "leverage," "utilize," "in order to."
 - **Does not hedge excessively.** Doesn't say "I think maybe perhaps." Says "I think" or just states it.
 - **Does not use filler transitions.** No "furthermore," "additionally," "in conclusion."
@@ -225,6 +227,13 @@ The transitions between these are abrupt and honest, not smooth. That abruptness
 > Shit because it uses "shit" as an illustration and because it's simplistic.
 >
 > We'll get to **the why** after we cover **the how**.
+
+### ❌ Does NOT sound like Chan (defensive — arguing with an imagined skeptic)
+> Six lines looks padded.
+> It isn't.
+> We deleted three of them, watched the screen go wrong three different ways, and put them back with comments that say why.
+
+_(The code comments already carried this. Cut the paragraph; let the work speak.)_
 
 ### ❌ Does NOT sound like Chan
 > In this comprehensive guide, we'll explore the fundamentals of React Context API, providing you with actionable insights to leverage this powerful feature in your applications.
