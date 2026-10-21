@@ -4,7 +4,7 @@ When you understand the language, you understand the process.
 
 One vocabulary file per area of work. Read the one(s) for the task at hand. Kept up by the `vocabulary` skill.
 
-- `video.md`: video post-production and publishing (edits, cuts, captions, thumbnails, the tracker, YouTube).
+- `video.md`: video post-production and publishing, and the video app at video.workos.cloud (videos, cuts, clips, edits, presenters, assets, targets, share kits, the tracker, YouTube).
 
 ## Words about this system
 
