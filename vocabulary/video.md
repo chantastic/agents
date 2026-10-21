@@ -13,7 +13,7 @@ _Avoid_: upload, artifact
 **Format**: a cut's frame shape (16:9, 1:1 square, 9:16 vertical). Only the shape; it says nothing about which part of the video the cut shows.
 _Avoid_: format when you mean the kind of cut
 
-**Clip**: a cut that is one section of the video, a contiguous time range of the primary cut.
+**Clip**: a cut that is one section of the video, a contiguous time range of the primary cut. Clip is also the broad word for clipping a section out of a larger piece of content.
 
 **Edit**: a high-potency distillation of the video that can rearrange, compress or remix it, rather than one contiguous section. Borrowed from TikTok. Typically social-only.
 
@@ -28,16 +28,11 @@ _Avoid_: artifact (that's files produced by agent runs)
 
 **Share kit**: the public /share page and post kit sent to a presenter (or a general kit) so they can repost a video first-party. Separate from the /videos admin pages.
 
+**Short**: packaging, not a kind of cut. How a vertical cut is presented on a target, like YouTube #Shorts. Closest to an Instagram Reel.
+_Avoid_: reel, vertical
+
 ## Proposed
 Not yet confirmed. Each needs Michael's OK before moving above this line.
-
-**Square version**: the 1:1 social edit of a talk or interview.
-
-**Multicam version**: the 16:9 multi-camera edit published as the full YouTube video.
-_Avoid_: long version, YouTube cut
-
-**Short**: a vertical 9:16 cut of 60 seconds or less, posted as a YouTube Short or social video.
-_Avoid_: reel, vertical, clip
 
 **Direction**: a distinct creative approach to the same footage, e.g. the four OOH directions (match-cut, readable, POV hunt, ROX-style).
 _Avoid_: concept, variant, version
