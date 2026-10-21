@@ -5,7 +5,7 @@ Video post-production and publishing for WorkOS, including the video app (video.
 **Video**: the parent record for one piece of content (a talk, panel, demo). Uploading the first cut creates it. One video has many cuts, presenters and assets.
 _Avoid_: content (too generic, collides with content license), upload (uploads are cuts)
 
-**Cut**: one rendered video file belonging to a video. Each has a format, a kind (primary, clip or edit) and its own targets. One video, many cuts.
+**Cut**: one rendered video file belonging to a video. Each has a format, a kind (primary, clip or edit) and its own platforms. One video, many cuts.
 _Avoid_: upload, artifact
 
 **Primary cut**: the full-length master cut, usually 16:9, typically published to YouTube only.
@@ -22,13 +22,14 @@ _Avoid_: format when you mean the kind of cut
 **Asset**: a non-video file attached to a video or a cut (thumbnail, captions, slides, photos, Drive links).
 _Avoid_: artifact (that's files produced by agent runs)
 
-**Target**: a destination a cut is published to (YouTube, X, LinkedIn, TikTok, Instagram and so on). Each cut has its own targets, in any combination.
+**Platform**: a destination a cut is published to (YouTube, X, LinkedIn, TikTok, Instagram and so on). Each cut has its own platforms, in any combination.
+_Avoid_: target (the app's older name for this)
 
-**Publication**: one instance of publishing a cut to a target. A cut can be published to the same target more than once.
+**Publication**: one instance of publishing a cut to a platform. A cut can be published to the same platform more than once.
 
 **Share kit**: the public /share page and post kit sent to a presenter (or a general kit) so they can repost a video first-party. Separate from the /videos admin pages.
 
-**Short**: packaging, not a kind of cut. How a vertical cut is presented on a target, like YouTube #Shorts. Implies a vertical (9:16) format. A reel is the Instagram equivalent.
+**Short**: packaging, not a kind of cut. How a vertical cut is presented on a platform, like YouTube #Shorts. Implies a vertical (9:16) format. A reel is the Instagram equivalent.
 _Avoid_: vertical (that's a format, not a short)
 
 ## Proposed
