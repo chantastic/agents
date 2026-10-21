@@ -13,7 +13,7 @@ _Avoid_: upload, artifact
 **Format**: a cut's frame shape (16:9, 1:1 square, 9:16 vertical). Only the shape; it says nothing about which part of the video the cut shows.
 _Avoid_: format when you mean the kind of cut
 
-**Clip**: a cut that is one section of the video, a contiguous time range of the primary cut. Clip is also the broad word for clipping a section out of a larger piece of content.
+**Clip**: a cut that is one section of the video, a contiguous time range of the primary cut. Clip is also the broad word for clipping a section out of a larger piece of content. A clip can be any format; it isn't inherently vertical.
 
 **Edit**: a high-potency distillation of the video that can rearrange, compress or remix it, rather than one contiguous section. Borrowed from TikTok. Typically social-only.
 
@@ -28,8 +28,8 @@ _Avoid_: artifact (that's files produced by agent runs)
 
 **Share kit**: the public /share page and post kit sent to a presenter (or a general kit) so they can repost a video first-party. Separate from the /videos admin pages.
 
-**Short**: packaging, not a kind of cut. How a vertical cut is presented on a target, like YouTube #Shorts. Closest to an Instagram Reel.
-_Avoid_: reel, vertical
+**Short**: packaging, not a kind of cut. How a vertical cut is presented on a target, like YouTube #Shorts. Implies a vertical (9:16) format. A reel is the Instagram equivalent.
+_Avoid_: vertical (that's a format, not a short)
 
 ## Proposed
 Not yet confirmed. Each needs Michael's OK before moving above this line.
