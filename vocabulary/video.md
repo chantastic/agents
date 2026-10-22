@@ -5,13 +5,16 @@ Video post-production and publishing for WorkOS, including the video app (video.
 **Video**: the parent record for one piece of content (a talk, panel, demo). Uploading the first cut creates it. One video has many cuts, presenters and assets.
 _Avoid_: content (too generic, collides with content license), upload (uploads are cuts)
 
-**Cut**: one rendered video file belonging to a video. Each has a format, a kind (primary, clip or edit) and its own platforms. One video, many cuts.
+**Cut**: one rendered video file belonging to a video. Each has a format, a kind (primary, alt, clip or edit) and its own platforms. One video, many cuts.
 _Avoid_: upload, artifact
 
 **Primary cut**: the full-length master cut, usually 16:9, typically published to YouTube only.
 
 **Format**: a cut's frame shape (16:9, 1:1 square, 9:16 vertical). Only the shape; it says nothing about which part of the video the cut shows.
 _Avoid_: format when you mean the kind of cut
+
+**Alt**: a cut with the same content as the primary cut in a different format, like a vertical or square version of the full talk.
+_Avoid_: edit (an edit changes the content; an alt only changes the format)
 
 **Clip**: a cut that is one section of the video, a contiguous time range of the primary cut. Clip is also the broad word for clipping a section out of a larger piece of content. A clip can be any format; it isn't inherently vertical.
 
