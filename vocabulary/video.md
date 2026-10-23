@@ -55,7 +55,7 @@ _Avoid_: target, destination
 
 **Connection**: the account integration with a service (e.g. the WorkOS YouTube channel). Kept separate so account details never live on a platform. A service with one connection is chosen silently.
 
-**Placement**: a first-class, linked record of one export posted to one platform through one connection, with its own copy, status, link, publish time and performance. The same export can have several placements on the same platform. Replaces publication.
+**Placement**: a first-class, linked record of one export posted to one platform through one connection, with its own copy, status, link, publish time and performance. The same export can have several placements on the same platform. Replaces publication. Durable history: a placement outlives the piece, timeline and export it came from. Deleting those unlinks the placement (its links become empty) and never deletes it or takes the post down; the placement keeps a snapshot of what was published.
 _Avoid_: publication, post (for the record)
 
 **Timeline processing / Export processing**: processing splits by what it acts on. Timeline processing works on content (transcription, presenters, chapters, copy drafts) once per timeline; export processing works on the file (encoding, reframing, burned-in captions, thumbnail) once per export.
