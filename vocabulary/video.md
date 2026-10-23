@@ -41,6 +41,8 @@ The restructure of the video app. These replace the terms above once it ships; u
 **Piece**: the top-level record for one piece of content. Only a title is required. Holds timelines today; articles, posts and threads may join later. Every piece has a speaker kit automatically, never created or deleted by hand.
 _Avoid_: video (as the parent record), project
 
+**Speaker kit (next version)**: one per piece, automatic. Lists the piece's placements across all its timelines, so a presenter can repost first-party. Presenter-specific pages are the same kit filtered with a URL query (e.g. ?presenter=swyx), not separate kits.
+
 **Timeline**: the primitive. One sequence of content with its own timestamps: transcript, chapters, presenters, title and description live here. The full talk is a timeline; a clip or an edit is another timeline that records the timeline it came from (a clip also records its time range). Defaults cascade only when a timeline is created; nothing stays live-linked.
 _Avoid_: cut, video (for the content-level record)
 
