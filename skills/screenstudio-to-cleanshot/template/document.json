@@ -1,0 +1,46 @@
+{
+  "hideCursorWhenNotMoving": false,
+  "cameraShape": 1,
+  "backgroundShadowIntensity": 0,
+  "recordingInfo": {
+    "retinaFactor": 2,
+    "scaleFactor": 1
+  },
+  "keystrokesPosition": 7,
+  "showCamera": false,
+  "backgroundPaddingPercent": 0,
+  "keystrokesDisplayAll": false,
+  "cursorClickEffect": {
+    "none": {}
+  },
+  "cursorPressEffect": true,
+  "keystrokesScale": 1,
+  "zoomAnimationStyle": 0,
+  "we": [],
+  "cornerRadius": 0,
+  "hideCursorWhenTyping": true,
+  "motionBlur": 2,
+  "cursorMovementStyle": 0,
+  "showCursor": true,
+  "zooms": [],
+  "audioConfiguration": {
+    "systemAudioTrack": {
+      "audioType": "system",
+      "isEnabled": false,
+      "volume": 1
+    }
+  },
+  "te": [],
+  "cameraPosition": 2,
+  "cursorStyle": "tahoe",
+  "clips": [],
+  "cursorScale": 2,
+  "flipCamera": true,
+  "systemDefaultCursorStyle": "tahoe",
+  "resizeCameraDuringZoom": true,
+  "cameraScale": 1,
+  "showKeystrokes": false,
+  "mouseEvents": [],
+  "keystrokesStyle": 0,
+  "keyboardEvents": []
+}
